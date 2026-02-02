@@ -7,14 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | 1-complete |
-| **Next Phase** | 2 - Git Worktree |
+| **Current Phase** | 2-complete |
+| **Next Phase** | 3 - Execute Story |
 | **Spec Folder** | agent-os/specs/2026-02-02-core-components |
-| **Worktree Path** | (pending) |
-| **Git Branch** | (pending) |
+| **Worktree Path** | ../rfz-tui-worktrees/core-components |
+| **Git Branch** | feature/core-components |
+| **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | Kanban board created |
-| **Next Action** | Setup git worktree |
+| **Last Action** | Git worktree created (external location) |
+| **Next Action** | Switch to worktree and execute first story |
 
 ---
 
@@ -99,6 +100,7 @@ None
 | Timestamp | Story | From | To | Notes |
 |-----------|-------|------|-----|-------|
 | 2026-02-02 | - | - | - | Kanban board created with 10 stories |
+| 2026-02-02 | - | Phase 1 | Phase 2 | Git worktree created at ../rfz-tui-worktrees/core-components |
 
 ---
 
