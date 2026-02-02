@@ -14,6 +14,7 @@
 | CORE-002 | TuiBox Component - Bordered container | box.go (new) |
 | CORE-003 | TuiDivider Component - Horizontal separator | divider.go (new) |
 | CORE-004 | TuiButton Component - Interactive button | button.go (new) |
+| CORE-005 | TuiStatus Component - Build status badge | status.go (existing) |
 
 ---
 
@@ -28,6 +29,9 @@
 - DividerStyle constants: `DividerSingle`, `DividerDouble`
 - `internal/ui/components/button.go` → `TuiButton(label string, variant ButtonVariant, shortcut string, focused bool) string`
 - ButtonVariant constants: `ButtonPrimary`, `ButtonSecondary`, `ButtonDestructive`
+- `internal/ui/components/status.go` → `TuiStatus(status Status) string` - Full status badge
+- `internal/ui/components/status.go` → `TuiStatusCompact(status Status) string` - Icon-only status
+- Status constants: `StatusPending`, `StatusRunning`, `StatusSuccess`, `StatusFailed`, `StatusError`, `StatusSkipped`
 
 ### Services
 <!-- New service classes/modules -->
@@ -62,3 +66,4 @@ _None yet_
 | internal/ui/components/box.go | Created | CORE-002 |
 | internal/ui/components/divider.go | Created | CORE-003 |
 | internal/ui/components/button.go | Created | CORE-004 |
+| internal/ui/components/status.go | Verified | CORE-005 |
