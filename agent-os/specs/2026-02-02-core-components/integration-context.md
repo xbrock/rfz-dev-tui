@@ -12,6 +12,7 @@
 |-------|---------|-------------|
 | CORE-001 | Styles Package - Design tokens and utilities | styles.go (existing), helpers.go (new) |
 | CORE-002 | TuiBox Component - Bordered container | box.go (new) |
+| CORE-003 | TuiDivider Component - Horizontal separator | divider.go (new) |
 
 ---
 
@@ -22,6 +23,8 @@
 - `internal/ui/components/box.go` → `TuiBox(content string, style BoxStyle, focused bool) string`
 - `internal/ui/components/box.go` → `TuiBoxWithWidth(content string, style BoxStyle, focused bool, width int) string`
 - BoxStyle constants: `BoxSingle`, `BoxDouble`, `BoxRounded`, `BoxHeavy`
+- `internal/ui/components/divider.go` → `TuiDivider(style DividerStyle, width int) string`
+- DividerStyle constants: `DividerSingle`, `DividerDouble`
 
 ### Services
 <!-- New service classes/modules -->
@@ -54,3 +57,4 @@ _None yet_
 | go.mod | Modified | CORE-001 |
 | go.sum | Modified | CORE-001 |
 | internal/ui/components/box.go | Created | CORE-002 |
+| internal/ui/components/divider.go | Created | CORE-003 |
