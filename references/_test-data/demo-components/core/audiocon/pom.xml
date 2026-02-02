@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.bahn.rfz</groupId>
+    <artifactId>audiocon</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>RIS-Fahrzeug AudioCon</name>
+
+    <modules>
+        <module>audiocon-config</module>
+        <module>audiocon-core</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <profiles>
+        <!-- Environment Profiles -->
+        <profile>
+            <id>target_env_dev</id>
+            <properties>
+                <target.environment>dev</target.environment>
+            </properties>
+        </profile>
+        <profile>
+            <id>target_env_test</id>
+            <properties>
+                <target.environment>test</target.environment>
+            </properties>
+        </profile>
+        <profile>
+            <id>target_env_prod</id>
+            <properties>
+                <target.environment>prod</target.environment>
+            </properties>
+        </profile>
+
+        <!-- Port Profiles (AudioCon only has 11091 profile) -->
+        <profile>
+            <id>target_env_use_traktion_11091</id>
+            <properties>
+                <service.port>11091</service.port>
+                <port.profile>11091</port.profile>
+            </properties>
+        </profile>
+
+        <!-- Config Generation Profile -->
+        <profile>
+            <id>generate_local_config_files</id>
+            <properties>
+                <generate.config>true</generate.config>
+            </properties>
+        </profile>
+    </profiles>
+</project>

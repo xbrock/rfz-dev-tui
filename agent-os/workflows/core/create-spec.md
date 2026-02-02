@@ -1,0 +1,1780 @@
+---
+description: Create Feature Specification with DevTeam (PO + Architect)
+globs:
+alwaysApply: false
+version: 3.0
+encoding: UTF-8
+---
+
+# Create Spec Workflow
+
+## Overview
+
+Create detailed feature specifications using DevTeam collaboration: PO gathers fachliche requirements, Architect adds technical refinement.
+
+**v3.0 Changes:**
+- **NEW: System Stories** - 3 automatisch generierte Stories am Ende jeder Spec:
+  - story-997: Code Review (Opus reviewt gesamten Feature-Diff)
+  - story-998: Integration Validation (ersetzt Phase 4.5)
+  - story-999: Finalize PR (ersetzt Phase 5 - Test-Szenarien, User-Todos, PR, Cleanup)
+- **ENHANCED: Backward Compatibility** - Specs ohne System Stories funktionieren weiterhin
+- **SIMPLIFIED: execute-tasks** - Phase 4.5 und 5 werden zu Legacy-Checks
+
+**v2.9 Changes:**
+- **NEW: Komponenten-Verbindungen** - Explizite Definition WIE Komponenten verbunden werden
+- **NEW: Verbindungs-Matrix** im Implementation Plan Template mit Source/Target/Story-Zuordnung
+- **NEW: Integration DoD** - Stories mit Verbindungs-Verantwortung bekommen Integration-DoD-Punkte
+- **NEW: Verbindungs-Validierung** im Self-Review (Step 2.5.2)
+- **ENHANCED: Story Generation** - Stories erhalten Integration-Metadata wenn zuständig für Verbindung
+- **FIX: "Komponenten gebaut aber nicht verbunden"** - Verhindert isolierte Implementierung
+
+**v2.8 Changes:**
+- **NEW: Implementation Plan (Step 2.5)** - Lückenloser Plan mit Self-Review und Minimalinvasiv-Analyse
+- **NEW: Kollegen-Methode** - Kritischer Self-Review vor Story-Generierung
+- **NEW: Editor-Option** - User kann Plan direkt im Editor bearbeiten
+- **NEW: implementation-plan.md** - Template für strukturierte Planung
+- **CHANGED: Step 2.4 → 2.6** - Stories werden jetzt aus dem Plan abgeleitet, nicht nur aus Clarification
+- **NEW: /review-implementation-plan Skill** - Standalone Review für existierende Pläne
+
+**v2.7 Changes:**
+- Automatic Effort Estimation (Step 3.6) - Dual estimation: Human-only + Human+AI Agent
+- effort-estimation.md - Per-Story und Gesamt-Schätzung im Spec-Ordner
+- Step 4 Summary zeigt Aufwandsschätzung mit Zeitersparnis durch KI
+
+**v2.6 Changes:**
+- **NEW: Gherkin-Style User Stories** - PO schreibt Akzeptanzkriterien im Given-When-Then Format
+- **NEW: Best Practices für Gherkin** - Ein Verhalten pro Szenario, konkrete Werte, Nutzer-Perspektive
+- **ENHANCED: Story Template** - Trennung zwischen fachlichen Gherkin-Szenarien und technischer Verifikation
+- **ENHANCED: Acceptance Criteria** - Fachlich (Gherkin) + Technisch (FILE_EXISTS, etc.) getrennt
+
+**v2.5 Changes:**
+- Pre-Refinement Layer Analysis - Systematic identification of all affected layers before technical refinement
+- "Betroffene Layer & Komponenten" section in story template for Full-Stack consistency
+- Integration Type classification (Backend-only / Frontend-only / Full-stack)
+- Critical Integration Points documentation for cross-layer dependencies
+- Cross-Layer Detection in Step 3.5 validates layer coverage in WO section
+- DoR checkboxes now include Full-Stack consistency checks
+
+**v2.4 Changes:**
+- Architect now selects relevant skills from skill-index.md for each story
+- Story template includes "Relevante Skills" section
+- Skills are used by Orchestrator during /execute-tasks for pattern extraction
+
+<pre_flight_check>
+  EXECUTE: agent-os/workflows/meta/pre-flight.md
+</pre_flight_check>
+
+<process_flow>
+
+<step number="1" name="spec_initiation">
+
+### Step 1: Feature Selection from Roadmap
+
+ALWAYS present roadmap features as options to user, even if they provided a custom idea.
+
+<mandatory_actions>
+  1. READ agent-os/product/roadmap.md
+
+  2. EXTRACT uncompleted features from all phases (MVP, Growth, Scale)
+
+  3. PRESENT to user via AskUserQuestion:
+     ```
+     Question: "What feature would you like to create a specification for?"
+
+     Options:
+     - [Roadmap Feature 1] - [One-line description]
+     - [Roadmap Feature 2] - [One-line description]
+     - [Roadmap Feature 3] - [One-line description]
+     - [Roadmap Feature 4] - [One-line description]
+
+     (User can also type custom feature via "Other" option)
+     ```
+
+  4. WAIT for user selection
+
+  5. STORE selected feature for Step 2
+</mandatory_actions>
+
+<instructions>
+  ACTION: Always show roadmap features first
+  FORMAT: Use AskUserQuestion tool with roadmap features as options
+  ALLOW: User can choose "Other" to enter custom feature
+  PROCEED: To Step 2 with selected feature
+</instructions>
+
+</step>
+
+<step number="2" name="po_fachliche_requirements_dialog">
+
+### Step 2: PO Phase - Dialog-Based Requirements Gathering
+
+⚠️ **NEW APPROACH:** For larger/complex features, engage in iterative dialog with user
+to fully understand requirements BEFORE generating user stories.
+
+<process_overview>
+  1. **Requirements Dialog** (Iterative clarification)
+  2. **Clarification Document** (Summary for approval)
+  3. **User Approval** (User confirms or requests changes)
+  4. **Implementation Plan** (NEW v2.8 - Lückenloser Plan mit Self-Review)
+  5. **User Story Generation** (Only after plan approval)
+</process_overview>
+
+<substep number="2.1" name="requirements_dialog">
+
+### Step 2.1: Requirements Dialog (Iterative)
+
+<mandatory_actions>
+  ⚠️ **CRITICAL: This workflow creates a NEW spec only!**
+  - NEVER modify, continue, or reference existing specs in agent-os/specs/
+  - NEVER ask the user which existing spec to work on
+  - ALWAYS create a fresh spec folder with today's date
+  - If user wants to modify existing spec → redirect to /update-feature
+
+  1. LOAD context:
+     - Product Brief: agent-os/product/product-brief-lite.md
+     - Roadmap: agent-os/product/roadmap.md (if from roadmap)
+
+  2. INITIAL questions to user:
+     - What is the feature? (user's perspective)
+     - Who needs it? (target users)
+     - Why is it valuable? (business value)
+     - What problem does it solve?
+
+  3. ITERATIVE clarification (CONTINUE until complete):
+     - What are the edge cases?
+     - Where does this feature affect the system? (explore dependencies)
+     - What existing features/components are related?
+     - What should happen in error scenarios?
+     - What is IN scope? What is OUT of scope?
+     - Are there permissions/security considerations?
+     - Are there performance requirements?
+
+  4. DEEP-DIVE based on complexity:
+     - If complex: Ask follow-up about integration points
+     - If affects multiple components: Map the relationships
+     - If unclear: Request examples or use cases
+     - If risky: Discuss mitigation strategies
+
+  5. CONTINUE asking questions until:
+     - All aspects are clear
+     - Dependencies are mapped
+     - Edge cases are identified
+     - User confirms "no more questions"
+</mandatory_actions>
+
+<instructions>
+  ACTION: Engage in dialog with user
+  FORMAT: Ask questions one section at a time
+  WAIT: For user answers before proceeding
+  PROBE: Deeper into unclear areas
+  DOCUMENT: Keep track of all answers
+  STOP: Only when user says requirements are complete
+</instructions>
+
+</substep>
+
+<substep number="2.2" name="clarification_document">
+
+### Step 2.2: Create Clarification Document
+
+Before generating user stories, create a summary document for user approval.
+
+<mandatory_actions>
+  1. Use date-checker to get current date (YYYY-MM-DD)
+
+  2. Create spec folder: agent-os/specs/YYYY-MM-DD-spec-name/
+
+  3. CREATE requirements-clarification.md:
+
+     <clarification_template>
+       # Requirements Clarification - [SPEC_NAME]
+
+       **Created:** [DATE]
+       **Status:** Pending User Approval
+
+       ## Feature Overview
+       [1-2 sentence summary of the feature]
+
+       ## Target Users
+       [Who will use this feature]
+
+       ## Business Value
+       [Why this feature matters]
+
+       ## Functional Requirements
+       [List of WHAT the feature should do - user-facing]
+
+       ## Affected Areas & Dependencies
+       [Where this feature impacts the system]
+       - [Component 1] - [Impact description]
+       - [Component 2] - [Impact description]
+       - [External System] - [Integration point]
+
+       ## Edge Cases & Error Scenarios
+       [What happens when things go wrong]
+       - [Edge case 1] - [Expected behavior]
+       - [Edge case 2] - [Expected behavior]
+
+       ## Security & Permissions
+       [Who can access what]
+
+       ## Performance Considerations
+       [Any performance requirements]
+
+       ## Scope Boundaries
+       **IN SCOPE:**
+       - [Item 1]
+       - [Item 2]
+
+       **OUT OF SCOPE:**
+       - [Item 1]
+       - [Item 2]
+
+       ## Open Questions (if any)
+       - [Question 1]
+       - [Question 2]
+
+       ## Proposed User Stories (High Level)
+       [List of story titles with brief descriptions - NOT full stories yet]
+       1. [Story 1 Title] - [Brief description]
+       2. [Story 2 Title] - [Brief description]
+       3. [Story 3 Title] - [Brief description]
+
+       ---
+       *Review this document carefully. Once approved, detailed user stories will be generated.*
+     </clarification_template>
+
+  4. PRESENT clarification document to user
+</mandatory_actions>
+
+</substep>
+
+<substep number="2.3" name="user_approval">
+
+### Step 2.3: User Approval
+
+<mandatory_actions>
+  1. ASK user via AskUserQuestion:
+
+     ```
+     Question: "I've created a Requirements Clarification document based on our discussion.
+                Please review it before I generate the detailed user stories."
+
+     Options:
+     1. Approve & Generate Stories
+        → Requirements are correct
+        → Proceed to generate full user stories
+
+     2. Request Changes
+        → Need to modify the clarification
+        → I'll update based on your feedback
+
+     3. Continue Discussion
+        → Need to explore more aspects
+        → Return to dialog mode
+     ```
+
+  2. BASED on user choice:
+     - If "Approve": Proceed to Step 2.5 (Implementation Plan)
+     - If "Request Changes": Update clarification, re-ask approval
+     - If "Continue": Return to Step 2.1 with focused questions
+</mandatory_actions>
+
+</substep>
+
+<substep number="2.5" name="implementation_plan">
+
+### Step 2.5: Implementation Plan (Kollegen-Methode)
+
+**Ziel:** Lückenlosen Implementierungsplan erstellen, kritisch reviewen, und minimalinvasiv optimieren - BEVOR Stories geschrieben werden.
+
+> Basiert auf bewährtem Prompt:
+> "Erstelle zunächst einen lückenlosen, sorgfältig durchdachten Implementierungsplan.
+> Mache dann einen kritischen Review. Solltest du auf Probleme stoßen, suche einen
+> besseren Weg. Analysiere dann, wie du minimalinvasiv vorgehen kannst OHNE auf
+> Features zu verzichten. Erstelle dann Actionable Items als Tickets mit DoD."
+
+<mandatory_actions>
+
+#### Step 2.5.1 - Implementation Plan erstellen
+
+**Input:** Genehmigtes `requirements-clarification.md`
+
+**Erstelle:** `implementation-plan.md` im Spec-Ordner
+
+1. LOAD template (hybrid lookup):
+   - TRY: agent-os/templates/docs/implementation-plan-template.md
+   - FALLBACK: ~/.agent-os/templates/docs/implementation-plan-template.md
+
+2. LOAD context:
+   - requirements-clarification.md (gerade genehmigt)
+   - agent-os/product/tech-stack.md
+   - agent-os/product/architecture-structure.md (if exists)
+
+3. EXPLORE codebase:
+   - Suche nach ähnlichen Features die bereits implementiert wurden
+   - Identifiziere wiederverwendbare Patterns und Komponenten
+   - Verstehe bestehende Architektur-Entscheidungen
+
+4. CREATE implementation-plan.md:
+   - **Executive Summary** - Was wird gebaut und warum (1-2 Sätze)
+   - **Architektur-Entscheidungen** - Welche Patterns/Ansätze werden verwendet
+   - **Komponenten-Übersicht** - Was muss erstellt/geändert werden
+   - **Umsetzungsphasen** - Grobe Reihenfolge der Umsetzung
+   - **Abhängigkeiten** - Was hängt wovon ab
+   - **Risiken & Mitigationen** - Potenzielle Probleme
+
+**Wichtig:** Noch KEINE detaillierten Dateipfade oder Story-Aufteilung!
+Der Plan ist architektonisch/strategisch, nicht taktisch.
+
+#### Step 2.5.2 - Kritischer Self-Review
+
+Führe einen kritischen Review des erstellten Plans durch:
+
+```
+Mache einen kritischen Review des Implementierungsplans:
+
+1. VOLLSTÄNDIGKEIT
+   - Sind alle Anforderungen aus der Clarification abgedeckt?
+   - Fehlen wichtige Aspekte?
+
+2. KONSISTENZ
+   - Gibt es Widersprüche im Plan?
+   - Passen die Architektur-Entscheidungen zusammen?
+
+3. RISIKEN
+   - Welche Probleme könnten auftreten?
+   - Gibt es kritische Abhängigkeiten?
+
+4. ALTERNATIVEN
+   - Gibt es einen besseren Weg?
+   - Was sind die Trade-offs?
+
+5. KOMPONENTEN-VERBINDUNGEN (KRITISCH - v2.9)
+   - Ist JEDE neue Komponente mit mindestens einer anderen verbunden?
+   - Ist JEDE Verbindung einer konkreten Story zugeordnet?
+   - Gibt es "verwaiste" Komponenten ohne Verbindung?
+   - Sind die Verbindungs-Validierungen ausführbar?
+
+Wenn du Probleme findest, schlage Verbesserungen vor die ALLE
+Anforderungen OHNE Abstriche erfüllen.
+```
+
+**Verbindungs-Validierung:**
+```
+FOR EACH Komponente in "Neue Komponenten" table:
+  CHECK: Hat diese Komponente mindestens einen Eintrag in
+         "Komponenten-Verbindungen" (als Source ODER Target)?
+
+  IF NOT:
+    FLAG: "Verwaiste Komponente: [NAME] - keine Verbindung definiert!"
+    REQUIRE: Verbindung hinzufügen ODER Komponente entfernen
+
+FOR EACH Verbindung in "Komponenten-Verbindungen" table:
+  CHECK: Ist eine "Zuständige Story" angegeben?
+
+  IF NOT:
+    FLAG: "Verbindung ohne Story: [Source] → [Target]"
+    REQUIRE: Story zuordnen
+```
+
+**Output:** Fülle `## Self-Review Ergebnisse` Sektion im Plan
+
+#### Step 2.5.3 - Minimalinvasiv-Analyse
+
+1. **Codebase-Exploration durchführen:**
+   - Suche nach bestehenden Patterns die wiederverwendet werden können
+   - Identifiziere ähnliche Features im Projekt
+   - Prüfe welche Infrastruktur bereits existiert
+
+2. **Analyse durchführen:**
+```
+Analysiere den Plan auf Minimalinvasivität:
+
+1. WIEDERVERWENDUNG
+   - Welcher bestehende Code kann genutzt werden?
+   - Welche Patterns existieren bereits im Projekt?
+
+2. ÄNDERUNGSUMFANG
+   - Welche Änderungen sind wirklich nötig?
+   - Was kann vermieden werden?
+
+3. FEATURE-PRESERVATION (KRITISCH!)
+   - Validiere: KEIN Feature wird geopfert!
+   - Jede Optimierung muss alle Requirements erhalten
+
+Optimiere den Plan basierend auf deinen Erkenntnissen.
+Dokumentiere jede Optimierung mit Begründung.
+```
+
+3. **Output:** Fülle `## Minimalinvasiv-Optimierungen` Sektion im Plan
+
+4. **Feature-Preservation Checkliste abhaken:**
+   - [ ] Alle Requirements aus Clarification sind abgedeckt
+   - [ ] Kein Feature wurde geopfert
+   - [ ] Alle Akzeptanzkriterien bleiben erfüllbar
+
+#### Step 2.5.4 - User Review (mit Editor-Option)
+
+1. PRESENT den Implementation Plan dem User
+
+2. ASK user via AskUserQuestion:
+   ```
+   Question: "Ich habe einen Implementation Plan basierend auf der genehmigten
+              Clarification erstellt. Der Plan enthält Self-Review und
+              Minimalinvasiv-Optimierungen."
+
+   Options:
+   1. Plan genehmigen
+      → Weiter zu Step 2.6 (Story-Generierung aus Plan)
+
+   2. Im Editor öffnen
+      → Ich zeige dir den Dateipfad
+      → Du bearbeitest die Datei
+      → Sage 'fertig' wenn du bereit bist
+
+   3. Änderungen besprechen
+      → Beschreibe die gewünschten Anpassungen
+      → Ich aktualisiere den Plan
+
+   4. Zurück zur Clarification
+      → Fundamentale Anforderungsänderungen nötig
+      → Zurück zu Step 2.1
+   ```
+
+3. BASED on user choice:
+   - If "Plan genehmigen":
+     - Set Status: APPROVED
+     - Proceed to Step 2.6
+
+   - If "Im Editor öffnen":
+     - SHOW: "Der Plan liegt unter: agent-os/specs/[spec-name]/implementation-plan.md"
+     - INFORM: "Öffne die Datei, bearbeite sie, und sage 'fertig' wenn du bereit bist"
+     - WAIT for user confirmation
+     - READ plan again
+     - VALIDATE changes preserve all requirements
+     - Re-ask approval
+
+   - If "Änderungen besprechen":
+     - COLLECT user feedback
+     - UPDATE plan accordingly
+     - Re-run Self-Review if significant changes
+     - Re-ask approval
+
+   - If "Zurück zur Clarification":
+     - RETURN to Step 2.1
+
+</mandatory_actions>
+
+<instructions>
+  ACTION: Create Implementation Plan with Self-Review and Minimalinvasiv-Analyse
+  EXPLORE: Codebase for reusable patterns before planning
+  REVIEW: Critically review the plan for completeness and consistency
+  OPTIMIZE: For minimal changes while preserving ALL features
+  PRESENT: To user with edit options
+  REFERENCE: agent-os/standards/plan-review-guidelines.md
+</instructions>
+
+**Output:**
+- `agent-os/specs/[spec-name]/implementation-plan.md` (APPROVED)
+
+</substep>
+
+<substep number="2.6" name="generate_stories">
+
+### Step 2.6: Generate User Stories from Implementation Plan
+
+<mandatory_actions>
+  **Input:**
+  - Genehmigter `implementation-plan.md` (aus Step 2.5)
+  - `requirements-clarification.md` (als Referenz für Akzeptanzkriterien)
+
+  **Story-Ableitung aus Plan:**
+  Der Implementation Plan definiert die Phasen und Komponenten.
+  Jede Phase/Komponente wird zu einer oder mehreren Stories.
+
+  **Mapping:**
+  | Plan-Element | Story-Typ |
+  |--------------|-----------|
+  | Neue Komponente | Feature Story |
+  | Änderung an Bestehendem | Enhancement Story |
+  | Integration zwischen Komponenten | Integration Story |
+  | Kritisches Risiko | Spike/Research Story |
+
+  1. USE date-checker to get current date (YYYY-MM-DD) - if not already done
+
+  2. CREATE spec folder structure (if not already exists):
+     ```
+     agent-os/specs/YYYY-MM-DD-spec-name/
+     ├── stories/              # NEW: Individual story files
+     │   ├── story-001-[slug].md
+     │   ├── story-002-[slug].md
+     │   └── ...
+     ├── spec.md
+     ├── spec-lite.md
+     ├── story-index.md       # NEW: Story overview
+     └── requirements-clarification.md
+     ```
+
+  3. CREATE spec.md (load template with hybrid lookup):
+     - Overview (1-2 sentences goal)
+     - User stories list
+     - Spec scope (what's included)
+     - Out of scope (what's excluded)
+     - Expected deliverable (testable outcomes)
+     - **Integration Requirements** (NEW - critical for end-to-end validation):
+       * Integration Type: Backend-only, Frontend-only, or Full-stack
+       * Integration Test Commands (bash commands to run)
+       * End-to-End Scenarios (user journeys to validate)
+       * For each test: mark if MCP tool required (e.g., Playwright)
+
+  **INTEGRATION REQUIREMENTS GUIDELINES:**
+  - If spec has Backend + Frontend stories: Integration Type = "Full-stack"
+  - If spec only affects one layer: Integration Type = "Backend-only" or "Frontend-only"
+  - Include at least 1-2 integration tests that verify the complete feature works
+  - Integration tests should be bash commands that exit 0 if successful
+  - Mark Playwright/browser tests with "Requires MCP: yes" (they will be optional)
+  - These tests will be executed automatically in Phase 4.5 of execute-tasks
+
+  4. CREATE spec-lite.md (load template with hybrid lookup):
+     - 1-3 sentence summary of core goal
+
+  5. CREATE stories/ directory
+
+  6. CREATE individual story files (stories/story-XXX-[slug].md):
+     FOR EACH story derived from Implementation Plan phases/components:
+     - Generate story ID: [SPEC_PREFIX]-### (e.g., PROF-001, PROF-002)
+     - Create file: stories/story-###-[slug].md
+       where [slug] = title lowercase with hyphens
+     - Use template: agent-os/templates/docs/story-template.md
+     - Fill with FACHLICHE content im **GHERKIN-STYLE**:
+
+       **Feature-Block (Pflicht):**
+       ```gherkin
+       Feature: [Feature-Name]
+         Als [User-Rolle]
+         möchte ich [Aktion],
+         damit [Nutzen/Wert].
+       ```
+
+       **Akzeptanzkriterien als Gherkin-Szenarien (Pflicht):**
+       - Schreibe 2-5 Szenarien im Given-When-Then Format
+       - Ein Verhalten pro Szenario (fokussiert & testbar)
+       - Verwende konkrete Werte ("100€" nicht "einen Betrag")
+       - Schreibe aus Nutzer-Perspektive (keine technischen Details)
+       - Beschreibe WAS passiert, nicht WIE
+       - Max. 2-3 "And"-Schritte pro Abschnitt
+       - Inkludiere mindestens 1 Edge-Case/Fehlerszenario
+
+       **Gherkin-Beispiel:**
+       ```gherkin
+       Scenario: Erfolgreicher Login mit gültigen Zugangsdaten
+         Given ich bin auf der Login-Seite
+         And ich bin ein registrierter Benutzer mit Email "max@example.com"
+         When ich meine Zugangsdaten eingebe
+         And ich die Anmeldung bestätige
+         Then sehe ich mein persönliches Dashboard
+         And ich bin für 24 Stunden eingeloggt
+
+       Scenario: Login schlägt fehl bei falschem Passwort
+         Given ich bin auf der Login-Seite
+         When ich ein falsches Passwort eingebe
+         Then sehe ich eine Fehlermeldung "Ungültige Zugangsdaten"
+         And ich kann es erneut versuchen
+       ```
+
+       **Anti-Patterns (VERMEIDEN):**
+       - ❌ "Given ich navigiere zu /login.html" (technisch)
+       - ❌ "When ich auf den Button mit id='submit' klicke" (Implementation)
+       - ❌ Mehrere unabhängige Tests in einem Szenario
+       - ❌ Vage Beschreibungen ohne konkrete Werte
+
+       **Scenario Outline für Variationen:**
+       ```gherkin
+       Scenario Outline: Validierung von Eingabefeldern
+         Given ich bin im Registrierungsformular
+         When ich <feld> mit "<wert>" ausfülle
+         Then sehe ich <ergebnis>
+
+         Examples:
+           | feld     | wert           | ergebnis                    |
+           | Email    | ungültig       | "Bitte gültige Email"       |
+           | Email    | test@valid.com | keine Fehlermeldung         |
+           | Passwort | 123            | "Mindestens 8 Zeichen"      |
+       ```
+
+       * Business value explanation
+       * Required MCP Tools (if applicable)
+     - Leave technical sections EMPTY (Architect fills in Step 3):
+       * DoR/DoD checkboxes (unchecked)
+       * WAS/WIE/WO/WER fields
+       * Technische Verifikation (FILE_EXISTS, etc.)
+       * Completion Check commands
+
+  7. CREATE story-index.md (load template with hybrid lookup):
+     - Use template: agent-os/templates/docs/story-index-template.md
+     - Fill with:
+       * Story Summary table (all stories)
+       * Dependency Graph (initially all "None")
+       * Execution Plan (initially all parallel)
+       * List of story files
+       * Blocked Stories section (initially empty)
+
+  Templates (hybrid lookup - MUST TRY BOTH):
+  FOR EACH template needed (story-template.md, story-index-template.md, etc.):
+    1. TRY READ: agent-os/templates/docs/[template].md
+    2. IF file not found or error:
+       READ: ~/.agent-os/templates/docs/[template].md
+    3. IF still not found: Error - run setup-devteam-global.sh
+
+  STORY SIZING:
+  - Keep stories small (max 5 files, max 400 LOC)
+  - Automated validation occurs in Step 3.5
+  - Full guidelines: agent-os/docs/story-sizing-guidelines.md
+
+  ACCEPTANCE CRITERIA FORMAT:
+
+  **Fachliche Kriterien (PO schreibt - Gherkin-Style):**
+  - Schreibe Akzeptanzkriterien als Gherkin-Szenarien (Given-When-Then)
+  - Ein Verhalten pro Szenario
+  - Konkrete Werte, Nutzer-Perspektive, deklarativ
+  - Min. 2 Szenarien, inkl. mindestens 1 Edge-Case
+
+  **Technische Verifikation (Architect ergänzt später):**
+  - Use prefix format: FILE_EXISTS:, CONTAINS:, LINT_PASS:, TEST_PASS:
+  - Each criterion must be verifiable via bash command
+  - Include exact file paths
+  - For browser tests: MCP_PLAYWRIGHT: prefix
+  - Avoid MANUAL: criteria when possible
+
+  Reference: agent-os/templates/docs/story-template.md
+
+  IMPORTANT:
+  - **Stories are derived from Implementation Plan phases/components**
+  - **Reference plan section in story for traceability**
+  - Write ONLY fachliche (business) content
+  - **USE GHERKIN-STYLE for all acceptance criteria (Given-When-Then)**
+  - **Nutzer-Perspektive, keine technischen Details in Szenarien**
+  - **Konkrete Werte, ein Verhalten pro Szenario**
+  - NO technical details (WAS/WIE/WO/WER) - Architect adds this
+  - NO DoR/DoD (Architect adds this in Step 3)
+  - NO dependencies (Architect adds this in Step 3)
+  - NO technical verification (FILE_EXISTS, etc.) - Architect adds this
+  - Focus on WHAT user needs, not HOW to implement
+  - Stories must be small enough for single Claude Code session
+  - Each story gets its OWN file for better context efficiency
+  - **Story grouping follows Implementation Plan phases**
+
+  **INTEGRATION REQUIREMENTS (v2.9 - KRITISCH):**
+  - CHECK: "Komponenten-Verbindungen" section in implementation-plan.md
+  - FOR EACH story that is "Zuständige Story" for a connection:
+    - ADD to story metadata: `Integration: [Source] → [Target]`
+    - This will be used by Architect to add Integration-DoD items
+  - Stories with integration responsibility MUST connect components, not just create them
+</mandatory_actions>
+
+</substep>
+
+**Output:**
+- `agent-os/specs/YYYY-MM-DD-spec-name/requirements-clarification.md` (approved)
+- `agent-os/specs/YYYY-MM-DD-spec-name/implementation-plan.md` (approved - from Step 2.5)
+- `agent-os/specs/YYYY-MM-DD-spec-name/spec.md`
+- `agent-os/specs/YYYY-MM-DD-spec-name/spec-lite.md`
+- `agent-os/specs/YYYY-MM-DD-spec-name/story-index.md`
+- `agent-os/specs/YYYY-MM-DD-spec-name/stories/story-001-[slug].md` (fachlich only, derived from plan)
+- `agent-os/specs/YYYY-MM-DD-spec-name/stories/story-002-[slug].md` (fachlich only, derived from plan)
+- ... (one file per story, grouped by plan phases)
+
+</step>
+
+<step number="3" subagent="dev-team__architect" name="architect_technical_refinement">
+
+### Step 3: Architect Phase - Technical Refinement
+
+Use dev-team__architect agent to add technical refinement to fachliche user stories.
+
+<delegation>
+  DELEGATE to dev-team__architect via Task tool:
+
+  PROMPT:
+  "Add technical refinement to user stories.
+
+  ⚠️ **NEW: Individual Story Files**
+  Each story now has its OWN file in the stories/ directory.
+  You must edit EACH story file individually to add technical refinement.
+
+  ⚠️ **NEW: Skill Selection (v2.0)**
+  For each story, you must select relevant skills from skill-index.md.
+  These skills will be used by the Orchestrator during execution.
+
+  Context:
+  - Spec: agent-os/specs/[YYYY-MM-DD-spec-name]/spec.md
+  - Story Index: agent-os/specs/[YYYY-MM-DD-spec-name]/story-index.md
+  - Story Files: agent-os/specs/[YYYY-MM-DD-spec-name]/stories/*.md
+  - Tech Stack: agent-os/product/tech-stack.md
+  - Architecture Decision: agent-os/product/architecture-decision.md
+  - Architecture Structure: agent-os/product/architecture-structure.md (folder structure)
+  - DoD: agent-os/team/dod.md (if exists, otherwise use standard DoD)
+  - DoR: agent-os/team/dor.md (if exists, otherwise use standard DoR)
+  - **Skill Index: agent-os/team/skill-index.md (for skill selection)**
+
+  Available DevTeam Agents (for WER field):
+  - List agents from .claude/agents/dev-team/
+  - Typical agents: dev-team__backend-developer, dev-team__frontend-developer,
+    dev-team__devops-specialist, dev-team__qa-specialist
+  - Use agent names as they appear in .claude/agents/dev-team/ folder
+
+  Tasks:
+  0. LOAD skill-index.md:
+     READ: agent-os/team/skill-index.md
+     UNDERSTAND: Available skills, their paths, and trigger keywords
+     NOTE: You will select relevant skills for each story based on this index
+
+  1. LIST all story files: ls agent-os/specs/[spec-name]/stories/
+
+  2. FOR EACH story file in stories/ directory:
+
+     a. READ the story file to understand fachliche requirements
+
+     b. **PRE-REFINEMENT LAYER ANALYSIS (NEU - PFLICHT):**
+        BEFORE filling technical sections, analyze affected layers:
+
+        i. EXTRACT from story:
+           - User Story (wer, was, warum)
+           - Akzeptanzkriterien (fachlich)
+           - Story Type (Frontend/Backend/DevOps/Test)
+
+        ii. ANALYZE affected layers:
+           ```
+           Layer Analysis Checklist:
+           - [ ] Frontend (UI, Components, JavaScript/TypeScript)
+           - [ ] Backend (API, Services, Controller, Logic)
+           - [ ] Database (Schema, Queries, Migrations)
+           - [ ] External APIs (Integrations, Third-Party)
+           - [ ] DevOps (Build, Deploy, Config, Environment)
+           - [ ] Security (Auth, Permissions, Validation)
+           ```
+
+        iii. FOR EACH affected layer:
+           Document:
+           - WHY affected (impact description)
+           - WHAT touch points (specific components/files)
+           - HOW connected to other layers (integration points)
+
+        iv. DETERMINE Integration Type:
+           - IF only 1 layer affected: "[Layer]-only"
+           - IF 2+ layers affected: "Full-stack"
+
+        v. IF Integration Type = "Full-stack":
+           FLAG: Story for additional validation
+           DOCUMENT: All critical integration points
+           ENSURE: WO section will cover ALL layers
+           CONSIDER: If story should be split by layer
+
+     c. FIND the '## Technisches Refinement (vom Architect)' section
+        (This section should already exist but be EMPTY/incomplete)
+
+     d. FILL IN the following sections:
+
+        **DoR (Definition of Ready):**
+        - Mark ALL checkboxes as [x] complete when done
+        - Fachliche requirements clear
+        - Technical approach defined
+        - Dependencies identified
+        - Affected components known
+        - Required MCP Tools documented (if applicable)
+        - Story is appropriately sized (max 5 files, 400 LOC)
+        - **Full-Stack Konsistenz (NEU):**
+          - [x] Alle betroffenen Layer identifiziert
+          - [x] Integration Type bestimmt
+          - [x] Kritische Integration Points dokumentiert (wenn Full-stack)
+          - [x] WO deckt ALLE Layer ab (wenn Full-stack)
+
+        **DoD (Definition of Done):**
+        - Define completion criteria (all start unchecked [ ])
+        - Code implemented and follows Style Guide
+        - Architecture requirements met
+        - Security/Performance requirements satisfied
+        - All acceptance criteria met
+        - Tests written and passing
+        - Code review approved
+        - Documentation updated
+        - No linting errors
+        - Completion Check commands successful
+
+        **Integration DoD (v2.9 - wenn Story Verbindung herstellt):**
+        CHECK: Hat diese Story einen "Integration:" Eintrag in der Metadata?
+        CHECK: Ist diese Story "Zuständige Story" für eine Verbindung im Plan?
+
+        IF YES:
+          READ: implementation-plan.md "Komponenten-Verbindungen" section
+          EXTRACT: Die Verbindung(en) für die diese Story zuständig ist
+
+          ADD Integration-DoD items:
+          - [ ] **Integration hergestellt: [Source] → [Target]**
+            - [ ] Import/Aufruf existiert in Code
+            - [ ] Verbindung ist funktional (nicht nur Stub)
+            - [ ] Validierung: `[Validierungsbefehl aus Plan]`
+
+          ADD to Completion Check:
+          ```bash
+          # Integration Validation
+          [Validierungsbefehl aus Plan, z.B.:]
+          grep -q "import.*ServiceName" src/path/to/file.ts && echo "✓ Import exists"
+          ```
+
+          **WICHTIG:** Diese Story ist NICHT done, wenn nur Code existiert.
+          Die Verbindung muss AKTIV hergestellt und validiert sein!
+
+        **Betroffene Layer & Komponenten (NEU - PFLICHT):**
+
+        Based on Pre-Refinement Layer Analysis, fill out:
+
+        - **Integration Type:** [Backend-only / Frontend-only / Full-stack]
+
+        - **Betroffene Komponenten Table:**
+          | Layer | Komponenten | Änderung |
+          |-------|-------------|----------|
+          | Frontend | [components/files] | [what changes] |
+          | Backend | [services/controllers] | [what changes] |
+          | Database | [tables/schema] | [what changes] |
+          | DevOps | [config/pipeline] | [what changes] |
+
+        - **Kritische Integration Points (if Full-stack):**
+          - [Source] → [Target] (e.g., "Backend API Response → Frontend UserProfile")
+          - [Source] → [Target] (e.g., "Database Schema Change → Backend Query Update")
+
+        - **Handover-Dokumente (if Multi-Layer):**
+          - API Contracts: [Define or reference]
+          - Data Structures: [Define or reference]
+          - Shared Types: [Define or reference]
+
+        ⚠️ **WICHTIG:** If Integration Type = "Full-stack":
+           - WO section MUST cover ALL affected layers
+           - EVERY Integration Point must have source AND target in WO
+           - Consider splitting story if >5 files across multiple layers
+
+        **Technical Details:**
+
+        **WAS:** [What components/features need to be created or modified - NO code]
+
+        **WIE (Architecture Guidance ONLY):**
+        - Which architectural patterns to apply (e.g., "Use Repository Pattern", "Apply Service Object")
+        - Constraints to respect (e.g., "No direct DB calls from controllers", "Must use existing AuthService")
+        - Existing patterns to follow (e.g., "Follow pattern from existing UserController")
+        - Security/Performance considerations (e.g., "Requires rate limiting", "Use caching")
+
+        ⚠️ IMPORTANT: NO implementation code, NO pseudo-code, NO detailed algorithms.
+        The implementing agent decides HOW to write the code - you only set guardrails.
+
+        **WO:** [Which files/folders to modify or create - paths only, no content]
+        ⚠️ MUST cover ALL layers from "Betroffene Komponenten" table!
+        ⚠️ MUST include BOTH source AND target files for each Integration Point!
+
+        **WER:** [Which agent - check .claude/agents/dev-team/ for available agents]
+        Examples: dev-team__backend-developer, dev-team__frontend-developer
+
+        **Abhängigkeiten:** [Story IDs this depends on, or \"None\"]
+
+        **Geschätzte Komplexität:** [XS/S/M/L/XL]
+
+        **Relevante Skills:** (NEW - select from skill-index.md)
+        ANALYZE: Story content (WAS, user story, WER)
+        MATCH: Against skill-index.md trigger keywords
+        SELECT: 1-3 most relevant skills
+
+        | Skill | Pfad | Grund |
+        |-------|------|-------|
+        | [skill-name] | agent-os/skills/[skill].md | [Why this skill is relevant] |
+
+        Example selections:
+        - Backend service story → backend-logic-implementing, backend-test-engineering
+        - Frontend component story → frontend-ui-component-architecture, frontend-state-management
+        - API integration story → backend-integration-adapter, frontend-api-bridge-building
+        - Database story → backend-persistence-adapter
+        - DevOps story → devops-pipeline-engineering, devops-infrastructure-provisioning
+
+        **Completion Check:**
+        ```bash
+        # Auto-Verify Commands - all must exit with 0
+        [VERIFY_COMMAND_1]
+        [VERIFY_COMMAND_2]
+        ```
+
+        **Story ist DONE wenn:**
+        1. Alle FILE_EXISTS/CONTAINS checks bestanden
+        2. Alle *_PASS commands exit 0
+        3. Git diff zeigt nur erwartete Änderungen
+
+     d. UPDATE the story file with filled technical sections (including Relevante Skills)
+
+     e. UPDATE story-index.md:
+        - Mark story status as "Ready" if DoR is complete
+        - Mark story status as "Blocked" if DoR is incomplete
+        - Update Dependencies column
+        - Update Type column (Backend/Frontend/DevOps/Test)
+
+  3. AFTER all stories are refined:
+
+     a. ANALYZE dependencies across ALL stories:
+        - Can stories run in parallel?
+        - Must some finish before others start?
+        - Document dependency chain
+
+     b. UPDATE story-index.md:
+        - Update Dependency Graph
+        - Update Execution Plan (parallel vs sequential)
+        - Update Total Estimated Effort
+
+     c. For dependent stories, note required handover documents:
+        - API contracts
+        - Data structures
+        - Integration points
+
+  4. EVALUATE cross-cutting concerns:
+     - New external dependencies?
+     - Global technical patterns needed?
+     - Security patterns?
+     - Performance requirements?
+
+     If YES, create:
+     agent-os/specs/[spec-name]/sub-specs/cross-cutting-decisions.md
+
+     Include:
+     - External dependencies (with justification)
+     - Global patterns (auth, error handling)
+     - Performance requirements
+     - Security patterns
+
+  5. ⚠️ **SYSTEM STORIES REQUIREMENT** (v3.0 - CRITICAL for ALL specs):
+
+     **ALWAYS create these 3 system stories at the END of EVERY spec:**
+
+     These stories replace Phase 4.5 and Phase 5 of execute-tasks.
+     They are executed AFTER all regular stories are done.
+
+     <system_story_generation>
+
+       ### story-997: Code Review
+
+       CREATE: agent-os/specs/[SPEC_NAME]/stories/story-997-code-review.md
+
+       **TEMPLATE LOOKUP (Hybrid):**
+       1. Local: agent-os/templates/docs/system-story-997-code-review-template.md
+       2. Global: ~/.agent-os/templates/docs/system-story-997-code-review-template.md
+
+       FILL placeholders:
+       - [SPEC_PREFIX] → Spec prefix (e.g., PROF)
+       - [SPEC_NAME] → Full spec name
+       - [CREATED_DATE] → Current date
+
+       **Purpose:** Starkes Modell (Opus) reviewt den gesamten Feature-Diff
+       **Type:** System/Review
+       **Dependencies:** Alle regulären Stories dieser Spec
+
+       ---
+
+       ### story-998: Integration Validation
+
+       CREATE: agent-os/specs/[SPEC_NAME]/stories/story-998-integration-validation.md
+
+       **TEMPLATE LOOKUP (Hybrid):**
+       1. Local: agent-os/templates/docs/system-story-998-integration-validation-template.md
+       2. Global: ~/.agent-os/templates/docs/system-story-998-integration-validation-template.md
+
+       FILL placeholders:
+       - [SPEC_PREFIX] → Spec prefix
+       - [SPEC_NAME] → Full spec name
+       - [CREATED_DATE] → Current date
+
+       **Purpose:** Ersetzt Phase 4.5 - Integration Tests aus spec.md ausführen
+       **Type:** System/Integration
+       **Dependencies:** story-997
+
+       ---
+
+       ### story-999: Finalize PR
+
+       CREATE: agent-os/specs/[SPEC_NAME]/stories/story-999-finalize-pr.md
+
+       **TEMPLATE LOOKUP (Hybrid):**
+       1. Local: agent-os/templates/docs/system-story-999-finalize-pr-template.md
+       2. Global: ~/.agent-os/templates/docs/system-story-999-finalize-pr-template.md
+
+       FILL placeholders:
+       - [SPEC_PREFIX] → Spec prefix
+       - [SPEC_NAME] → Full spec name
+       - [CREATED_DATE] → Current date
+
+       **Purpose:** Ersetzt Phase 5 - Test-Szenarien, User-Todos, PR, Worktree Cleanup
+       **Type:** System/Finalization
+       **Dependencies:** story-998
+
+     </system_story_generation>
+
+     UPDATE story-index.md to include all 3 system stories:
+     - Mark them as "System" type
+     - Set dependencies correctly (997 → 998 → 999)
+     - Note: They execute AFTER all regular stories
+
+     **IMPORTANT:**
+     - System stories are ALWAYS created, even for single-story specs
+     - They ensure consistent quality and process for ALL specs
+     - Backward compatibility: Specs without system stories use legacy Phase 4.5/5
+
+  Templates (hybrid lookup):
+  - story-template.md (for structure reference)
+  - story-index-template.md (for index structure)
+  - cross-cutting-decisions-template.md (if needed)
+
+  IMPORTANT:
+  - Add ONLY technical sections (WAS/WIE/WO/WER/DoR/DoD)
+  - Do NOT modify fachliche descriptions
+  - **MUST mark ALL DoR checkboxes as [x] complete** when story is ready
+  - Define clear DoD per story
+  - Map ALL dependencies
+  - **MUST select relevant skills from skill-index.md for each story** (NEW v2.4)
+  - Add Completion Check section with bash verify commands
+  - Keep stories small (automated validation in Step 3.5)
+  - **DoR validation will run in Step 3.4 - all checkboxes must be [x]**
+  - Update story-index.md after refining each story
+  - **MUST create 3 System Stories (997, 998, 999) for ALL specs** (NEW v3.0)
+  - Reference: agent-os/docs/story-sizing-guidelines.md
+  - Reference: agent-os/team/skill-index.md (for skill selection)
+
+  FULL-STACK KONSISTENZ (NEU v2.5):
+  - **MUST fill "Betroffene Layer & Komponenten" section for EVERY story**
+  - **MUST identify Integration Type** (Backend-only/Frontend-only/Full-stack)
+  - **For Full-stack stories:**
+    - WO section MUST cover files from ALL affected layers
+    - Integration Points MUST have source AND target files in WO
+    - Consider splitting into separate stories per layer if >5 files
+    - ALWAYS create Integration Story to verify cross-layer connection
+  - **Validation in Step 3.5 will check:**
+    - All layers from "Betroffene Komponenten" are covered in WO
+    - All Integration Points have complete file coverage
+    - Stories with incomplete coverage will be flagged as CRITICAL
+
+  ARCHITECTURE GUIDANCE RULES:
+  - WIE = Architectural constraints and patterns ONLY
+  - NO code snippets, NO pseudo-code, NO implementation details
+  - Focus on: What patterns to use, what to avoid, what to reuse
+  - Let implementing agents decide the actual code
+  - Example GOOD: 'Use Service Object pattern, follow UserService as template'
+  - Example BAD: 'Create a method that takes user_id, calls find(), then updates...'
+  - If you find yourself writing code, you're doing the implementer's job"
+
+  WAIT for dev-team__architect completion
+  RECEIVE:
+    - Updated story files in stories/ directory (fachlich + technisch)
+    - Updated story-index.md
+    - Optional: sub-specs/cross-cutting-decisions.md
+</delegation>
+
+**Output:**
+- `agent-os/specs/[spec-name]/stories/*.md` (COMPLETE with technical refinement + skill selection)
+- `agent-os/specs/[spec-name]/story-index.md` (updated with dependencies and status)
+- `agent-os/specs/[spec-name]/sub-specs/cross-cutting-decisions.md` (optional)
+
+</step>
+
+<step number="3.4" name="dor_validation">
+
+### Step 3.4: Definition of Ready (DoR) Validation
+
+Validate that all stories have complete DoR before proceeding to execution.
+
+<validation_process>
+  LIST all story files: ls agent-os/specs/[spec-name]/stories/
+
+  FOR EACH story file in stories/ directory:
+    <extract_dor_checkboxes>
+      READ: The story file
+      FIND: "### Technisches Refinement (vom Architect)" section
+      FIND: "DoR (Definition of Ready)" subsection
+      EXTRACT: All checkbox lines starting with "- [" or "- [x]"
+    </extract_dor_checkboxes>
+
+    <check_completion>
+      COUNT: Total number of DoR checkboxes
+      COUNT: Number of checked checkboxes [x]
+
+      IF checked_count < total_count:
+        FLAG: Story as "DoR Incomplete"
+        LIST: Unchecked DoR items
+        SEVERITY: Critical - Story cannot start execution
+    </check_completion>
+</validation_process>
+
+<decision_tree>
+  IF all stories have complete DoR:
+    LOG: "✅ All stories have complete DoR - Ready for execution"
+    PROCEED: To Step 3.5 (Story Size Validation)
+
+  ELSE (stories with incomplete DoR):
+    GENERATE: DoR Validation Report
+
+    <dor_report_format>
+      ⚠️ Definition of Ready Validation - INCOMPLETE
+
+      **Stories with Incomplete DoR:**
+
+      **Story [ID]: [Title]**
+      - Total DoR items: [N]
+      - Checked: [N]
+      - Unchecked: [N]
+
+      **Missing DoR Items:**
+      - [ ] [Unchecked item 1]
+      - [ ] [Unchecked item 2]
+      - [ ] [Unchecked item 3]
+
+      ---
+
+      **Summary:**
+      - Total stories: [N]
+      - Stories with complete DoR: [N]
+      - Stories with incomplete DoR: [N] ⚠️
+
+      **IMPORTANT:** Stories with incomplete DoR cannot start execution.
+      The Architect must complete all DoR items before /execute-tasks can run.
+    </dor_report_format>
+
+    PRESENT: DoR Validation Report to user
+
+    INFORM: "The Architect must complete all DoR checkboxes before stories can be executed.
+             Incomplete DoR means stories are not ready for implementation."
+
+    ASK user via AskUserQuestion:
+    "How would you like to proceed?
+
+    Options:
+    1. Return to Architect to complete DoR
+       → Architect will complete all unchecked DoR items
+       → Validation will run again after completion
+
+    2. Review and manually complete DoR
+       → You can manually complete DoR items in story files
+       → Re-run validation after edits
+
+    3. Proceed anyway (NOT RECOMMENDED)
+       → Stories with incomplete DoR will fail during execution
+       → Risk: Blocked stories, missing requirements, unclear implementation"
+
+    WAIT for user choice
+
+    <user_choice_handling>
+      IF choice = "Return to Architect":
+        DELEGATE: To dev-team__architect with prompt:
+        "Complete all DoR checkboxes for stories in agent-os/specs/[spec-name]/stories/
+
+        For EACH story file with incomplete DoR:
+        1. Read the story file
+        2. Review the unchecked DoR items
+        3. Complete the required analysis/design
+        4. Mark all DoR items as [x] complete
+        5. Update story-index.md to mark story as 'Ready'
+
+        Return: Updated story files with all DoR items checked"
+
+        WAIT for architect completion
+        REPEAT: Step 3.4 (DoR Validation)
+
+      ELSE IF choice = "Review and manually edit":
+        INFORM: "Please edit the story files in: agent-os/specs/[spec-name]/stories/"
+        INFORM: "Mark all DoR checkboxes as [x] complete in each story file"
+        PAUSE: Wait for user to edit
+        ASK: "Ready to re-validate? (yes/no)"
+        IF yes:
+          REPEAT: Step 3.4 (DoR Validation)
+        ELSE:
+          PROCEED: To Step 3.5 with warning flag
+
+      ELSE IF choice = "Proceed anyway":
+        WARN: "⚠️ Proceeding with incomplete DoR
+               - Stories may be blocked during execution
+               - Missing requirements may cause implementation issues
+               - Architect should complete DoR before execution"
+
+        LOG: DoR validation bypassed by user
+        PROCEED: To Step 3.5
+    </user_choice_handling>
+</decision_tree>
+
+<instructions>
+  ACTION: Validate all DoR checkboxes are marked [x]
+  CHECK: Each story file's DoR section
+  REQUIRE: All checkboxes must be checked before execution
+  BLOCK: Stories with incomplete DoR from starting
+  REFERENCE: agent-os/team/dor.md (if exists)
+</instructions>
+
+**Output:**
+- DoR validation report (if issues found)
+- User decision on how to proceed
+- Updated story files (if DoR completed)
+
+</step>
+
+<step number="3.5" name="story_size_validation">
+
+### Step 3.5: Story Size Validation
+
+Validate that all stories comply with size guidelines to prevent mid-execution context compaction.
+
+<validation_process>
+  LIST all story files: ls agent-os/specs/[spec-name]/stories/
+  READ: agent-os/standards/story-size-guidelines.md (for reference thresholds)
+
+  FOR EACH story file in stories/ directory:
+    <extract_metrics>
+      ANALYZE: WO (Where) field
+        COUNT: Number of file paths mentioned
+        EXTRACT: File paths list
+
+      ANALYZE: Geschätzte Komplexität field
+        EXTRACT: Complexity rating (XS/S/M/L/XL)
+
+      ANALYZE: WAS (What) field
+        ESTIMATE: Lines of code based on components mentioned
+        HEURISTIC:
+          - Each new file/component ~100-150 lines
+          - Each modified file ~50-100 lines
+          - Tests ~50-100 lines per test file
+    </extract_metrics>
+
+    <check_thresholds>
+      CHECK: Number of files
+        IF files > 5:
+          FLAG: Story as "Too Large - File Count"
+          SEVERITY: High
+
+      CHECK: Complexity rating
+        IF complexity in [M, L, XL]:
+          FLAG: Story as "Too Complex"
+          SEVERITY: High
+
+      CHECK: Estimated LOC
+        IF estimated_loc > 600:
+          FLAG: Story as "Too Large - Code Volume"
+          SEVERITY: Medium
+        ELSE IF estimated_loc > 400:
+          FLAG: Story as "Watch - Approaching Limit"
+          SEVERITY: Low
+
+      CHECK: Cross-layer detection (Enhanced)
+        EXTRACT: "Betroffene Layer & Komponenten" section
+        IF Integration Type = "Full-stack":
+          CHECK: WO section covers ALL layers from "Betroffene Komponenten" table
+          IF missing_layers detected:
+            FLAG: Story as "Incomplete Full-Stack Coverage"
+            SEVERITY: Critical
+            LIST: "Missing file paths for layers: [missing_layers]"
+            SUGGEST: "Add ALL layer files to WO section"
+            WARN: "Incomplete layer coverage will cause integration issues!"
+
+          CHECK: Integration Points validation
+          IF Critical Integration Points defined:
+            VERIFY: Each integration point has:
+              - Source file in WO
+              - Target file in WO
+            IF missing connection files:
+              FLAG: Story as "Missing Integration Files"
+              SEVERITY: High
+              LIST: "Integration points missing file coverage: [points]"
+              SUGGEST: "Add missing source/target files for integration points"
+
+          CHECK: Story splitting recommendation
+          IF files > 5 AND layers > 2:
+            FLAG: Story as "Consider Splitting"
+            SEVERITY: Medium
+            SUGGEST: "Split by layer (one story per layer with integration story)"
+
+        ELSE (Legacy check for stories without Layer section):
+          IF WO contains backend AND frontend paths:
+            FLAG: Story as "Multi-Layer (Legacy Detection)"
+            SEVERITY: Medium
+            SUGGEST: "Fill Betroffene Layer section, then split by layer"
+    </check_thresholds>
+
+    <record_issues>
+      IF any flags raised:
+        ADD to validation_report:
+          - Story ID
+          - Story Title
+          - Issue(s) detected
+          - Current metrics (files, complexity, LOC)
+          - Recommended action
+          - Suggested split pattern
+    </record_issues>
+</validation_process>
+
+<decision_tree>
+  IF no stories flagged:
+    LOG: "✅ All stories pass size validation"
+    PROCEED: To Step 4 (Spec Complete)
+
+  ELSE (stories flagged):
+    GENERATE: Validation Report
+
+    <validation_report_format>
+      ⚠️ Story Size Validation Issues
+
+      **Stories Exceeding Guidelines:**
+
+      **Story [ID]: [Title]**
+      - Files: [count] (recommended: max 5) ❌
+      - Complexity: [rating] (recommended: max S) ❌
+      - Est. LOC: ~[count] (recommended: max 400-600) ⚠️
+      - Issue: [description]
+
+      **Recommendation:** Split into [N] stories:
+      [Suggested split pattern based on story content]
+
+      ---
+
+      **Story [ID]: [Title]**
+      ...
+
+      **Summary:**
+      - Total stories: [N]
+      - Stories passing validation: [N]
+      - Stories flagged: [N]
+        - High severity: [N]
+        - Medium severity: [N]
+        - Low severity: [N]
+
+      **Impact if proceeding with large stories:**
+      - Higher token consumption per story
+      - Risk of mid-story auto-compaction
+      - Potential context loss during execution
+      - Higher costs (possibly crossing 200K threshold)
+    </validation_report_format>
+
+    PRESENT: Validation Report to user
+
+    ASK user via AskUserQuestion:
+    "Story Size Validation detected issues. How would you like to proceed?
+
+    Options:
+    1. Review and manually edit stories (Recommended)
+       → Edit the story files in stories/ directory
+       → Re-run validation after edits
+
+    2. Proceed anyway
+       → Accept higher token costs
+       → Risk mid-story compaction
+       → Continue to execution
+
+    3. Auto-split flagged stories
+       → System suggests splits based on content
+       → User reviews and approves splits
+       → New story files created automatically"
+
+    WAIT for user choice
+
+    <user_choice_handling>
+      IF choice = "Review and manually edit":
+        INFORM: "Please edit the story files in: agent-os/specs/[spec-name]/stories/"
+        INFORM: "Split large stories following patterns in:
+                 agent-os/standards/story-size-guidelines.md"
+        PAUSE: Wait for user to edit
+        ASK: "Ready to re-validate? (yes/no)"
+        IF yes:
+          REPEAT: Step 3.5 (this validation step)
+        ELSE:
+          PROCEED: To Step 4 with warning flag
+
+      ELSE IF choice = "Proceed anyway":
+        WARN: "⚠️ Proceeding with oversized stories
+               - Expect higher token costs
+               - Mid-story compaction likely
+               - Resume Context will preserve state if needed"
+        LOG: Validation bypassed by user
+        PROCEED: To Step 4
+
+      ELSE IF choice = "Auto-split flagged stories":
+        FOR EACH flagged_story:
+          <suggest_split>
+            ANALYZE: Story content (WAS/WIE/WO fields)
+
+            DETERMINE: Split pattern
+              IF multi_layer (backend + frontend):
+                SUGGEST: "Split by layer"
+                SUB_STORIES:
+                  - Story [ID].1: Backend implementation
+                  - Story [ID].2: Frontend implementation
+                  - Story [ID].3: Integration
+
+              ELSE IF high_file_count:
+                SUGGEST: "Split by component"
+                SUB_STORIES:
+                  - Story [ID].1: Core component
+                  - Story [ID].2: Supporting components
+                  - Story [ID].3: Tests
+
+              ELSE IF complex_feature:
+                SUGGEST: "Split by vertical slice"
+                SUB_STORIES:
+                  - Story [ID].1: Basic functionality
+                  - Story [ID].2: Advanced features
+                  - Story [ID].3: Edge cases + tests
+          </suggest_split>
+
+          PRESENT: Suggested split to user
+          ASK: "Accept this split for Story [ID]? (yes/no/custom)"
+
+          IF yes:
+            CREATE: New story files for sub-stories
+            UPDATE: story-index.md with new stories
+            UPDATE: Dependencies (sub-stories link to each other)
+            MARK: Original story file as "Split into [IDs]"
+
+          ELSE IF custom:
+            ALLOW: User to describe custom split
+            UPDATE: Based on user input
+
+        AFTER all splits:
+          INFORM: "Stories have been split. Re-running validation..."
+          REPEAT: Step 3.5 (this validation step)
+    </user_choice_handling>
+</decision_tree>
+
+<instructions>
+  ACTION: Validate all stories against size guidelines
+  CHECK: File count, complexity, estimated LOC, cross-layer detection
+  REPORT: Any issues found with specific recommendations
+  OFFER: Three options (edit, proceed, auto-split)
+  ENFORCE: Validation loop until passed or user explicitly bypasses
+  REFERENCE: agent-os/docs/story-sizing-guidelines.md
+</instructions>
+
+**Output:**
+- Validation report (if issues found)
+- User decision on how to proceed
+- Updated story files (if stories were split)
+- Updated story-index.md (if stories were split)
+
+</step>
+
+<step number="3.6" name="effort_estimation">
+
+### Step 3.6: Effort Estimation (Dual: Human + AI-Adjusted)
+
+Generate effort estimation for all stories with dual perspective: Human-only and Human+AI Agent.
+
+<estimation_process>
+
+  **Purpose:**
+  Provide realistic effort estimates showing:
+  1. **Human Baseline** - Traditional estimate (developer without AI tools)
+  2. **AI-Adjusted** - Realistic estimate with AI agent support (Claude Code, Cursor, etc.)
+
+  <substep number="3.6.1" name="load_stories">
+
+  ### Step 3.6.1: Load Story Data
+
+  <mandatory_actions>
+    1. LIST all story files: ls agent-os/specs/[spec-name]/stories/
+
+    2. FOR EACH story file:
+       READ and EXTRACT:
+       - Story ID
+       - Story Title
+       - Geschätzte Komplexität (XS/S/M/L/XL)
+       - WAS section (scope of work)
+       - WO section (files affected)
+       - Story Type (from WER field: Backend/Frontend/DevOps/Test)
+
+    3. COLLECT data for estimation
+  </mandatory_actions>
+
+  </substep>
+
+  <substep number="3.6.2" name="estimate_per_story">
+
+  ### Step 3.6.2: Estimate Each Story
+
+  FOR EACH story:
+
+  **Step A: Complexity to Hours Mapping (Human Baseline)**
+
+  Convert "Geschätzte Komplexität" to human baseline hours:
+
+  | Komplexität | Human Hours | Description |
+  |-------------|-------------|-------------|
+  | XS | 2-4h | Triviale Änderung, 1-2 Dateien |
+  | S | 4-8h | Kleine Story, max 3 Dateien |
+  | M | 8-16h | Mittlere Story, 3-5 Dateien |
+  | L | 16-32h | Große Story (sollte gesplittet werden) |
+  | XL | 32-64h | Sehr große Story (MUSS gesplittet werden) |
+
+  USE median of range for calculation.
+
+  **Step B: Determine AI-Acceleration Category**
+
+  ANALYZE story content (WAS, WER, Type) and categorize:
+
+  **HIGH AI-Acceleration (Factor 0.20 = 80% reduction):**
+  - Boilerplate code, CRUD operations, API endpoints
+  - Database migrations, configuration files
+  - Documentation, test writing, type definitions
+  - Standard refactoring, utilities
+  → Typical for: Backend CRUD, simple Frontend components
+
+  **MEDIUM AI-Acceleration (Factor 0.40 = 60% reduction):**
+  - Business logic, algorithms, state management
+  - Complex form validation, API integration
+  - Standard bug fixes, performance optimization
+  → Typical for: Complex Backend logic, Frontend with state
+
+  **LOW AI-Acceleration (Factor 0.70 = 30% reduction):**
+  - New technology exploration, architecture decisions
+  - Complex bug investigation, poorly documented APIs
+  - Performance profiling, security analysis
+  → Typical for: Research stories, complex debugging
+
+  **NO AI-Acceleration (Factor 1.00 = no reduction):**
+  - Manual QA, user acceptance testing
+  - Design decisions, business clarification
+  - Code review (human oversight required)
+  → Typical for: Integration stories, QA stories
+
+  **Step C: Calculate AI-Adjusted Hours**
+
+  ```
+  ai_adjusted_hours = human_baseline_hours × ai_factor
+  ```
+
+  **Step D: Document Per-Story Estimate**
+
+  FOR EACH story, record:
+  - Story ID
+  - Title
+  - Komplexität
+  - Human Hours (baseline)
+  - AI Factor (category)
+  - AI-Adjusted Hours
+  - Time Saved (hours)
+
+  </substep>
+
+  <substep number="3.6.3" name="calculate_totals">
+
+  ### Step 3.6.3: Calculate Totals
+
+  AGGREGATE all stories:
+
+  ```
+  Total Human Hours = Σ(story human_baseline_hours)
+  Total AI-Adjusted Hours = Σ(story ai_adjusted_hours)
+  Total Hours Saved = Total Human Hours - Total AI-Adjusted Hours
+  Reduction Percentage = (Hours Saved / Human Hours) × 100%
+  ```
+
+  CONVERT to work days/weeks:
+  - 1 day = 8 hours
+  - 1 week = 40 hours (5 days)
+
+  CALCULATE breakdown by AI category:
+  - High AI-Acceleration: [N] stories, [X]h → [Y]h
+  - Medium AI-Acceleration: [N] stories, [X]h → [Y]h
+  - Low AI-Acceleration: [N] stories, [X]h → [Y]h
+  - No AI-Acceleration: [N] stories, [X]h (unchanged)
+
+  </substep>
+
+  <substep number="3.6.4" name="create_estimation_file">
+
+  ### Step 3.6.4: Create effort-estimation.md
+
+  CREATE file: agent-os/specs/[spec-name]/effort-estimation.md
+
+  <effort_estimation_template>
+    # Aufwandsschätzung: [SPEC_NAME]
+
+    **Erstellt:** [DATE]
+    **Spec:** [SPEC_NAME]
+    **Anzahl Stories:** [N]
+
+    ---
+
+    ## 📊 Zusammenfassung
+
+    | Metrik | Human-only | Human + KI Agent | Ersparnis |
+    |--------|------------|------------------|-----------|
+    | **Stunden** | [X]h | [Y]h | [Z]h ([%]%) |
+    | **Arbeitstage** | [X]d | [Y]d | [Z]d |
+    | **Arbeitswochen** | [X]w | [Y]w | [Z]w |
+
+    ### Was bedeutet das?
+
+    **Human-only:** So lange würde die Implementierung dauern, wenn ein Entwickler komplett manuell arbeitet (ohne KI-Unterstützung).
+
+    **Human + KI Agent:** So lange dauert es realistisch mit modernen KI-Werkzeugen (Claude Code, Cursor, GitHub Copilot, etc.). Der Entwickler bleibt verantwortlich für Architektur, Code-Review und Qualitätssicherung.
+
+    ---
+
+    ## 📋 Schätzung pro Story
+
+    | ID | Story | Komplexität | Human (h) | KI-Faktor | KI-Adjusted (h) | Ersparnis |
+    |----|-------|-------------|-----------|-----------|-----------------|-----------|
+    | [ID] | [Title] | [XS/S/M/L] | [X]h | [high/med/low/none] | [Y]h | [Z]h |
+    | [ID] | [Title] | [XS/S/M/L] | [X]h | [high/med/low/none] | [Y]h | [Z]h |
+    | ... | ... | ... | ... | ... | ... | ... |
+    | **TOTAL** | | | **[X]h** | | **[Y]h** | **[Z]h** |
+
+    ---
+
+    ## 🤖 KI-Beschleunigung nach Kategorie
+
+    | Kategorie | Stories | Human (h) | KI-Adjusted (h) | Reduktion |
+    |-----------|---------|-----------|-----------------|-----------|
+    | **High** (80% schneller) | [N] | [X]h | [Y]h | -80% |
+    | **Medium** (60% schneller) | [N] | [X]h | [Y]h | -60% |
+    | **Low** (30% schneller) | [N] | [X]h | [Y]h | -30% |
+    | **None** (keine Beschleunigung) | [N] | [X]h | [X]h | 0% |
+
+    ### Erklärung der Kategorien
+
+    - **High (Faktor 0.20):** Boilerplate, CRUD, Tests, Dokumentation - KI kann 5x schneller helfen
+    - **Medium (Faktor 0.40):** Business-Logik, State Management, API-Integration - KI hilft 2.5x schneller
+    - **Low (Faktor 0.70):** Neue Technologien, komplexe Bugs, Architektur - KI hilft 1.4x schneller
+    - **None (Faktor 1.00):** QA, Design-Entscheidungen, Code-Review - menschliches Urteil erforderlich
+
+    ---
+
+    ## ⚠️ Annahmen & Hinweise
+
+    - Schätzungen basieren auf der Komplexitätsbewertung des Architects
+    - KI-Faktoren setzen aktive Nutzung von AI-Tools voraus (Claude Code, Cursor, etc.)
+    - Qualitätssicherung und Code-Review bleiben unverändert wichtig
+    - Unvorhergesehene Probleme können Aufwand erhöhen (+20-30% Puffer empfohlen)
+
+    ---
+
+    ## 🎯 Empfehlung
+
+    **Geplanter Aufwand:** [AI-Adjusted Hours]h ([AI-Adjusted Days]d / [AI-Adjusted Weeks]w)
+    **Mit Puffer (+25%):** [Buffered Hours]h ([Buffered Days]d / [Buffered Weeks]w)
+
+    ---
+
+    *Erstellt mit Agent OS /create-spec v2.7*
+  </effort_estimation_template>
+
+  </substep>
+
+</estimation_process>
+
+<instructions>
+  ACTION: Generate dual effort estimation for all stories
+  CALCULATE: Human baseline + AI-adjusted hours for each story
+  AGGREGATE: Total hours, days, weeks with breakdown by AI category
+  CREATE: effort-estimation.md in spec folder
+  FORMAT: Clear tables with both perspectives
+  NOTE: Use complexity ratings from Architect (Step 3)
+</instructions>
+
+**Output:**
+- `agent-os/specs/[spec-name]/effort-estimation.md`
+- Dual estimation: Human-only AND Human+AI Agent
+- Per-story breakdown with AI factors
+- Total aggregation with time savings
+
+</step>
+
+<step number="4" name="spec_complete">
+
+### Step 4: Spec Ready for Execution
+
+Present completed specification to user.
+
+<summary_template>
+  ✅ Specification complete!
+
+  **Location:** agent-os/specs/[YYYY-MM-DD-spec-name]/
+
+  **Files:**
+  - requirements-clarification.md - Approved requirements summary
+  - implementation-plan.md - Self-reviewed plan with minimalinvasiv optimizations (v2.8)
+  - spec.md - Full specification
+  - spec-lite.md - Quick reference summary
+  - story-index.md - Story overview and dependency mapping
+  - effort-estimation.md - Aufwandsschätzung (Human + AI)
+  - stories/ - Individual story files (fachlich + technisch)
+    * story-001-[slug].md, story-002-[slug].md, etc.
+    * Stories derived from Implementation Plan phases
+    * Fachliche descriptions (PO)
+    * Technical refinement (Architect): WAS/WIE/WO/WER/DoR/DoD
+    * Dependencies mapped
+
+  [IF cross-cutting exists:]
+  - sub-specs/cross-cutting-decisions.md - Spec-wide technical decisions
+
+  **Story Summary:**
+  - Total stories: [N]
+  - Can run parallel: [N]
+  - Sequential dependencies: [N]
+
+  **📊 Aufwandsschätzung:**
+
+  | Metrik | Human-only | Human + KI | Ersparnis |
+  |--------|------------|------------|-----------|
+  | Stunden | [X]h | [Y]h | [Z]h ([%]%) |
+  | Arbeitstage | [X]d | [Y]d | [Z]d |
+
+  💡 **Mit KI-Unterstützung** sparen Sie ca. **[%]%** der Entwicklungszeit!
+
+  Details: agent-os/specs/[spec-name]/effort-estimation.md
+
+  **Next Steps:**
+
+  1. Review specification:
+     → agent-os/specs/[spec-name]/story-index.md (overview)
+     → agent-os/specs/[spec-name]/stories/ (individual stories)
+     → agent-os/specs/[spec-name]/effort-estimation.md (Aufwand)
+
+  2. When ready, execute:
+     → /execute-tasks
+     → Creates kanban-board.md
+     → Executes stories via DevTeam
+     → Quality gates enforced
+     → Docs generated per story
+     → Per-story commits
+     → Final PR
+
+  What would you like to do?
+  1. Review the spec first
+  2. Start execution (/execute-tasks)
+  3. Add more stories
+</summary_template>
+
+</step>
+
+</process_flow>
+
+## Final Checklist
+
+<verify>
+  - [ ] Spec folder created (YYYY-MM-DD prefix)
+  - [ ] requirements-clarification.md created and approved by user
+  - [ ] **implementation-plan.md created with Self-Review and Minimalinvasiv-Analyse (Step 2.5)** (v2.8)
+  - [ ] **Implementation Plan approved by user** (v2.8)
+  - [ ] spec.md complete (all sections)
+  - [ ] spec-lite.md concise
+  - [ ] story-index.md created with all stories listed
+  - [ ] **Stories derived from Implementation Plan phases** (v2.8)
+  - [ ] stories/ directory created with individual story files
+  - [ ] Each story file has fachlich + technical content
+  - [ ] All stories have DoR/DoD
+  - [ ] **All DoR checkboxes are marked [x] complete**
+  - [ ] **Each story has "Relevante Skills" section filled (v2.4)**
+  - [ ] Dependencies identified in story-index.md
+  - [ ] Cross-cutting decisions (if applicable)
+  - [ ] **DoR validation passed (Step 3.4)**
+  - [ ] **Story size validation passed (Step 3.5)**
+  - [ ] **effort-estimation.md created with dual estimation (Step 3.6)** (v2.7)
+  - [ ] **System Stories created (story-997, story-998, story-999)** (v3.0)
+  - [ ] Ready for /execute-tasks
+</verify>

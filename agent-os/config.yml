@@ -1,0 +1,68 @@
+# Agent OS DevTeam System Configuration
+# Version: 2.1
+
+# Project Information
+project:
+  name: "[PROJECT_NAME]"  # Customize this
+
+# DevTeam System
+devteam:
+  enabled: false  # Set to true after /build-development-team
+
+# Workflow Settings
+workflows:
+  auto_commit_per_story: true  # Git commit after each story completion
+
+# Standards Lookup
+standards:
+  # Order: project first, then global fallback
+  # Project: .agent-os/standards/code-style.md
+  # Global: ~/.agent-os/standards/code-style.md
+  use_global_fallback: true
+
+# Team Development System Configuration (uses global installation)
+team_system:
+  enabled: true
+
+  # File lookup order (project-local first, then global fallback)
+  lookup_order:
+    - project  # Check agent-os/ and .claude/ in project first
+    - global   # Fallback to global agent-os/ and .claude/
+
+  # Coordination mode
+  coordination_mode: sequential  # MVP: sequential execution
+
+  # Smart task routing
+  task_routing:
+    enabled: true       # Enable automatic task routing
+    auto_delegate: true # Automatically delegate to specialists
+
+  # Specialist configuration (override global defaults if needed)
+  specialists:
+    backend_dev:
+      enabled: true
+      default_stack: java_spring_boot  # Options: java_spring_boot, nodejs_express
+      code_generation: full            # Options: full, scaffolding, guidance
+
+    frontend_dev:
+      enabled: true
+      default_framework: react  # Options: react, angular
+      code_generation: full
+
+    qa_specialist:
+      enabled: true
+      test_types: [unit, integration, e2e]
+      coverage_target: 80
+      auto_fix_attempts: 3
+
+    devops_specialist:
+      enabled: true
+      ci_platform: github_actions
+      containerization: docker
+
+  # Quality gates
+  quality_gates:
+    unit_tests_required: true
+    integration_tests_required: true
+    coverage_minimum: 80
+    build_success_required: true

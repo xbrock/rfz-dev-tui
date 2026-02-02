@@ -1,0 +1,180 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Terminal TUI Theme - Deutsche Bahn inspired */
+:root {
+  /* DB Brand Colors */
+  --db-red: oklch(0.55 0.20 25);           /* Only for errors */
+  --db-red-accent: oklch(0.58 0.18 25);    /* Subtle brand accent */
+  
+  /* DB Warm Gray palette (slightly warm undertone) */
+  --db-gray-100: oklch(0.13 0.008 60);     /* Darkest - background */
+  --db-gray-200: oklch(0.18 0.008 60);     /* Cards */
+  --db-gray-300: oklch(0.26 0.008 60);     /* Borders, inputs */
+  --db-gray-400: oklch(0.42 0.006 60);     /* Subtle text */
+  --db-gray-500: oklch(0.62 0.005 60);     /* Muted text */
+  --db-gray-600: oklch(0.82 0.003 60);     /* Light text */
+  
+  /* DB Digital accent colors */
+  --db-blue: oklch(0.68 0.14 240);         /* Primary interactive - DB digital blue */
+  --db-blue-bright: oklch(0.75 0.12 240);  /* Hover/focus states */
+  --tui-green: oklch(0.70 0.14 155);       /* Success */
+  --tui-yellow: oklch(0.82 0.14 85);       /* Warning/running */
+  --tui-cyan: oklch(0.72 0.10 200);        /* Secondary accent */
+
+  --background: var(--db-gray-100);
+  --foreground: var(--db-gray-600);
+  --card: var(--db-gray-200);
+  --card-foreground: var(--db-gray-600);
+  --popover: var(--db-gray-200);
+  --popover-foreground: var(--db-gray-600);
+  --primary: var(--db-blue);
+  --primary-foreground: var(--db-gray-100);
+  --secondary: var(--db-gray-300);
+  --secondary-foreground: var(--db-gray-600);
+  --muted: var(--db-gray-300);
+  --muted-foreground: var(--db-gray-500);
+  --accent: var(--db-blue-bright);
+  --accent-foreground: var(--db-gray-100);
+  --destructive: var(--db-red);
+  --destructive-foreground: oklch(0.95 0 0);
+  --border: var(--db-gray-400);
+  --input: var(--db-gray-300);
+  --ring: var(--db-blue);
+  --success: var(--tui-green);
+  --warning: var(--tui-yellow);
+  --brand: var(--db-red-accent);
+  --radius: 0;
+  --sidebar: var(--db-gray-200);
+  --sidebar-foreground: var(--db-gray-600);
+  --sidebar-primary: var(--db-blue);
+  --sidebar-primary-foreground: var(--db-gray-100);
+  --sidebar-accent: var(--db-gray-300);
+  --sidebar-accent-foreground: var(--db-gray-600);
+  --sidebar-border: var(--db-gray-400);
+  --sidebar-ring: var(--db-blue);
+}
+
+@theme inline {
+  --font-sans: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-tui-cyan: var(--db-blue-bright);
+  --color-tui-green: var(--tui-green);
+  --color-tui-yellow: var(--tui-yellow);
+  --color-tui-blue: var(--db-blue);
+  --color-brand: var(--brand);
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-mono;
+  }
+}
+
+/* TUI Box Drawing Characters Support */
+.tui-box {
+  border: 1px solid var(--border);
+}
+
+.tui-box-double {
+  border: 2px solid var(--border);
+}
+
+/* Blinking cursor animation */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s infinite;
+}
+
+/* TUI Focus styles */
+.tui-focus {
+  background-color: var(--db-blue-bright);
+  color: var(--db-gray-100);
+}
+
+/* TUI Selection marker */
+.tui-selected::before {
+  content: '>';
+  margin-right: 0.5ch;
+  color: var(--tui-cyan);
+}
+
+/* Spinner animation */
+@keyframes spin-frames {
+  0% { content: '⠋'; }
+  8% { content: '⠙'; }
+  16% { content: '⠹'; }
+  24% { content: '⠸'; }
+  32% { content: '⠼'; }
+  40% { content: '⠴'; }
+  48% { content: '⠦'; }
+  56% { content: '⠧'; }
+  64% { content: '⠇'; }
+  72% { content: '⠏'; }
+  80% { content: '⠋'; }
+  88% { content: '⠙'; }
+  100% { content: '⠹'; }
+}
+
+.tui-spinner::before {
+  content: '⠋';
+  animation: spin-frames 0.8s steps(1) infinite;
+}
+
+/* Progress bar styles */
+.tui-progress-fill {
+  background-color: var(--db-blue);
+}
+
+.tui-progress-empty {
+  background-color: var(--db-gray-300);
+}
+
+/* Status colors */
+.status-running { color: var(--tui-yellow); }
+.status-success { color: var(--tui-green); }
+.status-failed { color: var(--db-red); }
+.status-error { color: var(--db-red); }
+.status-pending { color: var(--db-gray-500); }

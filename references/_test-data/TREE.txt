@@ -1,0 +1,192 @@
+﻿Folder PATH listing for volume dev
+Volume serial number is FAF8-1AA4
+D:\APPS\RFZ-DEVELOPERS-CLI\_TEST-DATA\DEMO-COMPONENTS
++---core
+|   \---audiocon
+|       |   pom.xml
+|       |   
+|       +---audiocon-config
+|       |   |   pom.xml
+|       |   |   
+|       |   +---src
+|       |   |   \---main
+|       |   |       \---java
+|       |   |           \---de
+|       |   |               \---deutschebahn
+|       |   |                   \---rfz
+|       |   |                       \---audiocon
+|       |   |                           \---config
+|       |   |                                   AudioConConfig.java
+|       |   |                                   
+|       |   \---target
+|       |       |   audiocon-config-1.0.0-SNAPSHOT.jar
+|       |       |   
+|       |       +---antrun
+|       |       |       build-main.xml
+|       |       |       
+|       |       +---classes
+|       |       |   \---de
+|       |       |       \---deutschebahn
+|       |       |           \---rfz
+|       |       |               \---audiocon
+|       |       |                   \---config
+|       |       |                           AudioConConfig.class
+|       |       |                           
+|       |       +---generated-sources
+|       |       |   \---annotations
+|       |       +---maven-archiver
+|       |       |       pom.properties
+|       |       |       
+|       |       \---maven-status
+|       |           \---maven-compiler-plugin
+|       |               \---compile
+|       |                   \---default-compile
+|       |                           createdFiles.lst
+|       |                           inputFiles.lst
+|       |                           
+|       \---audiocon-core
+|           |   pom.xml
+|           |   
+|           +---src
+|           |   \---main
+|           |       \---java
+|           |           \---de
+|           |               \---deutschebahn
+|           |                   \---rfz
+|           |                       \---audiocon
+|           |                               AudioConApplication.java
+|           |                               
+|           \---target
+|               |   audiocon-core-1.0.0-SNAPSHOT.jar
+|               |   
+|               +---classes
+|               |   \---de
+|               |       \---deutschebahn
+|               |           \---rfz
+|               |               \---audiocon
+|               |                       AudioConApplication.class
+|               |                       
+|               +---generated-sources
+|               |   \---annotations
+|               +---maven-archiver
+|               |       pom.properties
+|               |       
+|               \---maven-status
+|                   \---maven-compiler-plugin
+|                       \---compile
+|                           \---default-compile
+|                                   createdFiles.lst
+|                                   inputFiles.lst
+|                                   
++---simulator
+|   \---sigsim
+|       |   pom.xml
+|       |   
+|       +---sigsim-config
+|       |   |   pom.xml
+|       |   |   
+|       |   +---src
+|       |   |   \---main
+|       |   |       \---java
+|       |   |           \---de
+|       |   |               \---deutschebahn
+|       |   |                   \---rfz
+|       |   |                       \---sigsim
+|       |   |                           \---config
+|       |   |                                   SigSimConfig.java
+|       |   |                                   
+|       |   \---target
+|       |       |   sigsim-config-1.0.0-SNAPSHOT.jar
+|       |       |   
+|       |       +---antrun
+|       |       |       build-main.xml
+|       |       |       
+|       |       +---classes
+|       |       |   \---de
+|       |       |       \---deutschebahn
+|       |       |           \---rfz
+|       |       |               \---sigsim
+|       |       |                   \---config
+|       |       |                           SigSimConfig.class
+|       |       |                           
+|       |       +---generated-sources
+|       |       |   \---annotations
+|       |       +---maven-archiver
+|       |       |       pom.properties
+|       |       |       
+|       |       \---maven-status
+|       |           \---maven-compiler-plugin
+|       |               \---compile
+|       |                   \---default-compile
+|       |                           createdFiles.lst
+|       |                           inputFiles.lst
+|       |                           
+|       \---sigsim-core
+|           |   pom.xml
+|           |   
+|           +---src
+|           |   \---main
+|           |       \---java
+|           |           \---de
+|           |               \---deutschebahn
+|           |                   \---rfz
+|           |                       \---sigsim
+|           |                               SigSimApplication.java
+|           |                               
+|           \---target
+|               |   sigsim-core-1.0.0-SNAPSHOT.jar
+|               |   
+|               +---classes
+|               |   \---de
+|               |       \---deutschebahn
+|               |           \---rfz
+|               |               \---sigsim
+|               |                       SigSimApplication.class
+|               |                       
+|               +---generated-sources
+|               |   \---annotations
+|               +---maven-archiver
+|               |       pom.properties
+|               |       
+|               \---maven-status
+|                   \---maven-compiler-plugin
+|                       \---compile
+|                           \---default-compile
+|                                   createdFiles.lst
+|                                   inputFiles.lst
+|                                   
+\---standalone
+    \---mgw-connector
+        |   pom.xml
+        |   
+        +---src
+        |   \---main
+        |       \---java
+        |           \---de
+        |               \---deutschebahn
+        |                   \---rfz
+        |                       \---mgw
+        |                               MgwConnectorApplication.java
+        |                               
+        \---target
+            |   mgw-connector-1.0.0-SNAPSHOT.jar
+            |   
+            +---classes
+            |   \---de
+            |       \---deutschebahn
+            |           \---rfz
+            |               \---mgw
+            |                       MgwConnectorApplication.class
+            |                       
+            +---generated-sources
+            |   \---annotations
+            +---maven-archiver
+            |       pom.properties
+            |       
+            \---maven-status
+                \---maven-compiler-plugin
+                    \---compile
+                        \---default-compile
+                                createdFiles.lst
+                                inputFiles.lst
+                                
