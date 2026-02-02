@@ -15,6 +15,7 @@
 | CORE-003 | TuiDivider Component - Horizontal separator | divider.go (new) |
 | CORE-004 | TuiButton Component - Interactive button | button.go (new) |
 | CORE-005 | TuiStatus Component - Build status badge | status.go (existing) |
+| CORE-006 | teatest Infrastructure - Golden file tests | *_test.go files, testdata/ golden files |
 
 ---
 
@@ -53,6 +54,7 @@ _None yet_
 - **Styles Package Complete**: All design tokens (colors, spacing, borders, typography) in `internal/ui/components/styles.go`
 - **Import Path**: `import "rfz-cli/internal/ui/components"` for access to styles and helpers
 - **Key Exports**: ColorBackground, ColorCyan, ColorGreen, etc.; SpaceXS-Space2XL; BorderSingle/Double/Rounded/Heavy; StyleH1-StyleBodyMuted
+- **Testing**: Golden file tests available via `go test rfz-cli/internal/ui/components`. Use `-update` flag to regenerate golden files.
 
 ---
 
@@ -67,3 +69,9 @@ _None yet_
 | internal/ui/components/divider.go | Created | CORE-003 |
 | internal/ui/components/button.go | Created | CORE-004 |
 | internal/ui/components/status.go | Verified | CORE-005 |
+| internal/ui/components/box_test.go | Created | CORE-006 |
+| internal/ui/components/divider_test.go | Created | CORE-006 |
+| internal/ui/components/button_test.go | Created | CORE-006 |
+| internal/ui/components/status_test.go | Created | CORE-006 |
+| internal/ui/components/testdata/*.golden | Created | CORE-006 |
+| go.mod | Modified | CORE-006 |
