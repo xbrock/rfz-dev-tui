@@ -1,1 +1,4 @@
 ./references/*
+.idea
+agent-os
+.claude

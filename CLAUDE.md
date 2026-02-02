@@ -1,60 +1,118 @@
-# CLAUDE.md - Agent OS Extended
+# CLAUDE.md - RFZ Developer CLI
 
-> Agent OS Extended Development Guide
-> Last Updated: 2026-01-16
-> Type: Framework Repository
+> RFZ Developer CLI Development Guide
+> Last Updated: 2026-02-02
+> Type: Go TUI Application (charm.land stack)
 
 ## Purpose
-Essential guidance for Claude Code development in the Agent OS Extended repository. This is the **framework repository** that provides workflows, templates, agents, and skills for other projects.
 
-## Repository Structure
+Essential guidance for Claude Code development on the RFZ Developer CLI - a Go-based Terminal User Interface for RFZ developers at Deutsche Bahn that streamlines Maven build workflows.
 
-**This is NOT a product project - it's the Agent OS framework itself.**
+---
 
-```
-agent-os-extended/
-├── agent-os/
-│   ├── workflows/core/       # Core workflows (plan-product, create-spec, etc.)
-│   ├── workflows/meta/       # Meta workflows (pre-flight)
-│   ├── templates/            # All templates (product, platform, docs, skills)
-│   ├── standards/            # Global coding standards
-│   └── docs/                 # Documentation and guides
-├── .claude/
-│   ├── commands/agent-os/    # Slash command definitions
-│   └── agents/               # Agent definitions
-├── setup.sh                  # Project installation script
-├── setup-claude-code.sh      # Claude Code installation script
-└── setup-devteam-global.sh   # Global templates installation script
-```
+## CRITICAL RULE: Charm.land First - Custom Last
 
-## Development Standards (load via context-fetcher when needed)
-- **Tech Stack Defaults**: agent-os/standards/tech-stack.md
-- **Code Style Preferences**: agent-os/standards/code-style.md
-- **Best Practices Philosophy**: agent-os/standards/best-practices.md
+**MANDATORY for ALL agents. This rule OVERRIDES all other styling/component decisions.**
+
+Before implementing ANY visual/UI element, you MUST check if charm.land provides it.
+
+### Priority Order (MUST follow)
+
+1. **Bubbles Component** - Use directly: `list`, `table`, `viewport`, `progress`, `spinner`, `help`, `textinput`, `paginator`
+2. **Lip Gloss Styling** - Use for ALL styling (borders, colors, layout, padding, text)
+3. **charmbracelet/log** - Use for all logging output
+4. **Custom implementation** - ONLY when charm.land has NO solution
+
+### Forbidden Patterns
+
+| DO NOT | USE INSTEAD |
+|--------|-------------|
+| Custom border drawing (`---`, box-drawing chars) | `lipgloss.NewStyle().Border(lipgloss.RoundedBorder())` |
+| Custom color codes / ANSI escapes | `lipgloss.Color("#ff0000")` |
+| Manual string padding | `lipgloss.NewStyle().Padding(1, 2)` |
+| Custom progress bar strings | `bubbles/progress` component |
+| Custom spinner frames | `bubbles/spinner` component |
+| Custom list rendering | `bubbles/list` component |
+| Custom table rendering | `bubbles/table` component |
+| Custom scrolling logic | `bubbles/viewport` component |
+
+**Even custom components MUST use Lip Gloss for ALL internal styling.**
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| **Go 1.21+** | Language |
+| **Bubble Tea** | TUI Framework (Elm architecture) |
+| **Lip Gloss** | ALL styling (borders, colors, layout) |
+| **Bubbles** | Components (list, table, viewport, progress, spinner, help) |
+| **charmbracelet/log** | Structured logging |
+| **teatest** | Visual regression testing |
+
+Full details: `agent-os/product/tech-stack.md`
+
+---
+
+## Document Locations (Load on Demand)
+
+### Product Information
+- **Product Vision**: `agent-os/product/product-brief.md`
+- **Product Summary**: `agent-os/product/product-brief-lite.md`
+- **Technical Stack**: `agent-os/product/tech-stack.md`
+- **Design System**: `agent-os/product/design-system.md` (colors, styles, spacing)
+- **Development Roadmap**: `agent-os/product/roadmap.md`
+
+### Development Standards
+- **Tech Stack Defaults**: `agent-os/standards/tech-stack.md`
+- **Code Style**: `agent-os/standards/code-style.md`
+- **Best Practices**: `agent-os/standards/best-practices.md`
+
+---
 
 ## Critical Rules
+
 - **FOLLOW ALL INSTRUCTIONS** - Mandatory, not optional
 - **ASK FOR CLARIFICATION** - If uncertain about any requirement
 - **MINIMIZE CHANGES** - Edit only what's necessary
-- **PRESERVE BACKWARD COMPATIBILITY** - Changes affect all users of the framework
+- **CHARM.LAND FIRST** - Always use Bubbles/Lip Gloss before custom code
 - **NO CO-AUTHORED COMMITS** - Never add "Co-Authored-By" lines to commit messages
 
-## Framework Development Guidelines
+---
 
-**When modifying workflows:**
-- Test changes conceptually before committing
-- Update version numbers in workflow frontmatter
-- Ensure template references use hybrid lookup (project → global)
-- Update setup scripts if new files are added
+## Components Strategy
 
-**When adding templates:**
-- Add to `agent-os/templates/` directory
-- Update `setup-devteam-global.sh` to include in global installation
-- Use consistent placeholder naming: `[PLACEHOLDER_NAME]`
+### Use from Bubbles (DO NOT reimplement)
 
-**When adding commands:**
-- Create in `.claude/commands/agent-os/`
-- Reference corresponding workflow in `agent-os/workflows/core/`
+| Component | Usage in RFZ CLI |
+|-----------|------------------|
+| `list` | Component selection, navigation lists |
+| `table` | Component registry, detected components |
+| `viewport` | Log viewer content area |
+| `progress` | Build progress indicators |
+| `spinner` | Loading states during builds |
+| `textinput` | Configuration inputs, search |
+| `help` | Keyboard shortcut display |
+| `paginator` | Log pagination |
+
+### Custom Components to Build (using Lip Gloss internally)
+
+| Component | Description |
+|-----------|-------------|
+| TuiBox | Container with focus state (Lip Gloss borders) |
+| TuiNavigation | Sidebar navigation container |
+| TuiNavItem | Menu item with keyboard shortcut |
+| TuiStatus | Build status badges (pending/running/success/failed) |
+| TuiButton | Action buttons |
+| TuiModal | Overlay dialog with backdrop |
+| TuiRadio | Radio button group |
+| TuiCheckbox | Checkbox with label |
+| TuiTabs | Tab navigation |
+| TuiStatusBar | Bottom bar with hints |
+| TuiTree | Tree view for hierarchies |
+
+---
 
 ## Sub-Agents
 
@@ -64,6 +122,8 @@ agent-os-extended/
 - **file-creator** - Create files and apply templates
 - **git-workflow** - Git operations, commits, PRs
 
+---
+
 ## File Organization Rules
 
 **CRITICAL - No Files in Project Root:**
@@ -71,65 +131,7 @@ agent-os-extended/
 - Architecture docs: `agent-os/product/`
 - Team docs: `agent-os/team/`
 
-## Essential Commands (for testing the framework)
-
-```bash
-# Product Planning
-/plan-product            # Single-product planning
-/plan-platform           # Multi-module platform planning
-
-# Team Setup
-/build-development-team  # Create DevTeam agents and skills
-
-# Feature Development
-/create-spec             # Create detailed specifications
-/execute-tasks           # Execute planned tasks
-/retroactive-doc         # Document existing features
-
-# Bug Management
-/create-bug              # Create bug specification
-/add-bug                 # Add bug to existing spec
-
-# Quick Tasks
-/add-todo                # Add lightweight task to backlog
-
-# Skill Management
-/add-skill               # Create custom skills
-/migrate-skills          # Add YAML frontmatter to existing skills
-```
-
-## Quality Requirements
-
-**Mandatory Checks:**
-- Ensure all workflow steps are numbered correctly
-- Verify template paths use hybrid lookup
-- Check that setup scripts include all new files
-- Test slash commands work correctly
-
-## Production Safety Rules
-
-**CRITICAL RESTRICTIONS:**
-- Never break backward compatibility without migration path
-- Never remove templates without deprecation notice
-- Always update setup scripts when adding files
-- Test changes in a separate project before committing
-
-## Workflow Development
-
-**Adding a new workflow:**
-1. Create workflow in `agent-os/workflows/core/[workflow-name].md`
-2. Create command in `.claude/commands/agent-os/[command-name].md`
-3. Add any new templates to `agent-os/templates/`
-4. Update `setup.sh` to download the workflow
-5. Update `setup-claude-code.sh` to download the command
-6. Update `setup-devteam-global.sh` for new templates
-
-**Modifying existing workflows:**
-1. Read the current workflow completely
-2. Understand all steps and their dependencies
-3. Make minimal changes to achieve the goal
-4. Update version number in frontmatter
-5. Test conceptually with edge cases
+---
 
 ## References Directory
 
@@ -148,4 +150,37 @@ The `references/` directory contains project reference materials:
 
 ---
 
-**Remember:** This repository is used by many projects. Changes here affect all Agent OS users. Quality, backward compatibility, and documentation are paramount.
+## Quality Requirements
+
+**Mandatory Checks:**
+- Run linting after ALL code changes (`golangci-lint`)
+- ALL lint errors must be fixed before task completion
+- Visual regression tests must pass (97 UI states)
+
+**Canonical Terminal Size for Testing:**
+- Width: 120 columns
+- Height: 40 rows
+
+---
+
+## Agent OS Commands
+
+```bash
+# Product Planning
+/plan-product            # Single-product planning
+
+# Feature Development
+/create-spec             # Create detailed specifications
+/execute-tasks           # Execute planned tasks
+
+# Bug Management
+/create-bug              # Create bug specification
+/add-bug                 # Add bug to existing spec
+
+# Documentation
+/retroactive-doc         # Document existing features
+```
+
+---
+
+**Remember:** This is a Go TUI application. ALL visual elements must use the charm.land stack. Check Bubbles and Lip Gloss FIRST before writing any custom rendering code.
