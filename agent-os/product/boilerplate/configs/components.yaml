@@ -1,0 +1,32 @@
+# RFZ Component Registry
+#
+# This file contains the list of registered RFZ components.
+# Components listed here will appear in the Build screen.
+#
+# Format:
+# components:
+#   - id: groupId:artifactId
+#     name: Display Name
+#     type: core|service|simulator|standalone|library
+#     path: /absolute/path/to/component
+#
+# Example:
+# components:
+#   - id: com.db.rfz:rfz-core
+#     name: RFZ Core
+#     type: core
+#     path: /workspace/rfz/core
+#
+#   - id: com.db.rfz:rfz-simulator
+#     name: RFZ Simulator
+#     type: simulator
+#     path: /workspace/rfz/simulator
+
+# Component registry
+components: []
+
+# Registry metadata
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-02"
+  workspace: "~/workspace"
