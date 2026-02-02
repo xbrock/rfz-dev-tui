@@ -12,7 +12,7 @@
 |----|-------|----------|------|--------|-----|
 | BUGFIX-001 | Identify and Document All Boilerplate Files | Must Have | 0 | Complete | Yes |
 | BUGFIX-002 | Remove Boilerplate Files from Project Root | Must Have | 1 | Done | Yes |
-| BUGFIX-003 | Add Regression Safeguard | Should Have | 2 | Ready | Yes |
+| BUGFIX-003 | Add Regression Safeguard | Should Have | 2 | Done | Yes |
 
 **Total Story Points: 3**
 
@@ -263,8 +263,8 @@ Add safeguards to prevent future accidental copies of boilerplate code to the pr
 
 ### Acceptance Criteria
 
-- [ ] Document boilerplate directory purpose in CLAUDE.md
-- [ ] Add README.md to boilerplate directory with clear warnings
+- [x] Document boilerplate directory purpose in CLAUDE.md
+- [x] Add README.md to boilerplate directory with clear warnings
 - [ ] (Optional) Add CI check to detect boilerplate in root
 
 ### WIE (How to Implement)
@@ -374,13 +374,13 @@ BUGFIX-001 (Identify) --> BUGFIX-002 (Remove) --> BUGFIX-003 (Safeguard)
 ## Definition of Done (Global)
 
 - [x] All boilerplate files identified and verified
-- [ ] All 29 boilerplate files removed from project root
-- [ ] `go build ./...` succeeds
-- [ ] `go test ./internal/ui/components/...` passes
-- [ ] `golangci-lint run ./internal/ui/components/...` passes
+- [x] All 29 boilerplate files removed from project root
+- [x] `go build ./...` succeeds
+- [x] `go test ./internal/ui/components/...` passes
+- [x] `golangci-lint run ./internal/ui/components/...` passes
 - [ ] Changes committed to main branch
-- [ ] Boilerplate in `agent-os/product/boilerplate/` remains intact
-- [ ] Documentation updated with safeguard information
+- [x] Boilerplate in `agent-os/product/boilerplate/` remains intact
+- [x] Documentation updated with safeguard information
 
 ---
 

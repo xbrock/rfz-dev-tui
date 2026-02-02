@@ -12,6 +12,7 @@
 |-------|---------|-------------|
 | BUGFIX-001 | Identify and Document All Boilerplate Files | Technical analysis completed - 29 files identified as boilerplate, 11+ files identified as actual implementation to preserve |
 | BUGFIX-002 | Remove Boilerplate Files from Project Root | Removed 29 boilerplate files (cmd/, configs/, internal/app/, internal/domain/, internal/infra/, internal/service/, internal/ui/screens/, internal/ui/modals/, Makefile, navitem.go, statusbar.go) |
+| BUGFIX-003 | Add Regression Safeguard | Added boilerplate section to CLAUDE.md with warning, created README.md in boilerplate directory with usage guidelines |
 
 ---
 
@@ -81,3 +82,5 @@ _None yet_
 | internal/ui/modals/ | Deleted (directory) | BUGFIX-002 |
 | internal/ui/components/navitem.go | Deleted | BUGFIX-002 |
 | internal/ui/components/statusbar.go | Deleted | BUGFIX-002 |
+| CLAUDE.md | Modified | BUGFIX-003 |
+| agent-os/product/boilerplate/README.md | Created | BUGFIX-003 |
