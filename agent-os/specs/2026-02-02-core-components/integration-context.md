@@ -11,6 +11,7 @@
 | Story | Summary | Key Changes |
 |-------|---------|-------------|
 | CORE-001 | Styles Package - Design tokens and utilities | styles.go (existing), helpers.go (new) |
+| CORE-002 | TuiBox Component - Bordered container | box.go (new) |
 
 ---
 
@@ -18,7 +19,9 @@
 
 ### Components
 <!-- New UI components created -->
-_None yet_
+- `internal/ui/components/box.go` → `TuiBox(content string, style BoxStyle, focused bool) string`
+- `internal/ui/components/box.go` → `TuiBoxWithWidth(content string, style BoxStyle, focused bool, width int) string`
+- BoxStyle constants: `BoxSingle`, `BoxDouble`, `BoxRounded`, `BoxHeavy`
 
 ### Services
 <!-- New service classes/modules -->
@@ -50,3 +53,4 @@ _None yet_
 | internal/ui/components/helpers.go | Created | CORE-001 |
 | go.mod | Modified | CORE-001 |
 | go.sum | Modified | CORE-001 |
+| internal/ui/components/box.go | Created | CORE-002 |
