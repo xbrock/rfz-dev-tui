@@ -13,6 +13,7 @@
 | CORE-001 | Styles Package - Design tokens and utilities | styles.go (existing), helpers.go (new) |
 | CORE-002 | TuiBox Component - Bordered container | box.go (new) |
 | CORE-003 | TuiDivider Component - Horizontal separator | divider.go (new) |
+| CORE-004 | TuiButton Component - Interactive button | button.go (new) |
 
 ---
 
@@ -25,6 +26,8 @@
 - BoxStyle constants: `BoxSingle`, `BoxDouble`, `BoxRounded`, `BoxHeavy`
 - `internal/ui/components/divider.go` → `TuiDivider(style DividerStyle, width int) string`
 - DividerStyle constants: `DividerSingle`, `DividerDouble`
+- `internal/ui/components/button.go` → `TuiButton(label string, variant ButtonVariant, shortcut string, focused bool) string`
+- ButtonVariant constants: `ButtonPrimary`, `ButtonSecondary`, `ButtonDestructive`
 
 ### Services
 <!-- New service classes/modules -->
@@ -58,3 +61,4 @@ _None yet_
 | go.sum | Modified | CORE-001 |
 | internal/ui/components/box.go | Created | CORE-002 |
 | internal/ui/components/divider.go | Created | CORE-003 |
+| internal/ui/components/button.go | Created | CORE-004 |
