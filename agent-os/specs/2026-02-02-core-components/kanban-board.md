@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | complete |
-| **Next Phase** | None - Spec Complete |
+| **Current Phase** | merged |
+| **Next Phase** | None - Spec Closed |
 | **Spec Folder** | agent-os/specs/2026-02-02-core-components |
-| **Worktree Path** | ../rfz-tui-worktrees/core-components |
-| **Git Branch** | feature/core-components |
+| **Worktree Path** | (removed) |
+| **Git Branch** | (merged and deleted) |
 | **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | Completed CORE-999 - All stories done |
-| **Next Action** | Merge feature/core-components to main |
+| **Last Action** | Merged to master, branch deleted, worktree removed |
+| **Next Action** | None - Spec fully complete |
 
 ---
 
@@ -111,6 +111,7 @@ None
 | 2026-02-02 | CORE-997 | Backlog | Done | Code Review - all checklists passed, review-report.md created |
 | 2026-02-02 | CORE-998 | Backlog | Done | Integration Validation - all tests passed |
 | 2026-02-02 | CORE-999 | In Progress | Done | Finalize PR - spec complete, ready for merge |
+| 2026-02-02 | - | complete | merged | Merged to master (fast-forward), branch deleted, worktree removed |
 
 ---
 
