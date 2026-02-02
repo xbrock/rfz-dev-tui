@@ -7,14 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | 1-complete |
-| **Next Phase** | 2 - Git Worktree |
+| **Current Phase** | 2-complete |
+| **Next Phase** | 3 - Execute Story |
 | **Spec Folder** | agent-os/specs/2026-02-02-bugfix-boilerplate-in-project-root |
-| **Worktree Path** | (pending) |
-| **Git Branch** | (pending) |
+| **Worktree Path** | ../rfz-tui-worktrees/bugfix-boilerplate-in-project-root |
+| **Git Branch** | bugfix/boilerplate-in-project-root |
+| **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | Kanban board created |
-| **Next Action** | Setup git worktree |
+| **Last Action** | Git worktree created (external location) |
+| **Next Action** | Switch to worktree and execute first story |
 
 ---
 
@@ -93,6 +94,7 @@ _None_
 | Timestamp | Story | From | To | Notes |
 |-----------|-------|------|-----|-------|
 | 2026-02-02 | - | - | - | Kanban board created |
+| 2026-02-02 | - | Phase 1 | Phase 2 | Git worktree created at ../rfz-tui-worktrees/bugfix-boilerplate-in-project-root |
 
 ---
 
