@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | all-stories-done |
-| **Next Phase** | System Stories (CORE-997, 998, 999) |
+| **Current Phase** | system-stories |
+| **Next Phase** | CORE-999 |
 | **Spec Folder** | agent-os/specs/2026-02-02-core-components |
 | **Worktree Path** | ../rfz-tui-worktrees/core-components |
 | **Git Branch** | feature/core-components |
 | **Git Strategy** | worktree |
-| **Current Story** | None |
-| **Last Action** | Completed CORE-007 - All regular stories done |
-| **Next Action** | Execute System Stories |
+| **Current Story** | CORE-999 |
+| **Last Action** | Completed CORE-998 - Integration Validation passed |
+| **Next Action** | Execute CORE-999 Finalize PR |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 10 |
-| **Completed** | 7 |
-| **In Progress** | 0 |
+| **Completed** | 9 |
+| **In Progress** | 1 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 3 |
+| **Backlog** | 0 |
 | **Blocked** | 0 |
 
 ---
@@ -46,11 +46,7 @@ None
 
 <!-- Stories that have not started yet (with complete DoR) -->
 
-| Story ID | Title | Type | Dependencies | DoR Status | Points |
-|----------|-------|------|--------------|------------|--------|
-| CORE-997 | Code Review | System | CORE-001, CORE-002, CORE-003, CORE-004, CORE-005, CORE-006, CORE-007 | ✅ Ready | 2 |
-| CORE-998 | Integration Validation | System | CORE-997 | ✅ Ready | 1 |
-| CORE-999 | Finalize PR | System | CORE-998 | ✅ Ready | 1 |
+None
 
 ---
 
@@ -58,7 +54,9 @@ None
 
 <!-- Stories currently being worked on -->
 
-None
+| Story ID | Title | Type | Dependencies | DoR Status | Points |
+|----------|-------|------|--------------|------------|--------|
+| CORE-999 | Finalize PR | System | CORE-998 | ✅ Ready | 1 |
 
 ---
 
@@ -91,6 +89,8 @@ None
 | CORE-005 | TuiStatus Component | Backend | CORE-001 | ✅ Ready | 2 |
 | CORE-006 | teatest Infrastructure | Test | CORE-001, CORE-002, CORE-003, CORE-004, CORE-005 | ✅ Ready | 3 |
 | CORE-007 | Component Gallery | Backend | CORE-006 | ✅ Ready | 3 |
+| CORE-997 | Code Review | System | CORE-001, CORE-002, CORE-003, CORE-004, CORE-005, CORE-006, CORE-007 | ✅ Ready | 2 |
+| CORE-998 | Integration Validation | System | CORE-997 | ✅ Ready | 1 |
 
 ---
 
@@ -109,6 +109,9 @@ None
 | 2026-02-02 | CORE-005 | Backlog | Done | TuiStatus Component - verified existing implementation |
 | 2026-02-02 | CORE-006 | Backlog | Done | teatest Infrastructure - test files and golden files |
 | 2026-02-02 | CORE-007 | Backlog | Done | Component Gallery - demo screen with all components |
+| 2026-02-02 | CORE-997 | Backlog | Done | Code Review - all checklists passed, review-report.md created |
+| 2026-02-02 | CORE-998 | Backlog | Done | Integration Validation - all tests passed |
+| 2026-02-02 | CORE-999 | Backlog | In Progress | Finalize PR - starting |
 
 ---
 
