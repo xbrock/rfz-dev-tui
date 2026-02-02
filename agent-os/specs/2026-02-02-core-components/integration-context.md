@@ -16,6 +16,7 @@
 | CORE-004 | TuiButton Component - Interactive button | button.go (new) |
 | CORE-005 | TuiStatus Component - Build status badge | status.go (existing) |
 | CORE-006 | teatest Infrastructure - Golden file tests | *_test.go files, testdata/ golden files |
+| CORE-007 | Component Gallery - Demo screen | demo/gallery.go, demo/gallery_test.go |
 
 ---
 
@@ -33,6 +34,7 @@
 - `internal/ui/components/status.go` → `TuiStatus(status Status) string` - Full status badge
 - `internal/ui/components/status.go` → `TuiStatusCompact(status Status) string` - Icon-only status
 - Status constants: `StatusPending`, `StatusRunning`, `StatusSuccess`, `StatusFailed`, `StatusError`, `StatusSkipped`
+- `internal/ui/components/demo/gallery.go` → `Gallery` (tea.Model) - Demo screen showing all components
 
 ### Services
 <!-- New service classes/modules -->

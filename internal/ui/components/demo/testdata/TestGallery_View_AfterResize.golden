@@ -1,0 +1,39 @@
+Component Gallery  (j/k to scroll, q to quit)
+TuiBox                                                                                                                  
+                                                                                                                        
+Border Variants:                                                                                                        
+┌───────────────┐                                                                                                       
+│ Single Border │                                                                                                       
+└───────────────┘  ╔═══════════════╗                                                                                    
+║ Double Border ║                                                                                                       
+╚═══════════════╝  ╭────────────────╮                                                                                   
+│ Rounded Border │                                                                                                      
+╰────────────────╯  ┏━━━━━━━━━━━━━━┓                                                                                    
+┃ Heavy Border ┃                                                                                                        
+┗━━━━━━━━━━━━━━┛                                                                                                        
+                                                                                                                        
+Focus State:                                                                                                            
+┌────────┐                                                                                                              
+│ Normal │                                                                                                              
+└────────┘  ┌─────────┐                                                                                                 
+│ Focused │                                                                                                             
+└─────────┘                                                                                                             
+                                                                                                                        
+TuiDivider                                                                                                              
+                                                                                                                        
+Single Line:                                                                                                            
+────────────────────────────────────────                                                                                
+                                                                                                                        
+Double Line:                                                                                                            
+════════════════════════════════════════                                                                                
+                                                                                                                        
+TuiButton                                                                                                               
+                                                                                                                        
+Button Variants:                                                                                                        
+  Primary    ┌─────────────┐                                                                                            
+│  Secondary  │                                                                                                         
+└─────────────┘    Destructive                                                                                          
+                                                                                                                        
+With Shortcuts:                                                                                                         
+  [Enter] Build    ┌────────────────┐                                                                                   
+│  [Esc] Cancel  │                                                                                                      

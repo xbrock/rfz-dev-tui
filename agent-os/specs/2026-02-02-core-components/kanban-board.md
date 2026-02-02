@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | story-complete |
-| **Next Phase** | 3 - Execute Story |
+| **Current Phase** | all-stories-done |
+| **Next Phase** | System Stories (CORE-997, 998, 999) |
 | **Spec Folder** | agent-os/specs/2026-02-02-core-components |
 | **Worktree Path** | ../rfz-tui-worktrees/core-components |
 | **Git Branch** | feature/core-components |
 | **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | Completed CORE-006 - self-review passed |
-| **Next Action** | Execute next story |
+| **Last Action** | Completed CORE-007 - All regular stories done |
+| **Next Action** | Execute System Stories |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 10 |
-| **Completed** | 6 |
+| **Completed** | 7 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 4 |
+| **Backlog** | 3 |
 | **Blocked** | 0 |
 
 ---
@@ -48,7 +48,6 @@ None
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| CORE-007 | Component Gallery | Backend | CORE-006 | ✅ Ready | 3 |
 | CORE-997 | Code Review | System | CORE-001, CORE-002, CORE-003, CORE-004, CORE-005, CORE-006, CORE-007 | ✅ Ready | 2 |
 | CORE-998 | Integration Validation | System | CORE-997 | ✅ Ready | 1 |
 | CORE-999 | Finalize PR | System | CORE-998 | ✅ Ready | 1 |
@@ -91,6 +90,7 @@ None
 | CORE-004 | TuiButton Component | Backend | CORE-001 | ✅ Ready | 2 |
 | CORE-005 | TuiStatus Component | Backend | CORE-001 | ✅ Ready | 2 |
 | CORE-006 | teatest Infrastructure | Test | CORE-001, CORE-002, CORE-003, CORE-004, CORE-005 | ✅ Ready | 3 |
+| CORE-007 | Component Gallery | Backend | CORE-006 | ✅ Ready | 3 |
 
 ---
 
@@ -108,6 +108,7 @@ None
 | 2026-02-02 | CORE-004 | Backlog | Done | TuiButton Component - interactive button with variants |
 | 2026-02-02 | CORE-005 | Backlog | Done | TuiStatus Component - verified existing implementation |
 | 2026-02-02 | CORE-006 | Backlog | Done | teatest Infrastructure - test files and golden files |
+| 2026-02-02 | CORE-007 | Backlog | Done | Component Gallery - demo screen with all components |
 
 ---
 
