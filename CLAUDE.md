@@ -148,6 +148,18 @@ The `references/` directory contains project reference materials:
 
 **Usage:** Read screenshots with the Read tool to see UI designs. The web prototype is for visual reference only (created via v0.dev) - this project is a Go TUI application.
 
+### Boilerplate Directory
+
+The `agent-os/product/boilerplate/` directory contains starter code templates:
+
+| Path | Content |
+|------|---------|
+| `agent-os/product/boilerplate/` | Go project starter code (cmd, internal, configs) |
+
+**WARNING:** This is REFERENCE MATERIAL ONLY. Do NOT copy these files to the project root.
+The boilerplate provides a starting point structure but should be adapted and written fresh,
+not copied verbatim.
+
 ---
 
 ## Quality Requirements
