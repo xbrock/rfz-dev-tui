@@ -104,19 +104,27 @@ func (g Gallery) renderBoxSection() string {
 
 	// Box variants
 	sb.WriteString("Border Variants:\n")
-	sb.WriteString(components.TuiBox("Single Border", components.BoxSingle, false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiBox("Double Border", components.BoxDouble, false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiBox("Rounded Border", components.BoxRounded, false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiBox("Heavy Border", components.BoxHeavy, false))
+	boxRow := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		components.TuiBox("Single Border", components.BoxSingle, false),
+		"  ",
+		components.TuiBox("Double Border", components.BoxDouble, false),
+		"  ",
+		components.TuiBox("Rounded Border", components.BoxRounded, false),
+		"  ",
+		components.TuiBox("Heavy Border", components.BoxHeavy, false),
+	)
+	sb.WriteString(boxRow)
 	sb.WriteString("\n\n")
 
 	sb.WriteString("Focus State:\n")
-	sb.WriteString(components.TuiBox("Normal", components.BoxSingle, false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiBox("Focused", components.BoxSingle, true))
+	focusRow := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		components.TuiBox("Normal", components.BoxSingle, false),
+		"  ",
+		components.TuiBox("Focused", components.BoxSingle, true),
+	)
+	sb.WriteString(focusRow)
 
 	return sb.String()
 }
@@ -146,25 +154,39 @@ func (g Gallery) renderButtonSection() string {
 	sb.WriteString("\n\n")
 
 	sb.WriteString("Button Variants:\n")
-	sb.WriteString(components.TuiButton("Primary", components.ButtonPrimary, "", false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiButton("Secondary", components.ButtonSecondary, "", false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiButton("Destructive", components.ButtonDestructive, "", false))
+	variantRow := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		components.TuiButton("Primary", components.ButtonPrimary, "", false),
+		"  ",
+		components.TuiButton("Secondary", components.ButtonSecondary, "", false),
+		"  ",
+		components.TuiButton("Destructive", components.ButtonDestructive, "", false),
+	)
+	sb.WriteString(variantRow)
 	sb.WriteString("\n\n")
 
 	sb.WriteString("With Shortcuts:\n")
-	sb.WriteString(components.TuiButton("Build", components.ButtonPrimary, "Enter", false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiButton("Cancel", components.ButtonSecondary, "Esc", false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiButton("Delete", components.ButtonDestructive, "D", false))
+	shortcutRow := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		components.TuiButton("Build", components.ButtonPrimary, "Enter", false),
+		"  ",
+		components.TuiButton("Cancel", components.ButtonSecondary, "Esc", false),
+		"  ",
+		components.TuiButton("Delete", components.ButtonDestructive, "D", false),
+	)
+	sb.WriteString(shortcutRow)
 	sb.WriteString("\n\n")
 
 	sb.WriteString("Focus State:\n")
-	sb.WriteString(components.TuiButton("Normal", components.ButtonPrimary, "", false))
-	sb.WriteString("  ")
-	sb.WriteString(components.TuiButton("Focused", components.ButtonPrimary, "", true))
+	focusBtnRow := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		components.TuiButton("Primary", components.ButtonPrimary, "", true),
+		"  ",
+		components.TuiButton("Secondary", components.ButtonSecondary, "", true),
+		"  ",
+		components.TuiButton("Destructive", components.ButtonDestructive, "", true),
+	)
+	sb.WriteString(focusBtnRow)
 
 	return sb.String()
 }
