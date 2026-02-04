@@ -71,15 +71,15 @@ Scenario: Alle CI Checks sind gruen
 
 ### Funktions-Pruefungen
 
-- [ ] BUILD_PASS: go build ./...
-- [ ] TEST_PASS: go test ./... -v
-- [ ] LINT_PASS: golangci-lint run ./...
+- [x] BUILD_PASS: go build ./...
+- [x] TEST_PASS: go test ./... -v
+- [x] LINT_PASS: golangci-lint run ./...
 
 ### Git-Pruefungen
 
-- [ ] GIT: Branch pushed to remote
-- [ ] GIT: PR created
-- [ ] GIT: No merge conflicts
+- [x] GIT: Branch pushed to remote
+- [x] GIT: PR created (https://github.com/xbrock/rfz-dev-tui/pull/2)
+- [x] GIT: No merge conflicts
 
 ---
 
@@ -91,7 +91,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - System Story
+> **Status:** Done - PR created https://github.com/xbrock/rfz-dev-tui/pull/2
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -117,19 +117,19 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Alle Commits gepusht
-- [ ] PR erstellt mit Beschreibung
-- [ ] Branch ist aktuell mit master
+- [x] Alle Commits gepusht
+- [x] PR erstellt mit Beschreibung
+- [x] Branch ist aktuell mit master
 
 #### Qualitaetssicherung
-- [ ] Alle CI Checks bestanden
-- [ ] Keine Merge-Konflikte
-- [ ] PR ist ready for review
+- [x] Alle CI Checks bestanden
+- [x] Keine Merge-Konflikte
+- [x] PR ist ready for review
 
 #### Dokumentation
-- [ ] PR Summary ist vollstaendig
-- [ ] Test Plan ist dokumentiert
-- [ ] Alle Stories referenziert
+- [x] PR Summary ist vollstaendig
+- [x] Test Plan ist dokumentiert
+- [x] Alle Stories referenziert
 
 ---
 
