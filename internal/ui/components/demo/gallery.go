@@ -91,6 +91,12 @@ func (g Gallery) renderContent() string {
 	sections = append(sections, g.renderDividerSection())
 	sections = append(sections, g.renderButtonSection())
 	sections = append(sections, g.renderStatusSection())
+	sections = append(sections, g.renderCheckboxSection())
+	sections = append(sections, g.renderRadioSection())
+	sections = append(sections, g.renderListSection())
+	sections = append(sections, g.renderTextInputSection())
+	sections = append(sections, g.renderSpinnerSection())
+	sections = append(sections, g.renderProgressSection())
 
 	return strings.Join(sections, "\n\n")
 }
@@ -217,6 +223,157 @@ func (g Gallery) renderStatusSection() string {
 		sb.WriteString(components.TuiStatusCompact(s))
 		sb.WriteString(fmt.Sprintf(" %s  ", s.String()))
 	}
+
+	return sb.String()
+}
+
+// renderCheckboxSection renders the TuiCheckbox demo section.
+func (g Gallery) renderCheckboxSection() string {
+	var sb strings.Builder
+
+	sb.WriteString(components.StyleH2.Render("TuiCheckbox"))
+	sb.WriteString("\n\n")
+
+	sb.WriteString("States:\n")
+	states := lipgloss.JoinVertical(
+		lipgloss.Left,
+		components.TuiCheckbox("Unchecked option", false, false, false),
+		components.TuiCheckbox("Checked option", true, false, false),
+		components.TuiCheckbox("Focused option", false, true, false),
+		components.TuiCheckbox("Disabled option", false, false, true),
+	)
+	sb.WriteString(states)
+
+	return sb.String()
+}
+
+// renderRadioSection renders the TuiRadio demo section.
+func (g Gallery) renderRadioSection() string {
+	var sb strings.Builder
+
+	sb.WriteString(components.StyleH2.Render("TuiRadio"))
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Horizontal Layout:\n")
+	sb.WriteString(components.TuiRadioGroup([]string{"clean", "install", "package"}, 1, 1, true))
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Vertical Layout:\n")
+	sb.WriteString(components.TuiRadioGroup([]string{"debug", "info", "warn", "error"}, 1, -1, false))
+
+	return sb.String()
+}
+
+// renderListSection renders the TuiList demo section.
+func (g Gallery) renderListSection() string {
+	var sb strings.Builder
+
+	sb.WriteString(components.StyleH2.Render("TuiList"))
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Multi-Select Mode (Checkboxes):\n")
+	multiItems := []components.TuiListItem{
+		{Label: "boss", Badge: "Core", Selected: true},
+		{Label: "fistiv", Badge: "Core", Selected: true},
+		{Label: "simulator", Badge: "Plugin", Selected: false},
+		{Label: "docs-generator", Badge: "Tool", Selected: false},
+	}
+	sb.WriteString(components.TuiList(multiItems, 1, components.ListMultiSelect, true, true))
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Single-Select Mode (Radio):\n")
+	singleItems := []components.TuiListItem{
+		{Label: "clean install", Selected: false},
+		{Label: "package", Selected: true},
+		{Label: "deploy", Selected: false},
+	}
+	sb.WriteString(components.TuiList(singleItems, 1, components.ListSingleSelect, true, false))
+
+	return sb.String()
+}
+
+// renderTextInputSection renders the TuiTextInput demo section.
+func (g Gallery) renderTextInputSection() string {
+	var sb strings.Builder
+
+	sb.WriteString(components.StyleH2.Render("TuiTextInput"))
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Empty with Placeholder:\n")
+	emptyInput := components.NewTuiTextInput("Enter port number...", "")
+	sb.WriteString(emptyInput.View())
+	sb.WriteString("\n\n")
+
+	sb.WriteString("With Value:\n")
+	valueInput := components.NewTuiTextInput("", "")
+	valueInput.SetValue("11090")
+	sb.WriteString(valueInput.View())
+	sb.WriteString("\n\n")
+
+	sb.WriteString("With Prompt Symbol:\n")
+	promptInput := components.NewTuiTextInput("Enter command...", "$")
+	promptInput.SetValue("mvn clean install")
+	sb.WriteString(promptInput.View())
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Disabled:\n")
+	disabledInput := components.NewTuiTextInput("", "")
+	disabledInput.SetValue("/usr/local/bin")
+	disabledInput.SetDisabled(true)
+	sb.WriteString(disabledInput.View())
+
+	return sb.String()
+}
+
+// renderSpinnerSection renders the TuiSpinner demo section.
+func (g Gallery) renderSpinnerSection() string {
+	var sb strings.Builder
+
+	sb.WriteString(components.StyleH2.Render("TuiSpinner"))
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Variants (static frames):\n")
+	variants := lipgloss.JoinVertical(
+		lipgloss.Left,
+		components.TuiSpinnerStatic(components.SpinnerBraille, "Braille dots", components.SpinnerColorCyan),
+		components.TuiSpinnerStatic(components.SpinnerLine, "Line", components.SpinnerColorCyan),
+		components.TuiSpinnerStatic(components.SpinnerCircle, "Circle quarters", components.SpinnerColorCyan),
+		components.TuiSpinnerStatic(components.SpinnerBounce, "Bounce", components.SpinnerColorCyan),
+	)
+	sb.WriteString(variants)
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Color Variants:\n")
+	colors := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		components.TuiSpinnerStatic(components.SpinnerBraille, "Cyan", components.SpinnerColorCyan),
+		"    ",
+		components.TuiSpinnerStatic(components.SpinnerBraille, "Green", components.SpinnerColorGreen),
+		"    ",
+		components.TuiSpinnerStatic(components.SpinnerBraille, "Yellow", components.SpinnerColorYellow),
+	)
+	sb.WriteString(colors)
+
+	return sb.String()
+}
+
+// renderProgressSection renders the TuiProgress demo section.
+func (g Gallery) renderProgressSection() string {
+	var sb strings.Builder
+
+	sb.WriteString(components.StyleH2.Render("TuiProgress"))
+	sb.WriteString("\n\n")
+
+	sb.WriteString("Progress States:\n")
+	progress := lipgloss.JoinVertical(
+		lipgloss.Left,
+		components.TuiProgress(0, 40, true),
+		components.TuiProgress(0.25, 40, true),
+		components.TuiProgress(0.5, 40, true),
+		components.TuiProgress(0.75, 40, true),
+		components.TuiProgress(1.0, 40, true),
+	)
+	sb.WriteString(progress)
 
 	return sb.String()
 }
