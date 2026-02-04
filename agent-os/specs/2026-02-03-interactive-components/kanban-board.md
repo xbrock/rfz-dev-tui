@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | 4-complete |
+| **Current Phase** | 5-merged |
 | **Next Phase** | Done |
 | **Spec Folder** | agent-os/specs/2026-02-03-interactive-components |
-| **Worktree Path** | ../rfz-tui-worktrees/interactive-components |
-| **Git Branch** | feature/interactive-components |
+| **Worktree Path** | (cleaned up) |
+| **Git Branch** | feature/interactive-components (merged & deleted) |
 | **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | PR created https://github.com/xbrock/rfz-dev-tui/pull/2 |
-| **Next Action** | Await PR merge |
+| **Last Action** | PR merged: https://github.com/xbrock/rfz-dev-tui/pull/2 |
+| **Next Action** | Spec complete |
 
 ---
 
@@ -107,6 +107,7 @@ None
 | 2026-02-04 | INTER-998 | Backlog | Done | Integration validation complete |
 | 2026-02-04 | INTER-999 | Backlog | Done | PR created: https://github.com/xbrock/rfz-dev-tui/pull/2 |
 | 2026-02-04 | - | 3-in-progress | 4-complete | All 11 stories complete, spec finished |
+| 2026-02-04 | - | 4-complete | 5-merged | PR merged, worktree cleaned up |
 
 ---
 
