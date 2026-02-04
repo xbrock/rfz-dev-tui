@@ -2,22 +2,14 @@ Component Gallery  (j/k to scroll, q to quit)
 TuiBox                                                                                                                  
                                                                                                                         
 Border Variants:                                                                                                        
-┌───────────────┐                                                                                                       
-│ Single Border │                                                                                                       
-└───────────────┘  ╔═══════════════╗                                                                                    
-║ Double Border ║                                                                                                       
-╚═══════════════╝  ╭────────────────╮                                                                                   
-│ Rounded Border │                                                                                                      
-╰────────────────╯  ┏━━━━━━━━━━━━━━┓                                                                                    
-┃ Heavy Border ┃                                                                                                        
-┗━━━━━━━━━━━━━━┛                                                                                                        
+┌───────────────┐  ╔═══════════════╗  ╭────────────────╮  ┏━━━━━━━━━━━━━━┓                                              
+│ Single Border │  ║ Double Border ║  │ Rounded Border │  ┃ Heavy Border ┃                                              
+└───────────────┘  ╚═══════════════╝  ╰────────────────╯  ┗━━━━━━━━━━━━━━┛                                              
                                                                                                                         
 Focus State:                                                                                                            
-┌────────┐                                                                                                              
-│ Normal │                                                                                                              
-└────────┘  ┌─────────┐                                                                                                 
-│ Focused │                                                                                                             
-└─────────┘                                                                                                             
+┌────────┐  ┌─────────┐                                                                                                 
+│ Normal │  │ Focused │                                                                                                 
+└────────┘  └─────────┘                                                                                                 
                                                                                                                         
 TuiDivider                                                                                                              
                                                                                                                         
@@ -30,10 +22,18 @@ Double Line:
 TuiButton                                                                                                               
                                                                                                                         
 Button Variants:                                                                                                        
-  Primary    ┌─────────────┐                                                                                            
-│  Secondary  │                                                                                                         
-└─────────────┘    Destructive                                                                                          
+[Primary]  [Secondary]  [Destructive]                                                                                   
                                                                                                                         
 With Shortcuts:                                                                                                         
-  [Enter] Build    ┌────────────────┐                                                                                   
-│  [Esc] Cancel  │                                                                                                      
+[Build]  Enter   [Cancel]  Esc   [Delete]  D                                                                            
+                                                                                                                        
+Focus State:                                                                                                            
+ [Primary]    [Secondary]    [Destructive]                                                                              
+                                                                                                                        
+TuiStatus                                                                                                               
+                                                                                                                        
+Status Badges:                                                                                                          
+ PENDING    RUNNING    SUCCESS    FAILED    ERROR                                                                       
+                                                                                                                        
+Compact Variants:                                                                                                       
+○ PENDING  ● RUNNING  ✓ SUCCESS  ✗ FAILED  ! ERROR                                                                      

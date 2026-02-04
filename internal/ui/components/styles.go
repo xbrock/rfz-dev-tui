@@ -73,6 +73,23 @@ var (
 )
 
 // ============================================================================
+// UNICODE SYMBOLS
+// ============================================================================
+
+const (
+	// Checkbox symbols (charm-style ballot box)
+	SymbolCheckboxUnchecked = "☐" // U+2610 Ballot Box
+	SymbolCheckboxChecked   = "☑" // U+2611 Ballot Box with Check
+
+	// Radio symbols (charm-style circle)
+	SymbolRadioUnselected = "◯" // U+25EF Large Circle
+	SymbolRadioSelected   = "◉" // U+25C9 Fisheye (filled circle)
+
+	// List/navigation symbols
+	SymbolListPointer = "›" // U+203A Single Right-Pointing Angle Quotation Mark
+)
+
+// ============================================================================
 // SPACING CONSTANTS
 // ============================================================================
 
