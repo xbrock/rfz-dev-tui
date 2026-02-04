@@ -89,19 +89,19 @@ Scenario: Radio-Gruppe mit einzelner Option
 
 ### Datei-Prüfungen
 
-- [ ] FILE_EXISTS: internal/ui/components/radio.go
-- [ ] FILE_EXISTS: internal/ui/components/radio_test.go
+- [x] FILE_EXISTS: internal/ui/components/radio.go
+- [x] FILE_EXISTS: internal/ui/components/radio_test.go
 
 ### Inhalt-Prüfungen
 
-- [ ] CONTAINS: radio.go enthält "SymbolRadioUnselected"
-- [ ] CONTAINS: radio.go enthält "SymbolRadioSelected"
+- [x] CONTAINS: radio.go enthält "SymbolRadioUnselected"
+- [x] CONTAINS: radio.go enthält "SymbolRadioSelected"
 
 ### Funktions-Prüfungen
 
-- [ ] BUILD_PASS: go build ./internal/ui/components/...
-- [ ] TEST_PASS: go test ./internal/ui/components/... -run TestRadio -v
-- [ ] LINT_PASS: golangci-lint run ./internal/ui/components/radio.go
+- [x] BUILD_PASS: go build ./internal/ui/components/...
+- [x] TEST_PASS: go test ./internal/ui/components/... -run TestRadio -v
+- [x] LINT_PASS: golangci-lint run ./internal/ui/components/radio.go
 
 ---
 
@@ -113,7 +113,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - Alle DoR-Kriterien erfüllt
+> **Status:** Done - Implementation complete
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -139,18 +139,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten
-- [ ] Security/Performance Anforderungen erfüllt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten
+- [x] Security/Performance Anforderungen erfüllt
 
 #### Qualitätssicherung
-- [ ] Alle Akzeptanzkriterien erfüllt
-- [ ] Unit Tests geschrieben und bestanden
-- [ ] Code Review durchgeführt und genehmigt
+- [x] Alle Akzeptanzkriterien erfüllt
+- [x] Unit Tests geschrieben und bestanden
+- [x] Code Review durchgeführt und genehmigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich
 
 ---
 

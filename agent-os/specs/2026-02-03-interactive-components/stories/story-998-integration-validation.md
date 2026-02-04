@@ -71,19 +71,19 @@ Scenario: Keine zirkulaeren Abhaengigkeiten
 
 ### Funktions-Pruefungen
 
-- [ ] BUILD_PASS: go build ./cmd/rfz/...
-- [ ] BUILD_PASS: go build ./internal/...
-- [ ] TEST_PASS: go test ./... -v
-- [ ] LINT_PASS: golangci-lint run ./...
+- [x] BUILD_PASS: go build ./cmd/rfz/...
+- [x] BUILD_PASS: go build ./internal/...
+- [x] TEST_PASS: go test ./... -v
+- [x] LINT_PASS: golangci-lint run ./...
 
 ### Datei-Pruefungen
 
-- [ ] FILE_EXISTS: internal/ui/components/checkbox.go
-- [ ] FILE_EXISTS: internal/ui/components/radio.go
-- [ ] FILE_EXISTS: internal/ui/components/list.go
-- [ ] FILE_EXISTS: internal/ui/components/textinput.go
-- [ ] FILE_EXISTS: internal/ui/components/spinner.go
-- [ ] FILE_EXISTS: internal/ui/components/progress.go
+- [x] FILE_EXISTS: internal/ui/components/checkbox.go
+- [x] FILE_EXISTS: internal/ui/components/radio.go
+- [x] FILE_EXISTS: internal/ui/components/list.go
+- [x] FILE_EXISTS: internal/ui/components/textinput.go
+- [x] FILE_EXISTS: internal/ui/components/spinner.go
+- [x] FILE_EXISTS: internal/ui/components/progress.go
 
 ---
 
@@ -95,7 +95,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - System Story
+> **Status:** Done - Integration Validation complete
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -121,18 +121,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Alle Builds erfolgreich
-- [ ] Alle Tests bestanden
-- [ ] Gallery zeigt alle Komponenten
+- [x] Alle Builds erfolgreich
+- [x] Alle Tests bestanden
+- [x] Gallery zeigt alle Komponenten
 
 #### Qualitaetssicherung
-- [ ] Keine zirkulaeren Abhaengigkeiten
-- [ ] Keine Lint Errors
-- [ ] Performance ist akzeptabel
+- [x] Keine zirkulaeren Abhaengigkeiten
+- [x] Keine Lint Errors
+- [x] Performance ist akzeptabel
 
 #### Dokumentation
-- [ ] Integration validiert
-- [ ] Keine offenen Blocker
+- [x] Integration validiert
+- [x] Keine offenen Blocker
 
 ---
 

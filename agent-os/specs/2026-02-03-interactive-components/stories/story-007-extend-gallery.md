@@ -122,22 +122,22 @@ Scenario: Durch Gallery scrollen
 
 ### Datei-Prüfungen
 
-- [ ] FILE_EXISTS: internal/ui/components/demo/gallery.go (modified)
+- [x] FILE_EXISTS: internal/ui/components/demo/gallery.go (modified)
 
 ### Inhalt-Prüfungen
 
-- [ ] CONTAINS: gallery.go enthält "renderCheckboxSection"
-- [ ] CONTAINS: gallery.go enthält "renderRadioSection"
-- [ ] CONTAINS: gallery.go enthält "renderListSection"
-- [ ] CONTAINS: gallery.go enthält "renderTextInputSection"
-- [ ] CONTAINS: gallery.go enthält "renderSpinnerSection"
-- [ ] CONTAINS: gallery.go enthält "renderProgressSection"
+- [x] CONTAINS: gallery.go enthält "renderCheckboxSection"
+- [x] CONTAINS: gallery.go enthält "renderRadioSection"
+- [x] CONTAINS: gallery.go enthält "renderListSection"
+- [x] CONTAINS: gallery.go enthält "renderTextInputSection"
+- [x] CONTAINS: gallery.go enthält "renderSpinnerSection"
+- [x] CONTAINS: gallery.go enthält "renderProgressSection"
 
 ### Funktions-Prüfungen
 
-- [ ] BUILD_PASS: go build ./cmd/rfz/...
-- [ ] TEST_PASS: go test ./internal/ui/components/demo/... -v
-- [ ] LINT_PASS: golangci-lint run ./internal/ui/components/demo/...
+- [x] BUILD_PASS: go build ./cmd/rfz/...
+- [x] TEST_PASS: go test ./internal/ui/components/demo/... -v
+- [x] LINT_PASS: golangci-lint run ./internal/ui/components/demo/...
 
 ---
 
@@ -149,7 +149,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - Alle DoR-Kriterien erfüllt
+> **Status:** Done - Implementation complete
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -175,18 +175,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten
-- [ ] Security/Performance Anforderungen erfüllt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten
+- [x] Security/Performance Anforderungen erfüllt
 
 #### Qualitätssicherung
-- [ ] Alle Akzeptanzkriterien erfüllt
-- [ ] Unit Tests geschrieben und bestanden
-- [ ] Code Review durchgeführt und genehmigt
+- [x] Alle Akzeptanzkriterien erfüllt
+- [x] Unit Tests geschrieben und bestanden
+- [x] Code Review durchgeführt und genehmigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich
 
 ---
 

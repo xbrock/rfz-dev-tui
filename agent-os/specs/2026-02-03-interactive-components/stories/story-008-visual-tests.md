@@ -115,22 +115,22 @@ Scenario: Golden Files können aktualisiert werden
 
 ### Datei-Prüfungen
 
-- [ ] FILE_EXISTS: internal/ui/components/checkbox_test.go
-- [ ] FILE_EXISTS: internal/ui/components/radio_test.go
-- [ ] FILE_EXISTS: internal/ui/components/list_test.go
-- [ ] FILE_EXISTS: internal/ui/components/textinput_test.go
-- [ ] FILE_EXISTS: internal/ui/components/spinner_test.go
-- [ ] FILE_EXISTS: internal/ui/components/progress_test.go
+- [x] FILE_EXISTS: internal/ui/components/checkbox_test.go
+- [x] FILE_EXISTS: internal/ui/components/radio_test.go
+- [x] FILE_EXISTS: internal/ui/components/list_test.go
+- [x] FILE_EXISTS: internal/ui/components/textinput_test.go
+- [x] FILE_EXISTS: internal/ui/components/spinner_test.go
+- [x] FILE_EXISTS: internal/ui/components/progress_test.go
 
 ### Inhalt-Prüfungen
 
-- [ ] CONTAINS: checkbox_test.go enthält "golden" oder "Golden"
-- [ ] CONTAINS: radio_test.go enthält "golden" oder "Golden"
+- [x] CONTAINS: checkbox_test.go enthält "golden" oder "Golden"
+- [x] CONTAINS: radio_test.go enthält "golden" oder "Golden"
 
 ### Funktions-Prüfungen
 
-- [ ] TEST_PASS: go test ./internal/ui/components/... -v
-- [ ] TEST_PASS: go test ./internal/ui/components/demo/... -v
+- [x] TEST_PASS: go test ./internal/ui/components/... -v
+- [x] TEST_PASS: go test ./internal/ui/components/demo/... -v
 
 ---
 
@@ -142,7 +142,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - Alle DoR-Kriterien erfüllt
+> **Status:** Done - Implementation complete
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -168,18 +168,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten
-- [ ] Security/Performance Anforderungen erfüllt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten
+- [x] Security/Performance Anforderungen erfüllt
 
 #### Qualitätssicherung
-- [ ] Alle Akzeptanzkriterien erfüllt
-- [ ] Unit Tests geschrieben und bestanden
-- [ ] Code Review durchgeführt und genehmigt
+- [x] Alle Akzeptanzkriterien erfüllt
+- [x] Unit Tests geschrieben und bestanden
+- [x] Code Review durchgeführt und genehmigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich
 
 ---
 

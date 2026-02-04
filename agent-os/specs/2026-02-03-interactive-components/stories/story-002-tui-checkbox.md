@@ -81,19 +81,19 @@ Scenario: Checkbox mit langem Label wird gekürzt
 
 ### Datei-Prüfungen
 
-- [ ] FILE_EXISTS: internal/ui/components/checkbox.go
-- [ ] FILE_EXISTS: internal/ui/components/checkbox_test.go
+- [x] FILE_EXISTS: internal/ui/components/checkbox.go
+- [x] FILE_EXISTS: internal/ui/components/checkbox_test.go
 
 ### Inhalt-Prüfungen
 
-- [ ] CONTAINS: checkbox.go enthält "SymbolCheckboxUnchecked"
-- [ ] CONTAINS: checkbox.go enthält "SymbolCheckboxChecked"
+- [x] CONTAINS: checkbox.go enthält "SymbolCheckboxUnchecked"
+- [x] CONTAINS: checkbox.go enthält "SymbolCheckboxChecked"
 
 ### Funktions-Prüfungen
 
-- [ ] BUILD_PASS: go build ./internal/ui/components/...
-- [ ] TEST_PASS: go test ./internal/ui/components/... -run TestCheckbox -v
-- [ ] LINT_PASS: golangci-lint run ./internal/ui/components/checkbox.go
+- [x] BUILD_PASS: go build ./internal/ui/components/...
+- [x] TEST_PASS: go test ./internal/ui/components/... -run TestCheckbox -v
+- [x] LINT_PASS: golangci-lint run ./internal/ui/components/checkbox.go
 
 ---
 
@@ -105,7 +105,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - Alle DoR-Kriterien erfüllt
+> **Status:** Done - Implementation complete
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -131,18 +131,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten (WIE section)
-- [ ] Security/Performance Anforderungen erfüllt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten (WIE section)
+- [x] Security/Performance Anforderungen erfüllt
 
 #### Qualitätssicherung
-- [ ] Alle Akzeptanzkriterien erfüllt
-- [ ] Unit Tests geschrieben und bestanden
-- [ ] Code Review durchgeführt und genehmigt
+- [x] Alle Akzeptanzkriterien erfüllt
+- [x] Unit Tests geschrieben und bestanden
+- [x] Code Review durchgeführt und genehmigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich
 
 ---
 

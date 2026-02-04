@@ -91,19 +91,19 @@ Scenario: Textfeld mit Zeichenlimit
 
 ### Datei-Prüfungen
 
-- [ ] FILE_EXISTS: internal/ui/components/textinput.go
-- [ ] FILE_EXISTS: internal/ui/components/textinput_test.go
+- [x] FILE_EXISTS: internal/ui/components/textinput.go
+- [x] FILE_EXISTS: internal/ui/components/textinput_test.go
 
 ### Inhalt-Prüfungen
 
-- [ ] CONTAINS: textinput.go enthält "bubbles/textinput"
-- [ ] CONTAINS: textinput.go enthält "ColorCyan"
+- [x] CONTAINS: textinput.go enthält "bubbles/textinput"
+- [x] CONTAINS: textinput.go enthält "ColorCyan"
 
 ### Funktions-Prüfungen
 
-- [ ] BUILD_PASS: go build ./internal/ui/components/...
-- [ ] TEST_PASS: go test ./internal/ui/components/... -run TestTextInput -v
-- [ ] LINT_PASS: golangci-lint run ./internal/ui/components/textinput.go
+- [x] BUILD_PASS: go build ./internal/ui/components/...
+- [x] TEST_PASS: go test ./internal/ui/components/... -run TestTextInput -v
+- [x] LINT_PASS: golangci-lint run ./internal/ui/components/textinput.go
 
 ---
 
@@ -115,7 +115,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - Alle DoR-Kriterien erfüllt
+> **Status:** Done - Implementation complete
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -141,18 +141,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten
-- [ ] Security/Performance Anforderungen erfüllt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten
+- [x] Security/Performance Anforderungen erfüllt
 
 #### Qualitätssicherung
-- [ ] Alle Akzeptanzkriterien erfüllt
-- [ ] Unit Tests geschrieben und bestanden
-- [ ] Code Review durchgeführt und genehmigt
+- [x] Alle Akzeptanzkriterien erfüllt
+- [x] Unit Tests geschrieben und bestanden
+- [x] Code Review durchgeführt und genehmigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich
 
 ---
 

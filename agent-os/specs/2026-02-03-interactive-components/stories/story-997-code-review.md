@@ -74,14 +74,14 @@ Scenario: Code Style ist konsistent
 
 ### Funktions-Pruefungen
 
-- [ ] LINT_PASS: golangci-lint run ./internal/ui/components/...
-- [ ] BUILD_PASS: go build ./internal/ui/components/...
-- [ ] TEST_PASS: go test ./internal/ui/components/... -v
+- [x] LINT_PASS: golangci-lint run ./internal/ui/components/...
+- [x] BUILD_PASS: go build ./internal/ui/components/...
+- [x] TEST_PASS: go test ./internal/ui/components/... -v
 
 ### Inhalt-Pruefungen
 
-- [ ] NOT_CONTAINS: Keine "\x1b[" ANSI escape codes in component files
-- [ ] CONTAINS: All components import "github.com/charmbracelet/lipgloss"
+- [x] NOT_CONTAINS: Keine "\x1b[" ANSI escape codes in component files
+- [x] CONTAINS: All components import "github.com/charmbracelet/lipgloss"
 
 ---
 
@@ -93,7 +93,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - System Story
+> **Status:** Done - Code Review complete
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -119,18 +119,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code Review durchgefuehrt
-- [ ] Alle Review-Kommentare adressiert
-- [ ] Architektur-Konformitaet bestaetigt
+- [x] Code Review durchgefuehrt
+- [x] Alle Review-Kommentare adressiert
+- [x] Architektur-Konformitaet bestaetigt
 
 #### Qualitaetssicherung
-- [ ] Alle Lint Checks bestanden
-- [ ] Alle Tests bestanden
-- [ ] Code Style ist konsistent
+- [x] Alle Lint Checks bestanden
+- [x] Alle Tests bestanden
+- [x] Code Style ist konsistent
 
 #### Dokumentation
-- [ ] Review-Ergebnis dokumentiert
-- [ ] Keine offenen Blocker
+- [x] Review-Ergebnis dokumentiert
+- [x] Keine offenen Blocker
 
 ---
 

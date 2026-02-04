@@ -104,19 +104,19 @@ Scenario: Progress im ASCII-Stil
 
 ### Datei-Prüfungen
 
-- [ ] FILE_EXISTS: internal/ui/components/progress.go
-- [ ] FILE_EXISTS: internal/ui/components/progress_test.go
+- [x] FILE_EXISTS: internal/ui/components/progress.go
+- [x] FILE_EXISTS: internal/ui/components/progress_test.go
 
 ### Inhalt-Prüfungen
 
-- [ ] CONTAINS: progress.go enthält "bubbles/progress"
-- [ ] CONTAINS: progress.go enthält "ColorGreen" oder "ColorYellow"
+- [x] CONTAINS: progress.go enthält "bubbles/progress"
+- [x] CONTAINS: progress.go enthält "ColorGreen" oder "ColorYellow"
 
 ### Funktions-Prüfungen
 
-- [ ] BUILD_PASS: go build ./internal/ui/components/...
-- [ ] TEST_PASS: go test ./internal/ui/components/... -run TestProgress -v
-- [ ] LINT_PASS: golangci-lint run ./internal/ui/components/progress.go
+- [x] BUILD_PASS: go build ./internal/ui/components/...
+- [x] TEST_PASS: go test ./internal/ui/components/... -run TestProgress -v
+- [x] LINT_PASS: golangci-lint run ./internal/ui/components/progress.go
 
 ---
 
@@ -128,7 +128,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** READY - Alle DoR-Kriterien erfüllt
+> **Status:** Done - Implementation complete
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -154,18 +154,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten
-- [ ] Security/Performance Anforderungen erfüllt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten
+- [x] Security/Performance Anforderungen erfüllt
 
 #### Qualitätssicherung
-- [ ] Alle Akzeptanzkriterien erfüllt
-- [ ] Unit Tests geschrieben und bestanden
-- [ ] Code Review durchgeführt und genehmigt
+- [x] Alle Akzeptanzkriterien erfüllt
+- [x] Unit Tests geschrieben und bestanden
+- [x] Code Review durchgeführt und genehmigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich
 
 ---
 
