@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | 2-complete |
+| **Current Phase** | story-complete |
 | **Next Phase** | 3 - Execute Story |
 | **Spec Folder** | agent-os/specs/2026-02-06-layout-navigation |
 | **Worktree Path** | ../rfz-tui-worktrees/layout-navigation |
 | **Git Branch** | feature/layout-navigation |
 | **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | Git worktree created (external location) |
-| **Next Action** | Switch to worktree and execute first story |
+| **Last Action** | Completed LAYOUT-001 - self-review passed |
+| **Next Action** | Execute next story |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 12 |
-| **Completed** | 0 |
+| **Completed** | 1 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 12 |
+| **Backlog** | 11 |
 | **Blocked** | 0 |
 
 ---
@@ -50,7 +50,6 @@ _No blocked stories._
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-001 | TuiNavigation + TuiNavItem Components | Frontend | None | ✅ Ready | 2 |
 | LAYOUT-002 | TuiModal Component | Frontend | None | ✅ Ready | 3 |
 | LAYOUT-003 | TuiKeyHints Component | Frontend | None | ✅ Ready | 1 |
 | LAYOUT-004 | TuiTable Component | Frontend | None | ✅ Ready | 2 |
@@ -98,7 +97,9 @@ _No stories in testing._
 
 <!-- Stories that are complete -->
 
-_No completed stories._
+| Story ID | Title | Type | Dependencies | DoR Status | Points |
+|----------|-------|------|--------------|------------|--------|
+| LAYOUT-001 | TuiNavigation + TuiNavItem Components | Frontend | None | ✅ Ready | 2 |
 
 ---
 
@@ -110,6 +111,8 @@ _No completed stories._
 |-----------|-------|------|-----|-------|
 | 2026-02-06 | - | - | - | Kanban board created |
 | 2026-02-06 | - | Phase 1 | Phase 2 | Git worktree created at ../rfz-tui-worktrees/layout-navigation |
+| 2026-02-06 | LAYOUT-001 | Backlog | In Progress | Started execution |
+| 2026-02-06 | LAYOUT-001 | In Progress | Done | Self-review passed, all tests green |
 
 ---
 
