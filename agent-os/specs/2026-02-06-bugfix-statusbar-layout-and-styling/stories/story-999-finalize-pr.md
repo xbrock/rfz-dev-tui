@@ -1,6 +1,6 @@
 # Story 999: Finalize PR
 
-**Status**: Open
+**Status**: Done
 **Type**: System
 **Points**: 0
 **Dependencies**: Story 998
@@ -12,6 +12,6 @@ System Story: PR finalisieren - Test Scenarios und User Todos erstellen, PR erst
 - [x] System Story - immer bereit wenn Integration Validation abgeschlossen
 
 ## Definition of Done (DoD)
-- [ ] Test Scenarios erstellt
-- [ ] User Todos erstellt
-- [ ] PR erstellt und beschrieben
+- [x] Test Scenarios erstellt
+- [x] User Todos erstellt (none needed - pure code fix)
+- [x] PR erstellt und beschrieben
