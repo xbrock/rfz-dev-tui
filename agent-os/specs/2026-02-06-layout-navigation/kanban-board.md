@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | 3 - Execute Story |
-| **Next Phase** | complete |
+| **Current Phase** | complete |
+| **Next Phase** | - |
 | **Spec Folder** | agent-os/specs/2026-02-06-layout-navigation |
 | **Worktree Path** | ../rfz-tui-worktrees/layout-navigation |
 | **Git Branch** | feature/layout-navigation |
 | **Git Strategy** | worktree |
-| **Current Story** | LAYOUT-999 |
-| **Last Action** | Started LAYOUT-999 - Finalize PR |
-| **Next Action** | Generate test-scenarios, create PR |
+| **Current Story** | None |
+| **Last Action** | PR created - https://github.com/xbrock/rfz-dev-tui/pull/3 |
+| **Next Action** | Spec execution complete |
 
 ---
 
@@ -24,8 +24,8 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 12 |
-| **Completed** | 11 |
-| **In Progress** | 1 |
+| **Completed** | 12 |
+| **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
 | **Backlog** | 0 |
@@ -64,9 +64,7 @@ _No system stories in backlog._
 
 <!-- Stories currently being worked on -->
 
-| Story ID | Title | Type | Dependencies | DoR Status | Points |
-|----------|-------|------|--------------|------------|--------|
-| LAYOUT-999 | Finalize and Create PR | Release | LAYOUT-998 | ✅ Ready | 1 |
+_No stories in progress._
 
 ---
 
@@ -103,6 +101,7 @@ _No stories in testing._
 | LAYOUT-009 | Visual Regression Tests | Test | LAYOUT-001 to LAYOUT-007 | ✅ Ready | 2 |
 | LAYOUT-997 | Code Review by Opus | Review | LAYOUT-001 to LAYOUT-009 | ✅ Ready | 2 |
 | LAYOUT-998 | Integration Validation | Validation | LAYOUT-997 | ✅ Ready | 1 |
+| LAYOUT-999 | Finalize and Create PR | Release | LAYOUT-998 | ✅ Ready | 1 |
 
 ---
 
@@ -137,6 +136,7 @@ _No stories in testing._
 | 2026-02-06 | LAYOUT-998 | Backlog | In Progress | Started Integration Validation |
 | 2026-02-06 | LAYOUT-998 | In Progress | Done | All 4 integration tests passed, 189 tests, 0 lint issues |
 | 2026-02-06 | LAYOUT-999 | Backlog | In Progress | Started Finalize PR execution |
+| 2026-02-06 | LAYOUT-999 | In Progress | Done | PR created: https://github.com/xbrock/rfz-dev-tui/pull/3 |
 
 ---
 

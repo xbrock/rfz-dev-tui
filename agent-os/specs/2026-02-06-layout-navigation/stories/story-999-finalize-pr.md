@@ -68,16 +68,16 @@ Scenario: PR wird mit gh CLI erstellt
 
 ### Pre-PR Checks
 
-- [ ] All integration tests from LAYOUT-998 passing
-- [ ] Code review from LAYOUT-997 approved
-- [ ] No uncommitted changes
+- [x] All integration tests from LAYOUT-998 passing
+- [x] Code review from LAYOUT-997 approved
+- [x] No uncommitted changes
 
 ### PR Content
 
-- [ ] PR title follows convention: "feat(components): Add layout and navigation components"
-- [ ] PR description includes Summary section
-- [ ] PR description includes Test Plan section
-- [ ] PR description includes link to spec
+- [x] PR title follows convention: "feat(components): Add layout and navigation components"
+- [x] PR description includes Summary section
+- [x] PR description includes Test Plan section
+- [x] PR description includes link to spec
 
 ---
 
@@ -89,7 +89,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** Ready
+> **Status:** Done
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -115,15 +115,15 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] PR erstellt mit gh CLI
-- [ ] PR title und description korrekt
+- [x] PR erstellt mit gh CLI
+- [x] PR title und description korrekt
 
 #### Qualitaetssicherung
-- [ ] Test scenarios dokumentiert
-- [ ] User TODOs dokumentiert
+- [x] Test scenarios dokumentiert
+- [x] User TODOs dokumentiert
 
 #### Dokumentation
-- [ ] PR URL dokumentiert
+- [x] PR URL dokumentiert: https://github.com/xbrock/rfz-dev-tui/pull/3
 - [ ] Spec als "Merged" markiert (nach Merge)
 
 ---
