@@ -13,6 +13,7 @@
 | LAYOUT-001 | TuiNavigation sidebar + TuiNavItem menu items | `navigation.go`, `navigation_test.go`, 12 golden files |
 | LAYOUT-002 | TuiModal overlay dialog with double border | `modal.go`, `modal_test.go`, 10 golden files |
 | LAYOUT-003 | TuiKeyHints keyboard shortcut display | `keyhints.go`, `keyhints_test.go`, 6 golden files |
+| LAYOUT-004 | TuiTable wrapper around bubbles/table | `table.go`, `table_test.go`, 7 golden files |
 
 ---
 
@@ -24,6 +25,9 @@
 - `internal/ui/components/navigation.go` → `TuiNavigation(items, cursorIndex, activeIndex, focused, header, footer, width)` - Renders full sidebar navigation
 - `internal/ui/components/modal.go` → `TuiModal(config, termWidth, termHeight)` - Renders centered overlay dialog with double border and backdrop
 - `internal/ui/components/keyhints.go` → `TuiKeyHints(hints, width)` - Renders horizontal keyboard hints with middle-dot separators
+- `internal/ui/components/table.go` → `NewTuiTable(cfg TuiTableConfig) table.Model` - Creates RFZ-styled bubbles/table
+- `internal/ui/components/table.go` → `TuiTableStyles() table.Styles` - Returns pre-configured RFZ table styles
+- `internal/ui/components/table.go` → `TuiTableEmpty(columns, width)` - Renders empty table with "No data" message
 
 ### Services
 <!-- New service classes/modules -->
@@ -40,6 +44,7 @@ _None yet_
 - `internal/ui/components/modal.go` → `TuiModalButton{Label, Variant, Shortcut}` - Modal footer button
 - `internal/ui/components/keyhints.go` → `KeyHint{Key, Label}` - Single keyboard hint struct
 - `internal/ui/components/keyhints.go` → `SymbolKeySeparator` - Middle dot separator constant
+- `internal/ui/components/table.go` → `TuiTableConfig{Columns, Rows, Width, Height, Focused, ZebraStripe}` - Table configuration struct
 
 ---
 
@@ -60,6 +65,10 @@ _None yet_
 - `SymbolKeySeparator` ("·") used between hints with `ColorTextMuted` styling
 - Keys rendered in `ColorCyan` + Bold, labels in `ColorTextSecondary`
 - Width parameter enables adaptive truncation (omits hints that don't fit)
+- TuiTable wraps `bubbles/table` with RFZ styling (different pattern: returns `table.Model` for Bubble Tea lifecycle)
+- `NewTuiTable` is a factory function returning `table.Model`, not a stateless render function
+- `TuiTableEmpty` is a stateless render for the empty-table case with headers + "No data" message
+- Header: bold `ColorTextSecondary` with bottom border, Cell: `ColorTextPrimary`, Selected: bold `ColorSecondary` bg
 
 ---
 
@@ -77,3 +86,6 @@ _None yet_
 | `internal/ui/components/keyhints.go` | Created | LAYOUT-003 |
 | `internal/ui/components/keyhints_test.go` | Created | LAYOUT-003 |
 | `internal/ui/components/testdata/TestKeyHints_*.golden` (6 files) | Created | LAYOUT-003 |
+| `internal/ui/components/table.go` | Created | LAYOUT-004 |
+| `internal/ui/components/table_test.go` | Created | LAYOUT-004 |
+| `internal/ui/components/testdata/TestTable_*.golden` (7 files) | Created | LAYOUT-004 |

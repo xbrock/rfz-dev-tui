@@ -1,0 +1,7 @@
+ Name                  Type        Status     
+──────────────────────────────────────────────
+  rfz-core              Core        Running     
+ rfz-api               Plugin      Stopped      
+ rfz-web               Plugin      Running      
+                                                
+                                                
