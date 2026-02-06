@@ -14,8 +14,8 @@
 | **Git Branch** | feature/layout-navigation |
 | **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | Completed LAYOUT-008 - self-review passed |
-| **Next Action** | Execute next story |
+| **Last Action** | Completed LAYOUT-009 - self-review passed |
+| **Next Action** | Execute next story (LAYOUT-997 System Story) |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 12 |
-| **Completed** | 8 |
+| **Completed** | 9 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 4 |
+| **Backlog** | 3 |
 | **Blocked** | 0 |
 
 ---
@@ -50,7 +50,7 @@ _No blocked stories._
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-009 | Visual Regression Tests | Test | LAYOUT-001 to LAYOUT-007 | ✅ Ready | 2 |
+_No regular stories in backlog._
 
 ### System Stories
 
@@ -100,6 +100,7 @@ _No stories in testing._
 | LAYOUT-006 | TuiTabs Component | Frontend | None | ✅ Ready | 2 |
 | LAYOUT-007 | TuiStatusBar Component | Frontend | LAYOUT-003 | ✅ Ready | 2 |
 | LAYOUT-008 | Layout Navigation Demo | Frontend | LAYOUT-001 to LAYOUT-007 | ✅ Ready | 2 |
+| LAYOUT-009 | Visual Regression Tests | Test | LAYOUT-001 to LAYOUT-007 | ✅ Ready | 2 |
 
 ---
 
@@ -127,6 +128,8 @@ _No stories in testing._
 | 2026-02-06 | LAYOUT-007 | In Progress | Done | Self-review passed, all tests green |
 | 2026-02-06 | LAYOUT-008 | Backlog | In Progress | Started execution |
 | 2026-02-06 | LAYOUT-008 | In Progress | Done | Self-review passed, all tests green |
+| 2026-02-06 | LAYOUT-009 | Backlog | In Progress | Started execution |
+| 2026-02-06 | LAYOUT-009 | In Progress | Done | Self-review passed, all tests green, 162 golden files |
 
 ---
 

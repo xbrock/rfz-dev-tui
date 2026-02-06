@@ -18,6 +18,7 @@
 | LAYOUT-006 | TuiTabs horizontal tab bar with shortcuts/badges | `tabs.go`, `tabs_test.go`, `styles.go` updated, 10 golden files |
 | LAYOUT-007 | TuiStatusBar full-width bottom bar with 3 sections | `statusbar.go`, `statusbar_test.go`, 9 golden files |
 | LAYOUT-008 | Interactive layout demo with all 7 components | `demo/layout_gallery.go`, `cmd/layout-demo/main.go` |
+| LAYOUT-009 | Visual regression tests - ZebraStripe golden test added | `table_test.go` updated, 1 new golden file |
 
 ---
 
@@ -143,3 +144,5 @@ _None yet_
 | `internal/ui/components/testdata/TestStatusBar_*.golden` (9 files) | Created | LAYOUT-007 |
 | `internal/ui/components/demo/layout_gallery.go` | Created | LAYOUT-008 |
 | `cmd/layout-demo/main.go` | Created | LAYOUT-008 |
+| `internal/ui/components/table_test.go` | Modified | LAYOUT-009 |
+| `internal/ui/components/testdata/TestTable_ZebraStripe.golden` | Created | LAYOUT-009 |

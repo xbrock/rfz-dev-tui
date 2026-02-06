@@ -148,17 +148,17 @@ Scenario: Tests mit kanonischer Terminal-Größe
 
 ### Datei-Prüfungen
 
-- [ ] FILE_EXISTS: internal/ui/components/navigation_test.go (Golden Tests)
-- [ ] FILE_EXISTS: internal/ui/components/modal_test.go (Golden Tests)
-- [ ] FILE_EXISTS: internal/ui/components/table_test.go (Golden Tests)
-- [ ] FILE_EXISTS: internal/ui/components/tree_test.go (Golden Tests)
-- [ ] FILE_EXISTS: internal/ui/components/tabs_test.go (Golden Tests)
-- [ ] FILE_EXISTS: internal/ui/components/statusbar_test.go (Golden Tests)
-- [ ] FILE_EXISTS: internal/ui/components/keyhints_test.go (Golden Tests)
+- [x] FILE_EXISTS: internal/ui/components/navigation_test.go (Golden Tests)
+- [x] FILE_EXISTS: internal/ui/components/modal_test.go (Golden Tests)
+- [x] FILE_EXISTS: internal/ui/components/table_test.go (Golden Tests)
+- [x] FILE_EXISTS: internal/ui/components/tree_test.go (Golden Tests)
+- [x] FILE_EXISTS: internal/ui/components/tabs_test.go (Golden Tests)
+- [x] FILE_EXISTS: internal/ui/components/statusbar_test.go (Golden Tests)
+- [x] FILE_EXISTS: internal/ui/components/keyhints_test.go (Golden Tests)
 
 ### Funktions-Prüfungen
 
-- [ ] TEST_PASS: go test ./internal/ui/components/... -v
+- [x] TEST_PASS: go test ./internal/ui/components/... -v
 
 ---
 
@@ -170,7 +170,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** Ready
+> **Status:** Done
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -196,18 +196,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten
-- [ ] Security/Performance Anforderungen erfüllt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten
+- [x] Security/Performance Anforderungen erfüllt
 
 #### Qualitätssicherung
-- [ ] Alle Akzeptanzkriterien erfüllt
-- [ ] All golden file tests passing
-- [ ] Code Review durchgeführt und genehmigt
+- [x] Alle Akzeptanzkriterien erfüllt
+- [x] All golden file tests passing
+- [x] Code Review durchgeführt und genehmigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich
 
 ---
 

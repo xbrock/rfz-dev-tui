@@ -107,6 +107,18 @@ func TestTable_LongValues(t *testing.T) {
 	golden.RequireEqual(t, []byte(output))
 }
 
+func TestTable_ZebraStripe(t *testing.T) {
+	tbl := components.NewTuiTable(components.TuiTableConfig{
+		Columns:     sampleColumns(),
+		Rows:        sampleRows(),
+		Height:      5,
+		Focused:     true,
+		ZebraStripe: true,
+	})
+	output := tbl.View()
+	golden.RequireEqual(t, []byte(output))
+}
+
 func TestTable_Styles(t *testing.T) {
 	styles := components.TuiTableStyles()
 	// Verify styles are not zero values by rendering through them
