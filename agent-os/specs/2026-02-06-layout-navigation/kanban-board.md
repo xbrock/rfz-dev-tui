@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | story-complete |
-| **Next Phase** | 3 - Execute Story |
+| **Current Phase** | 3 - Execute Story |
+| **Next Phase** | complete |
 | **Spec Folder** | agent-os/specs/2026-02-06-layout-navigation |
 | **Worktree Path** | ../rfz-tui-worktrees/layout-navigation |
 | **Git Branch** | feature/layout-navigation |
 | **Git Strategy** | worktree |
-| **Current Story** | None |
-| **Last Action** | Completed LAYOUT-998 - Integration Validation passed |
-| **Next Action** | Execute next story (LAYOUT-999 Finalize PR) |
+| **Current Story** | LAYOUT-999 |
+| **Last Action** | Started LAYOUT-999 - Finalize PR |
+| **Next Action** | Generate test-scenarios, create PR |
 
 ---
 
@@ -25,10 +25,10 @@
 |--------|-------|
 | **Total Stories** | 12 |
 | **Completed** | 11 |
-| **In Progress** | 0 |
+| **In Progress** | 1 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 1 |
+| **Backlog** | 0 |
 | **Blocked** | 0 |
 
 ---
@@ -56,7 +56,7 @@ _No regular stories in backlog._
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-999 | Finalize and Create PR | Release | LAYOUT-998 | ✅ Ready | 1 |
+_No system stories in backlog._
 
 ---
 
@@ -64,7 +64,9 @@ _No regular stories in backlog._
 
 <!-- Stories currently being worked on -->
 
-_No stories in progress._
+| Story ID | Title | Type | Dependencies | DoR Status | Points |
+|----------|-------|------|--------------|------------|--------|
+| LAYOUT-999 | Finalize and Create PR | Release | LAYOUT-998 | ✅ Ready | 1 |
 
 ---
 
@@ -134,6 +136,7 @@ _No stories in testing._
 | 2026-02-06 | LAYOUT-997 | In Progress | Done | Code Review passed, 0 critical/major issues, review report created |
 | 2026-02-06 | LAYOUT-998 | Backlog | In Progress | Started Integration Validation |
 | 2026-02-06 | LAYOUT-998 | In Progress | Done | All 4 integration tests passed, 189 tests, 0 lint issues |
+| 2026-02-06 | LAYOUT-999 | Backlog | In Progress | Started Finalize PR execution |
 
 ---
 
