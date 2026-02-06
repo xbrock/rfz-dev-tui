@@ -87,6 +87,10 @@ const (
 
 	// List/navigation symbols
 	SymbolListPointer = "›" // U+203A Single Right-Pointing Angle Quotation Mark
+
+	// Tree expand/collapse symbols
+	SymbolExpanded  = "▼" // U+25BC Black Down-Pointing Triangle
+	SymbolCollapsed = "▶" // U+25B6 Black Right-Pointing Triangle
 )
 
 // ============================================================================
@@ -218,6 +222,29 @@ var (
 		Bold(true).
 		PaddingLeft(2).
 		PaddingRight(2)
+)
+
+// ============================================================================
+// TAB STYLES
+// ============================================================================
+
+var (
+	// StyleTabNormal is for inactive, unfocused tabs
+	StyleTabNormal = lipgloss.NewStyle().
+		Foreground(ColorTextSecondary)
+
+	// StyleTabActive is for the currently active/selected tab
+	StyleTabActive = lipgloss.NewStyle().
+		Foreground(ColorTextPrimary).
+		Background(ColorSecondary).
+		Bold(true).
+		Padding(0, 1)
+
+	// StyleTabFocused is for the keyboard-focused tab (distinct from active)
+	StyleTabFocused = lipgloss.NewStyle().
+		Foreground(ColorCyan).
+		Bold(true).
+		Underline(true)
 )
 
 // ============================================================================

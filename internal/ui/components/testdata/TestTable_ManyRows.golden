@@ -1,0 +1,7 @@
+ Name                  Type        Status     
+──────────────────────────────────────────────
+  component-01          Core        Running     
+ component-02          Plugin      Stopped      
+ component-03          Core        Running      
+ component-04          Plugin      Error        
+ component-05          Core        Running      

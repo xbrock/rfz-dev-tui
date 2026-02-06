@@ -1,0 +1,3 @@
+    boss clean
+    worker-1 building
+    worker-2 idle
