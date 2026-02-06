@@ -14,7 +14,7 @@
 | **Git Branch** | feature/layout-navigation |
 | **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | Completed LAYOUT-001 - self-review passed |
+| **Last Action** | Completed LAYOUT-002 - self-review passed |
 | **Next Action** | Execute next story |
 
 ---
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 12 |
-| **Completed** | 1 |
+| **Completed** | 2 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 11 |
+| **Backlog** | 10 |
 | **Blocked** | 0 |
 
 ---
@@ -50,7 +50,6 @@ _No blocked stories._
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-002 | TuiModal Component | Frontend | None | ✅ Ready | 3 |
 | LAYOUT-003 | TuiKeyHints Component | Frontend | None | ✅ Ready | 1 |
 | LAYOUT-004 | TuiTable Component | Frontend | None | ✅ Ready | 2 |
 | LAYOUT-005 | TuiTree Component | Frontend | None | ✅ Ready | 3 |
@@ -100,6 +99,7 @@ _No stories in testing._
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
 | LAYOUT-001 | TuiNavigation + TuiNavItem Components | Frontend | None | ✅ Ready | 2 |
+| LAYOUT-002 | TuiModal Component | Frontend | None | ✅ Ready | 3 |
 
 ---
 
@@ -113,6 +113,8 @@ _No stories in testing._
 | 2026-02-06 | - | Phase 1 | Phase 2 | Git worktree created at ../rfz-tui-worktrees/layout-navigation |
 | 2026-02-06 | LAYOUT-001 | Backlog | In Progress | Started execution |
 | 2026-02-06 | LAYOUT-001 | In Progress | Done | Self-review passed, all tests green |
+| 2026-02-06 | LAYOUT-002 | Backlog | In Progress | Started execution |
+| 2026-02-06 | LAYOUT-002 | In Progress | Done | Self-review passed, all tests green |
 
 ---
 
