@@ -12,6 +12,7 @@
 |-------|---------|-------------|
 | LAYOUT-001 | TuiNavigation sidebar + TuiNavItem menu items | `navigation.go`, `navigation_test.go`, 12 golden files |
 | LAYOUT-002 | TuiModal overlay dialog with double border | `modal.go`, `modal_test.go`, 10 golden files |
+| LAYOUT-003 | TuiKeyHints keyboard shortcut display | `keyhints.go`, `keyhints_test.go`, 6 golden files |
 
 ---
 
@@ -22,6 +23,7 @@
 - `internal/ui/components/navigation.go` → `TuiNavItemRender(item, cursor, active, focused, width)` - Renders single nav item
 - `internal/ui/components/navigation.go` → `TuiNavigation(items, cursorIndex, activeIndex, focused, header, footer, width)` - Renders full sidebar navigation
 - `internal/ui/components/modal.go` → `TuiModal(config, termWidth, termHeight)` - Renders centered overlay dialog with double border and backdrop
+- `internal/ui/components/keyhints.go` → `TuiKeyHints(hints, width)` - Renders horizontal keyboard hints with middle-dot separators
 
 ### Services
 <!-- New service classes/modules -->
@@ -36,6 +38,8 @@ _None yet_
 - `internal/ui/components/navigation.go` → `TuiNavItem{Label, Number, Shortcut}` - Navigation menu item struct
 - `internal/ui/components/modal.go` → `TuiModalConfig{Title, Content, Buttons, Width, Height, FocusedIndex}` - Modal configuration
 - `internal/ui/components/modal.go` → `TuiModalButton{Label, Variant, Shortcut}` - Modal footer button
+- `internal/ui/components/keyhints.go` → `KeyHint{Key, Label}` - Single keyboard hint struct
+- `internal/ui/components/keyhints.go` → `SymbolKeySeparator` - Middle dot separator constant
 
 ---
 
@@ -52,6 +56,10 @@ _None yet_
 - `BorderDouble` + `ColorCyan` border for modal frame
 - `lipgloss.Place()` with `ColorBackground` whitespace for backdrop centering
 - `FocusedIndex` in config controls which button appears focused (for Tab cycling)
+- KeyHints uses pure Lipgloss stateless render function (same pattern as navigation/modal)
+- `SymbolKeySeparator` ("·") used between hints with `ColorTextMuted` styling
+- Keys rendered in `ColorCyan` + Bold, labels in `ColorTextSecondary`
+- Width parameter enables adaptive truncation (omits hints that don't fit)
 
 ---
 
@@ -66,3 +74,6 @@ _None yet_
 | `internal/ui/components/modal.go` | Created | LAYOUT-002 |
 | `internal/ui/components/modal_test.go` | Created | LAYOUT-002 |
 | `internal/ui/components/testdata/TestModal_*.golden` (10 files) | Created | LAYOUT-002 |
+| `internal/ui/components/keyhints.go` | Created | LAYOUT-003 |
+| `internal/ui/components/keyhints_test.go` | Created | LAYOUT-003 |
+| `internal/ui/components/testdata/TestKeyHints_*.golden` (6 files) | Created | LAYOUT-003 |
