@@ -96,7 +96,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** Ready
+> **Status:** Done
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -122,18 +122,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Alle Integration Tests erfolgreich
-- [ ] Validierungsbericht erstellt
+- [x] Alle Integration Tests erfolgreich
+- [x] Validierungsbericht erstellt
 
 #### Qualitaetssicherung
-- [ ] Alle Akzeptanzkriterien erfuellt
-- [ ] Build erfolgreich
-- [ ] Tests erfolgreich
-- [ ] Lint erfolgreich
+- [x] Alle Akzeptanzkriterien erfuellt
+- [x] Build erfolgreich
+- [x] Tests erfolgreich
+- [x] Lint erfolgreich
 
 #### Dokumentation
-- [ ] Testergebnisse dokumentiert
-- [ ] Keine offenen Failures
+- [x] Testergebnisse dokumentiert
+- [x] Keine offenen Failures
 
 ---
 
