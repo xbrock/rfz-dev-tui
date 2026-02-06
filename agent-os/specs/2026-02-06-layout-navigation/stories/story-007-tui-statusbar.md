@@ -134,7 +134,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** Ready
+> **Status:** Done
 
 ### DoR (Definition of Ready) - Vom Architect
 

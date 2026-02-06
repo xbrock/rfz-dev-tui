@@ -16,6 +16,7 @@
 | LAYOUT-004 | TuiTable wrapper around bubbles/table | `table.go`, `table_test.go`, 7 golden files |
 | LAYOUT-005 | TuiTree hierarchical view with expand/collapse | `tree.go`, `tree_test.go`, `styles.go` updated, 11 golden files |
 | LAYOUT-006 | TuiTabs horizontal tab bar with shortcuts/badges | `tabs.go`, `tabs_test.go`, `styles.go` updated, 10 golden files |
+| LAYOUT-007 | TuiStatusBar full-width bottom bar with 3 sections | `statusbar.go`, `statusbar_test.go`, 9 golden files |
 
 ---
 
@@ -34,6 +35,7 @@
 - `internal/ui/components/tree.go` → `TuiTreeItem(node, depth, cursor, focused)` - Renders single tree node line
 - `internal/ui/components/tree.go` → `VisibleNodeCount(nodes)` - Returns count of visible nodes for cursor bounds
 - `internal/ui/components/tabs.go` → `TuiTabs(tabs, focusedIndex, width)` - Renders horizontal tab bar with numeric shortcuts
+- `internal/ui/components/statusbar.go` → `TuiStatusBar(cfg TuiStatusBarConfig)` - Renders full-width bottom status bar with left/center/right sections
 
 ### Services
 <!-- New service classes/modules -->
@@ -56,6 +58,7 @@ _None yet_
 - `internal/ui/components/tabs.go` → `TuiTab{Label, Badge, Active}` - Tab item struct
 - `internal/ui/components/tabs.go` → `SymbolTabSeparator` - Pipe separator constant
 - `internal/ui/components/styles.go` → `StyleTabActive`, `StyleTabFocused`, `StyleTabNormal` - Tab state styles
+- `internal/ui/components/statusbar.go` → `TuiStatusBarConfig{Status, StatusColor, Info, Hints, Width}` - StatusBar configuration struct
 
 ---
 
@@ -93,6 +96,14 @@ _None yet_
 - Numeric shortcuts `1:` through `9:` for first 9 tabs; tabs 10+ have no prefix
 - Badge format: `Label (N)` in `ColorTextMuted`
 - Width parameter omits tabs that don't fit (same adaptive pattern as keyhints)
+- TuiStatusBar uses pure Lipgloss stateless render function with config struct pattern
+- Three-column layout: left (status), center (info), right (TuiKeyHints composition)
+- Uses `StyleFooter` as base style with `ColorCard` background
+- `StatusColor` field controls left section color (e.g., `ColorGreen`, `ColorYellow`, `ColorDestructive`)
+- Accounts for `StyleFooter` horizontal padding (2 chars) in inner width calculation
+- Right section prioritized: hints get up to half the width, then remaining split between left/center
+- `Truncate()` applied to status text and info text when space is limited
+- Integrates `TuiKeyHints()` directly for right section rendering
 
 ---
 
@@ -121,3 +132,6 @@ _None yet_
 | `internal/ui/components/tabs_test.go` | Created | LAYOUT-006 |
 | `internal/ui/components/styles.go` | Modified | LAYOUT-006 |
 | `internal/ui/components/testdata/TestTabs_*.golden` (10 files) | Created | LAYOUT-006 |
+| `internal/ui/components/statusbar.go` | Created | LAYOUT-007 |
+| `internal/ui/components/statusbar_test.go` | Created | LAYOUT-007 |
+| `internal/ui/components/testdata/TestStatusBar_*.golden` (9 files) | Created | LAYOUT-007 |
