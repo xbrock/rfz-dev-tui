@@ -10,12 +10,12 @@
 | **Current Phase** | complete |
 | **Next Phase** | - |
 | **Spec Folder** | agent-os/specs/2026-02-06-layout-navigation |
-| **Worktree Path** | ../rfz-tui-worktrees/layout-navigation |
-| **Git Branch** | feature/layout-navigation |
+| **Worktree Path** | (cleaned up) |
+| **Git Branch** | (merged & deleted) |
 | **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | PR created - https://github.com/xbrock/rfz-dev-tui/pull/3 |
-| **Next Action** | Spec execution complete |
+| **Last Action** | Post-merge cleanup: worktree removed, branch deleted, master updated |
+| **Next Action** | - |
 
 ---
 
@@ -137,6 +137,7 @@ _No stories in testing._
 | 2026-02-06 | LAYOUT-998 | In Progress | Done | All 4 integration tests passed, 189 tests, 0 lint issues |
 | 2026-02-06 | LAYOUT-999 | Backlog | In Progress | Started Finalize PR execution |
 | 2026-02-06 | LAYOUT-999 | In Progress | Done | PR created: https://github.com/xbrock/rfz-dev-tui/pull/3 |
+| 2026-02-06 | - | - | - | Post-merge cleanup: worktree removed, branch deleted, master updated |
 
 ---
 

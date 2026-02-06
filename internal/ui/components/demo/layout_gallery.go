@@ -482,17 +482,17 @@ func (m LayoutGallery) renderStatusBar() string {
 	hints := []components.KeyHint{
 		{Key: "Tab", Label: "Section"},
 		{Key: "m", Label: "Modal"},
-		{Key: "q", Label: "Quit"},
 	}
 
 	sectionNames := [sectionCount]string{"Navigation", "Tree", "Tabs", "Table"}
 
 	return components.TuiStatusBar(components.TuiStatusBarConfig{
-		Status:      "Layout Demo",
-		StatusColor: components.ColorGreen,
-		Info:        sectionNames[m.activeSection],
-		Hints:       hints,
-		Width:       m.width,
+		ModeBadge:      "DEMO",
+		ModeBadgeColor: components.ColorGreen,
+		ContextBadge:   sectionNames[m.activeSection],
+		Hints:          hints,
+		QuitHint:       &components.KeyHint{Key: "q", Label: "Quit"},
+		Width:          m.width,
 	})
 }
 

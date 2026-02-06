@@ -376,6 +376,28 @@ var (
 			Padding(0, 1)
 )
 
+// FooterItem renders a key+label footer item with styled key and muted label.
+func FooterItem(key string, label string) string {
+	keyStyle := lipgloss.NewStyle().
+		Foreground(ColorCyan).
+		Bold(true)
+
+	labelStyle := lipgloss.NewStyle().
+		Foreground(ColorTextSecondary)
+
+	return keyStyle.Render(key) + " " + labelStyle.Render(label)
+}
+
+// FooterItemActive renders an active/current footer badge as a colored pill.
+func FooterItemActive(label string) string {
+	return lipgloss.NewStyle().
+		Background(ColorCyan).
+		Foreground(ColorBackground).
+		Bold(true).
+		Padding(0, 1).
+		Render(label)
+}
+
 // ============================================================================
 // CONTENT STYLES
 // ============================================================================
