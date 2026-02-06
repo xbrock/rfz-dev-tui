@@ -1,6 +1,6 @@
 # Story 002: Update Regression Tests for StatusBar and KeyHints
 
-**Status**: Open
+**Status**: Done
 **Type**: Test
 **Points**: 3
 **Dependencies**: Story 001
@@ -43,8 +43,8 @@ Die bestehenden Golden-Tests für TuiStatusBar (8 Tests) und TuiKeyHints (6 Test
 - [ ] Test-Strategie festgelegt (golden testing mit charmbracelet/x/exp/golden)
 
 ## Definition of Done (DoD)
-- [ ] Alle bestehenden Tests aktualisiert
-- [ ] Neue Badge-Tests implementiert
-- [ ] Alle Tests bestehen mit Fix
-- [ ] Golden files regeneriert und verifiziert
-- [ ] `go test ./internal/ui/components/...` erfolgreich
+- [x] Alle bestehenden Tests aktualisiert
+- [x] Neue Badge-Tests implementiert
+- [x] Alle Tests bestehen mit Fix
+- [x] Golden files regeneriert und verifiziert
+- [x] `go test ./internal/ui/components/...` erfolgreich

@@ -1,6 +1,7 @@
 package components_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/charmbracelet/x/exp/golden"
@@ -61,5 +62,21 @@ func TestKeyHints_TwoItems(t *testing.T) {
 		{Key: "Enter", Label: "Select"},
 	}
 	output := components.TuiKeyHints(hints, 0)
+	golden.RequireEqual(t, []byte(output))
+}
+
+func TestKeyHints_NoDotSeparator(t *testing.T) {
+	hints := []components.KeyHint{
+		{Key: "Enter", Label: "Select"},
+		{Key: "Esc", Label: "Cancel"},
+		{Key: "q", Label: "Quit"},
+	}
+	output := components.TuiKeyHints(hints, 0)
+	if strings.Contains(output, "·") {
+		t.Error("expected no middle-dot separator, but found '·' in output")
+	}
+	if strings.Contains(output, " · ") {
+		t.Error("expected no dot separator, but found ' · ' in output")
+	}
 	golden.RequireEqual(t, []byte(output))
 }

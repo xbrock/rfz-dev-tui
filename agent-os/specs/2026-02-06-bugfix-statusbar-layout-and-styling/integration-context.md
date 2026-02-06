@@ -11,6 +11,7 @@
 | Story | Summary | Key Changes |
 |-------|---------|-------------|
 | Story-001 | Redesigned TuiStatusBar with badge-based layout | New config struct, FooterItem/FooterItemActive functions, separator change |
+| Story-002 | Added regression tests for badges, colors, FooterItem, separator | 7 new golden tests, NoDotSeparator assertion |
 
 ---
 
@@ -40,6 +41,8 @@ _None yet_
 - Golden test files regenerated for both StatusBar and KeyHints tests
 - Old stale golden files cleaned up (CenterInfo, LeftStatus, LongStatusTruncation, Separator)
 - Tests renamed to match new config structure (ModeBadgeOnly, ContextBadgeOnly, BadgesAndHints, LongBadgeTruncation)
+- Story-002: Total StatusBar tests now 14 (was 9), KeyHints tests now 7 (was 6), plus 2 FooterItem tests
+- Story-002: Explicit NoDotSeparator assertion ensures no regression on separator change
 
 ---
 
@@ -54,3 +57,12 @@ _None yet_
 | internal/ui/components/statusbar_test.go | Modified | Story-001 |
 | internal/ui/components/testdata/TestStatusBar_*.golden | Regenerated | Story-001 |
 | internal/ui/components/testdata/TestKeyHints_*.golden | Regenerated | Story-001 |
+| internal/ui/components/statusbar_test.go | Modified | Story-002 |
+| internal/ui/components/keyhints_test.go | Modified | Story-002 |
+| internal/ui/components/testdata/TestStatusBar_BadgeColors.golden | Created | Story-002 |
+| internal/ui/components/testdata/TestStatusBar_ContextBadgeCustomColor.golden | Created | Story-002 |
+| internal/ui/components/testdata/TestStatusBar_QuitHintOnly.golden | Created | Story-002 |
+| internal/ui/components/testdata/TestStatusBar_DefaultModeBadgeColor.golden | Created | Story-002 |
+| internal/ui/components/testdata/TestFooterItem.golden | Created | Story-002 |
+| internal/ui/components/testdata/TestFooterItemActive.golden | Created | Story-002 |
+| internal/ui/components/testdata/TestKeyHints_NoDotSeparator.golden | Created | Story-002 |

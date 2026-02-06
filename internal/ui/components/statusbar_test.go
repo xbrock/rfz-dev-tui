@@ -115,3 +115,54 @@ func TestStatusBar_ZeroWidth(t *testing.T) {
 	output := components.TuiStatusBar(cfg)
 	golden.RequireEqual(t, []byte(output))
 }
+
+func TestStatusBar_BadgeColors(t *testing.T) {
+	cfg := components.TuiStatusBarConfig{
+		ModeBadge:      "ERROR",
+		ModeBadgeColor: components.ColorDestructive,
+		ContextBadge:   "Build Failed",
+		Width:          80,
+	}
+	output := components.TuiStatusBar(cfg)
+	golden.RequireEqual(t, []byte(output))
+}
+
+func TestStatusBar_ContextBadgeCustomColor(t *testing.T) {
+	cfg := components.TuiStatusBarConfig{
+		ModeBadge:         "LOGS",
+		ModeBadgeColor:    components.ColorGreen,
+		ContextBadge:      "rfz-core",
+		ContextBadgeColor: components.ColorCyan,
+		Width:             80,
+	}
+	output := components.TuiStatusBar(cfg)
+	golden.RequireEqual(t, []byte(output))
+}
+
+func TestStatusBar_QuitHintOnly(t *testing.T) {
+	cfg := components.TuiStatusBarConfig{
+		QuitHint: &components.KeyHint{Key: "q", Label: "Quit"},
+		Width:    80,
+	}
+	output := components.TuiStatusBar(cfg)
+	golden.RequireEqual(t, []byte(output))
+}
+
+func TestStatusBar_DefaultModeBadgeColor(t *testing.T) {
+	cfg := components.TuiStatusBarConfig{
+		ModeBadge: "SELECT",
+		Width:     80,
+	}
+	output := components.TuiStatusBar(cfg)
+	golden.RequireEqual(t, []byte(output))
+}
+
+func TestFooterItem(t *testing.T) {
+	output := components.FooterItem("Enter", "Select")
+	golden.RequireEqual(t, []byte(output))
+}
+
+func TestFooterItemActive(t *testing.T) {
+	output := components.FooterItemActive("Build")
+	golden.RequireEqual(t, []byte(output))
+}

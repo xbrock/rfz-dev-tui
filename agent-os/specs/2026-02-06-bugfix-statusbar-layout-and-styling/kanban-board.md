@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | story-complete |
-| **Next Phase** | 3 - Execute Story |
+| **Current Phase** | all-stories-done |
+| **Next Phase** | 3 - Execute System Stories |
 | **Spec Folder** | agent-os/specs/2026-02-06-bugfix-statusbar-layout-and-styling |
 | **Worktree Path** | (none) |
 | **Git Branch** | bugfix/statusbar-layout-and-styling |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Completed Story-001 - self-review passed |
-| **Next Action** | Execute next story |
+| **Last Action** | Completed Story-002 - self-review passed |
+| **Next Action** | Execute system stories |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 5 |
-| **Completed** | 1 |
+| **Completed** | 2 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 1 |
+| **Backlog** | 0 |
 | **Blocked** | 0 |
 
 ---
@@ -45,9 +45,7 @@ _None_
 
 <!-- Stories that have not started yet (with complete DoR) -->
 
-| Story ID | Title | Type | Dependencies | DoR Status | Points |
-|----------|-------|------|--------------|------------|--------|
-| Story-002 | Update Regression Tests for StatusBar and KeyHints | Test | Story-001 | Ready | 3 |
+_None_
 
 ---
 
@@ -82,6 +80,7 @@ _None_
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
 | Story-001 | Redesign TuiStatusBar with Badge-Based Layout | Frontend | None | Ready | 5 |
+| Story-002 | Update Regression Tests for StatusBar and KeyHints | Test | Story-001 | Ready | 3 |
 
 ---
 
@@ -105,6 +104,8 @@ _None_
 | 2026-02-06 | - | Phase 1 | Phase 2 | Branch strategy: bugfix/statusbar-layout-and-styling created |
 | 2026-02-06 | Story-001 | Backlog | Done | Badge-based statusbar implemented, KeyHints separator updated |
 | 2026-02-06 | Story-002 | Blocked | Backlog | Unblocked by Story-001 completion |
+| 2026-02-06 | Story-002 | Backlog | In Progress | Started regression test implementation |
+| 2026-02-06 | Story-002 | In Progress | Done | Added 7 new tests (badges, colors, FooterItem, FooterItemActive, separator) |
 
 ---
 
