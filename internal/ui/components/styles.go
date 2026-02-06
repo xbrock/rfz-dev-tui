@@ -225,6 +225,29 @@ var (
 )
 
 // ============================================================================
+// TAB STYLES
+// ============================================================================
+
+var (
+	// StyleTabNormal is for inactive, unfocused tabs
+	StyleTabNormal = lipgloss.NewStyle().
+		Foreground(ColorTextSecondary)
+
+	// StyleTabActive is for the currently active/selected tab
+	StyleTabActive = lipgloss.NewStyle().
+		Foreground(ColorTextPrimary).
+		Background(ColorSecondary).
+		Bold(true).
+		Padding(0, 1)
+
+	// StyleTabFocused is for the keyboard-focused tab (distinct from active)
+	StyleTabFocused = lipgloss.NewStyle().
+		Foreground(ColorCyan).
+		Bold(true).
+		Underline(true)
+)
+
+// ============================================================================
 // STATUS/BADGE STYLES
 // ============================================================================
 

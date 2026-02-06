@@ -15,6 +15,7 @@
 | LAYOUT-003 | TuiKeyHints keyboard shortcut display | `keyhints.go`, `keyhints_test.go`, 6 golden files |
 | LAYOUT-004 | TuiTable wrapper around bubbles/table | `table.go`, `table_test.go`, 7 golden files |
 | LAYOUT-005 | TuiTree hierarchical view with expand/collapse | `tree.go`, `tree_test.go`, `styles.go` updated, 11 golden files |
+| LAYOUT-006 | TuiTabs horizontal tab bar with shortcuts/badges | `tabs.go`, `tabs_test.go`, `styles.go` updated, 10 golden files |
 
 ---
 
@@ -32,6 +33,7 @@
 - `internal/ui/components/tree.go` → `TuiTree(nodes, cursorIndex, focused)` - Renders hierarchical tree view
 - `internal/ui/components/tree.go` → `TuiTreeItem(node, depth, cursor, focused)` - Renders single tree node line
 - `internal/ui/components/tree.go` → `VisibleNodeCount(nodes)` - Returns count of visible nodes for cursor bounds
+- `internal/ui/components/tabs.go` → `TuiTabs(tabs, focusedIndex, width)` - Renders horizontal tab bar with numeric shortcuts
 
 ### Services
 <!-- New service classes/modules -->
@@ -51,6 +53,9 @@ _None yet_
 - `internal/ui/components/table.go` → `TuiTableConfig{Columns, Rows, Width, Height, Focused, ZebraStripe}` - Table configuration struct
 - `internal/ui/components/tree.go` → `TuiTreeNode{Label, Metadata, Children, Expanded}` - Tree node struct
 - `internal/ui/components/styles.go` → `SymbolExpanded`, `SymbolCollapsed` - Tree expand/collapse symbols
+- `internal/ui/components/tabs.go` → `TuiTab{Label, Badge, Active}` - Tab item struct
+- `internal/ui/components/tabs.go` → `SymbolTabSeparator` - Pipe separator constant
+- `internal/ui/components/styles.go` → `StyleTabActive`, `StyleTabFocused`, `StyleTabNormal` - Tab state styles
 
 ---
 
@@ -80,6 +85,14 @@ _None yet_
 - `SymbolExpanded` ("▼") and `SymbolCollapsed` ("▶") for branch nodes, leaf nodes get spacing
 - `maxTreeDepth=15` limits nesting; deeper nodes show "..." truncation indicator
 - `VisibleNodeCount()` utility for cursor bounds checking in Bubble Tea models
+- TuiTabs uses pure Lipgloss stateless render function (same pattern as keyhints)
+- `SymbolTabSeparator` ("|") between tabs with `ColorTextMuted` styling
+- Active tab: `StyleTabActive` with `ColorSecondary` background + bold
+- Focused tab: `StyleTabFocused` with `ColorCyan` + bold + underline (distinct from active)
+- Normal tab: shortcut in `ColorTextMuted`, label in `ColorTextSecondary`
+- Numeric shortcuts `1:` through `9:` for first 9 tabs; tabs 10+ have no prefix
+- Badge format: `Label (N)` in `ColorTextMuted`
+- Width parameter omits tabs that don't fit (same adaptive pattern as keyhints)
 
 ---
 
@@ -104,3 +117,7 @@ _None yet_
 | `internal/ui/components/tree_test.go` | Created | LAYOUT-005 |
 | `internal/ui/components/styles.go` | Modified | LAYOUT-005 |
 | `internal/ui/components/testdata/TestTree*.golden` (11 files) | Created | LAYOUT-005 |
+| `internal/ui/components/tabs.go` | Created | LAYOUT-006 |
+| `internal/ui/components/tabs_test.go` | Created | LAYOUT-006 |
+| `internal/ui/components/styles.go` | Modified | LAYOUT-006 |
+| `internal/ui/components/testdata/TestTabs_*.golden` (10 files) | Created | LAYOUT-006 |
