@@ -17,6 +17,7 @@
 | LAYOUT-005 | TuiTree hierarchical view with expand/collapse | `tree.go`, `tree_test.go`, `styles.go` updated, 11 golden files |
 | LAYOUT-006 | TuiTabs horizontal tab bar with shortcuts/badges | `tabs.go`, `tabs_test.go`, `styles.go` updated, 10 golden files |
 | LAYOUT-007 | TuiStatusBar full-width bottom bar with 3 sections | `statusbar.go`, `statusbar_test.go`, 9 golden files |
+| LAYOUT-008 | Interactive layout demo with all 7 components | `demo/layout_gallery.go`, `cmd/layout-demo/main.go` |
 
 ---
 
@@ -36,6 +37,7 @@
 - `internal/ui/components/tree.go` → `VisibleNodeCount(nodes)` - Returns count of visible nodes for cursor bounds
 - `internal/ui/components/tabs.go` → `TuiTabs(tabs, focusedIndex, width)` - Renders horizontal tab bar with numeric shortcuts
 - `internal/ui/components/statusbar.go` → `TuiStatusBar(cfg TuiStatusBarConfig)` - Renders full-width bottom status bar with left/center/right sections
+- `internal/ui/components/demo/layout_gallery.go` → `NewLayoutGallery() LayoutGallery` - Interactive demo showcasing all 7 layout components
 
 ### Services
 <!-- New service classes/modules -->
@@ -104,6 +106,10 @@ _None yet_
 - Right section prioritized: hints get up to half the width, then remaining split between left/center
 - `Truncate()` applied to status text and info text when space is limited
 - Integrates `TuiKeyHints()` directly for right section rendering
+- LayoutGallery is a full Bubble Tea model with section-based focus (Tab/Shift+Tab cycles sections)
+- Integrates all 7 layout components: Navigation, Modal, KeyHints, Table, Tree, Tabs, StatusBar
+- Demo uses `tea.WithAltScreen()` for full terminal takeover
+- Entry point: `cmd/layout-demo/main.go` → `go run ./cmd/layout-demo/`
 
 ---
 
@@ -135,3 +141,5 @@ _None yet_
 | `internal/ui/components/statusbar.go` | Created | LAYOUT-007 |
 | `internal/ui/components/statusbar_test.go` | Created | LAYOUT-007 |
 | `internal/ui/components/testdata/TestStatusBar_*.golden` (9 files) | Created | LAYOUT-007 |
+| `internal/ui/components/demo/layout_gallery.go` | Created | LAYOUT-008 |
+| `cmd/layout-demo/main.go` | Created | LAYOUT-008 |
