@@ -71,23 +71,23 @@ Scenario: Ausreichende Test-Abdeckung
 
 ### Review-Scope
 
-- [ ] `internal/ui/components/navigation.go` - TuiNavigation + TuiNavItem
-- [ ] `internal/ui/components/modal.go` - TuiModal
-- [ ] `internal/ui/components/keyhints.go` - TuiKeyHints
-- [ ] `internal/ui/components/table.go` - TuiTable
-- [ ] `internal/ui/components/tree.go` - TuiTree
-- [ ] `internal/ui/components/tabs.go` - TuiTabs
-- [ ] `internal/ui/components/statusbar.go` - TuiStatusBar
-- [ ] `internal/ui/components/styles.go` - Style additions
-- [ ] `internal/ui/components/demo/layout_gallery.go` - Demo
-- [ ] `cmd/layout-demo/main.go` - Demo entry point
-- [ ] All `*_test.go` files for new components
+- [x] `internal/ui/components/navigation.go` - TuiNavigation + TuiNavItem
+- [x] `internal/ui/components/modal.go` - TuiModal
+- [x] `internal/ui/components/keyhints.go` - TuiKeyHints
+- [x] `internal/ui/components/table.go` - TuiTable
+- [x] `internal/ui/components/tree.go` - TuiTree
+- [x] `internal/ui/components/tabs.go` - TuiTabs
+- [x] `internal/ui/components/statusbar.go` - TuiStatusBar
+- [x] `internal/ui/components/styles.go` - Style additions
+- [x] `internal/ui/components/demo/layout_gallery.go` - Demo
+- [x] `cmd/layout-demo/main.go` - Demo entry point
+- [x] All `*_test.go` files for new components
 
 ### Funktions-Pruefungen
 
-- [ ] BUILD_PASS: go build ./...
-- [ ] TEST_PASS: go test ./internal/ui/components/... -v
-- [ ] LINT_PASS: golangci-lint run ./...
+- [x] BUILD_PASS: go build ./...
+- [x] TEST_PASS: go test ./internal/ui/components/... -v
+- [x] LINT_PASS: golangci-lint run ./...
 
 ---
 
@@ -99,7 +99,7 @@ None required.
 
 ## Technisches Refinement (vom Architect)
 
-> **Status:** Ready
+> **Status:** Done
 
 ### DoR (Definition of Ready) - Vom Architect
 
@@ -125,18 +125,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code Review abgeschlossen
-- [ ] Alle kritischen Findings behoben
-- [ ] Review-Bericht erstellt
+- [x] Code Review abgeschlossen
+- [x] Alle kritischen Findings behoben
+- [x] Review-Bericht erstellt
 
 #### Qualitaetssicherung
-- [ ] Alle Akzeptanzkriterien erfuellt
-- [ ] Style Guide Compliance bestaetigt
-- [ ] Pattern Compliance bestaetigt
+- [x] Alle Akzeptanzkriterien erfuellt
+- [x] Style Guide Compliance bestaetigt
+- [x] Pattern Compliance bestaetigt
 
 #### Dokumentation
-- [ ] Review-Findings dokumentiert
-- [ ] Keine offenen kritischen Issues
+- [x] Review-Findings dokumentiert
+- [x] Keine offenen kritischen Issues
 
 ---
 

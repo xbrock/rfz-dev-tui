@@ -14,8 +14,8 @@
 | **Git Branch** | feature/layout-navigation |
 | **Git Strategy** | worktree |
 | **Current Story** | None |
-| **Last Action** | Completed LAYOUT-009 - self-review passed |
-| **Next Action** | Execute next story (LAYOUT-997 System Story) |
+| **Last Action** | Completed LAYOUT-997 - Code Review passed |
+| **Next Action** | Execute next story (LAYOUT-998 Integration Validation) |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 12 |
-| **Completed** | 9 |
+| **Completed** | 10 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 3 |
+| **Backlog** | 2 |
 | **Blocked** | 0 |
 
 ---
@@ -56,7 +56,6 @@ _No regular stories in backlog._
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-997 | Code Review by Opus | Review | LAYOUT-001 to LAYOUT-009 | ✅ Ready | 2 |
 | LAYOUT-998 | Integration Validation | Validation | LAYOUT-997 | ✅ Ready | 1 |
 | LAYOUT-999 | Finalize and Create PR | Release | LAYOUT-998 | ✅ Ready | 1 |
 
@@ -101,6 +100,7 @@ _No stories in testing._
 | LAYOUT-007 | TuiStatusBar Component | Frontend | LAYOUT-003 | ✅ Ready | 2 |
 | LAYOUT-008 | Layout Navigation Demo | Frontend | LAYOUT-001 to LAYOUT-007 | ✅ Ready | 2 |
 | LAYOUT-009 | Visual Regression Tests | Test | LAYOUT-001 to LAYOUT-007 | ✅ Ready | 2 |
+| LAYOUT-997 | Code Review by Opus | Review | LAYOUT-001 to LAYOUT-009 | ✅ Ready | 2 |
 
 ---
 
@@ -130,6 +130,8 @@ _No stories in testing._
 | 2026-02-06 | LAYOUT-008 | In Progress | Done | Self-review passed, all tests green |
 | 2026-02-06 | LAYOUT-009 | Backlog | In Progress | Started execution |
 | 2026-02-06 | LAYOUT-009 | In Progress | Done | Self-review passed, all tests green, 162 golden files |
+| 2026-02-06 | LAYOUT-997 | Backlog | In Progress | Started Code Review execution |
+| 2026-02-06 | LAYOUT-997 | In Progress | Done | Code Review passed, 0 critical/major issues, review report created |
 
 ---
 
