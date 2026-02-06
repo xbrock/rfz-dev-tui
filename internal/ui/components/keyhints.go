@@ -9,9 +9,6 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// SymbolKeySeparator is the middle dot separator between key hints.
-const SymbolKeySeparator = "·"
-
 // KeyHint represents a single keyboard shortcut hint.
 type KeyHint struct {
 	Key   string // The key(s) to press (e.g., "Enter", "q", "Esc")
@@ -28,10 +25,9 @@ func TuiKeyHints(hints []KeyHint, width int) string {
 
 	keyStyle := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
 	labelStyle := lipgloss.NewStyle().Foreground(ColorTextSecondary)
-	separatorStyle := lipgloss.NewStyle().Foreground(ColorTextMuted)
 
-	separator := separatorStyle.Render(" " + SymbolKeySeparator + " ")
-	separatorWidth := 3 // " · " = 3 chars
+	separator := "  " // double space, no dot separator
+	separatorWidth := 2
 
 	var renderedHints []string
 	usedWidth := 0
