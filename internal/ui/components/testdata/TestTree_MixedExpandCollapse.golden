@@ -1,0 +1,5 @@
+ ▼ root
+   ▼ open-dir
+        file-a.go
+   ▶ closed-dir
+      leaf.txt

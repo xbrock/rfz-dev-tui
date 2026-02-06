@@ -87,6 +87,10 @@ const (
 
 	// List/navigation symbols
 	SymbolListPointer = "›" // U+203A Single Right-Pointing Angle Quotation Mark
+
+	// Tree expand/collapse symbols
+	SymbolExpanded  = "▼" // U+25BC Black Down-Pointing Triangle
+	SymbolCollapsed = "▶" // U+25B6 Black Right-Pointing Triangle
 )
 
 // ============================================================================
