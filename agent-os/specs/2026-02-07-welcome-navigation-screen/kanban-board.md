@@ -14,7 +14,7 @@
 | **Git Branch** | feature/welcome-navigation-screen |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Completed WELCOME-001 - self-review passed |
+| **Last Action** | Completed WELCOME-002 - self-review passed |
 | **Next Action** | Execute next story |
 
 ---
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 9 |
-| **Completed** | 1 |
+| **Completed** | 2 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 8 |
+| **Backlog** | 7 |
 | **Blocked** | 0 |
 
 ---
@@ -48,7 +48,6 @@ No blocked stories.
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| WELCOME-002 | App Shell Model with Layout | Frontend | WELCOME-001 | ✅ Ready | S |
 | WELCOME-003 | Welcome Screen | Frontend | WELCOME-002 | ✅ Ready | XS |
 | WELCOME-004 | Screen Switching & Navigation | Frontend | WELCOME-002 | ✅ Ready | S |
 | WELCOME-005 | Exit Confirmation Modal | Frontend | WELCOME-002 | ✅ Ready | XS |
@@ -89,6 +88,7 @@ No stories in testing.
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
+| WELCOME-002 | App Shell Model with Layout | Frontend | WELCOME-001 | ✅ Ready | S |
 | WELCOME-001 | Entry Point & Demo Rename | Frontend | None | ✅ Ready | XS |
 
 ---
@@ -99,6 +99,8 @@ No stories in testing.
 
 | Timestamp | Story | From | To | Notes |
 |-----------|-------|------|-----|-------|
+| 2026-02-07 | WELCOME-002 | In Progress | Done | App Shell Model with Layout completed - self-review passed |
+| 2026-02-07 | WELCOME-002 | Backlog | In Progress | App Shell Model with Layout - execution started |
 | 2026-02-07 | WELCOME-001 | In Progress | Done | Entry Point & Demo Rename completed - self-review passed |
 | 2026-02-07 | - | - | - | Phase 2 complete. Branch strategy: feature/welcome-navigation-screen |
 | 2026-02-07 | - | - | - | Board created. Initial kanban with 9 stories (6 feature + 3 system) |
