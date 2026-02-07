@@ -15,58 +15,49 @@ import (
 func (m Model) viewExecution() string {
 	title := components.StyleH2.Render("Build")
 
-	// Command preview
+	// Build Execution box: command preview
 	cmdLine := components.StylePrompt.Render("$") + " " +
 		lipgloss.NewStyle().Foreground(components.ColorGreen).Render(m.config.ToCommand())
 
-	// Component table
-	table := m.viewComponentTable()
-
-	// Overall progress
-	progressSection := m.viewOverallProgress()
-
-	// Status counters
-	counters := m.viewStatusCounters()
-
-	// Actions
-	actions := m.viewExecutionActions()
-
-	content := lipgloss.JoinVertical(lipgloss.Left,
-		cmdLine,
-		"",
-		table,
-		"",
-		progressSection,
-		"",
-		counters,
-	)
-
-	contentBox := lipgloss.NewStyle().
+	buildExecBox := lipgloss.NewStyle().
 		Border(components.BorderRounded).
-		BorderForeground(components.ColorCyan).
+		BorderForeground(components.ColorBorder).
 		Padding(0, 1).
 		Width(m.width).
 		Render(
 			components.StyleH3.Render("Build Execution") + "\n" +
-				content,
+				cmdLine,
 		)
+
+	// Components box
+	componentsBox := m.viewComponentTable()
+
+	// Progress box (includes status counters)
+	progressBox := m.viewProgressBox()
+
+	// Actions box
+	actions := m.viewExecutionActions()
 
 	return lipgloss.JoinVertical(lipgloss.Left,
 		title,
-		contentBox,
+		buildExecBox,
+		"",
+		componentsBox,
+		"",
+		progressBox,
 		"",
 		actions,
 	)
 }
 
-// viewComponentTable renders the component build table with per-row status.
+// viewComponentTable renders the component build table wrapped in a bordered box.
 func (m Model) viewComponentTable() string {
 	if len(m.buildStates) == 0 {
 		return ""
 	}
 
 	// Column widths
-	colStatus := 11
+	colStatus := 4
 	colName := 20
 	colPhase := 12
 	colProgress := 22
@@ -76,15 +67,17 @@ func (m Model) viewComponentTable() string {
 		Bold(true).
 		Foreground(components.ColorTextSecondary)
 
-	header := lipgloss.JoinHorizontal(lipgloss.Top,
-		headerStyle.Width(colStatus).Render("Status"),
+	// Use padding to account for the tree-branch prefix width (4 chars: "├── " or ">   ")
+	headerPad := "    "
+	header := headerPad + lipgloss.JoinHorizontal(lipgloss.Top,
+		headerStyle.Width(colStatus).Render("St"),
 		headerStyle.Width(colName).Render("Component"),
 		headerStyle.Width(colPhase).Render("Phase"),
 		headerStyle.Width(colProgress).Render("Progress"),
 		headerStyle.Width(colTime).Render("Time"),
 	)
 
-	divider := components.TuiDivider(components.DividerSingle, colStatus+colName+colPhase+colProgress+colTime)
+	divider := components.TuiDivider(components.DividerSingle, colStatus+colName+colPhase+colProgress+colTime+4)
 
 	var rows []string
 	rows = append(rows, header)
@@ -95,7 +88,17 @@ func (m Model) viewComponentTable() string {
 		rows = append(rows, row)
 	}
 
-	return strings.Join(rows, "\n")
+	tableContent := strings.Join(rows, "\n")
+
+	return lipgloss.NewStyle().
+		Border(components.BorderRounded).
+		BorderForeground(components.ColorCyan).
+		Padding(0, 1).
+		Width(m.width).
+		Render(
+			components.StyleH3.Render("Components") + "\n" +
+				tableContent,
+		)
 }
 
 // viewComponentRow renders a single component row in the build table.
@@ -106,25 +109,22 @@ func (m Model) viewComponentRow(
 ) string {
 	isFocused := idx == m.buildCursor
 
-	// Status badge
+	// Status icon (compact single character)
 	status := phaseToStatus(state.Phase)
-	statusStr := components.TuiStatus(status)
+	statusStr := components.TuiStatusCompact(status)
 	statusCell := lipgloss.NewStyle().Width(colStatus).Render(statusStr)
 
 	// Component name
-	nameStyle := lipgloss.NewStyle().
+	nameCell := lipgloss.NewStyle().
 		Width(colName).
-		Foreground(components.ColorTextPrimary)
-	if isFocused {
-		nameStyle = nameStyle.Bold(true).Foreground(components.ColorCyan)
-	}
-	nameCell := nameStyle.Render(state.Name)
+		Foreground(components.ColorTextPrimary).
+		Render(state.Name)
 
 	// Phase
-	phaseStyle := lipgloss.NewStyle().
+	phaseCell := lipgloss.NewStyle().
 		Width(colPhase).
-		Foreground(phaseColor(state.Phase))
-	phaseCell := phaseStyle.Render(state.Phase.String())
+		Foreground(phaseColor(state.Phase)).
+		Render(state.Phase.String())
 
 	// Progress bar (inline)
 	var progressCell string
@@ -155,58 +155,86 @@ func (m Model) viewComponentRow(
 		Foreground(components.ColorTextSecondary).
 		Render(elapsed)
 
-	// Row cursor indicator
-	cursor := "  "
-	if isFocused {
-		cursor = lipgloss.NewStyle().Foreground(components.ColorCyan).Render("> ")
-	}
-
-	return cursor + lipgloss.JoinHorizontal(lipgloss.Top,
+	rowCells := lipgloss.JoinHorizontal(lipgloss.Top,
 		statusCell,
 		nameCell,
 		phaseCell,
 		progressCell,
 		timeCell,
 	)
+
+	// Tree-branch prefix and highlight
+	if isFocused {
+		totalWidth := colStatus + colName + colPhase + colProgress + colTime + 4
+		return lipgloss.NewStyle().
+			Background(components.ColorCyan).
+			Foreground(components.ColorBackground).
+			Width(totalWidth).
+			Render("> " + "  " + rowCells)
+	}
+
+	return "├── " + rowCells
 }
 
-// viewOverallProgress renders the overall build progress section.
-func (m Model) viewOverallProgress() string {
+// viewProgressBox renders the progress section with overall bar and status counters in a bordered box.
+func (m Model) viewProgressBox() string {
 	progress := m.overallProgress()
 
 	label := lipgloss.NewStyle().
 		Foreground(components.ColorTextSecondary).
 		Bold(true).
-		Render("Overall Progress")
+		Render("Overall:")
 
 	bar := components.TuiProgress(progress, m.width-30, true)
 
-	return label + "  " + bar
+	progressLine := label + "  " + bar
+	counters := m.viewStatusCounters()
+	content := progressLine + "\n" + counters
+
+	return lipgloss.NewStyle().
+		Border(components.BorderRounded).
+		BorderForeground(components.ColorBorder).
+		Padding(0, 1).
+		Width(m.width).
+		Render(
+			components.StyleH3.Render("Progress") + "\n" +
+				content,
+		)
 }
 
-// viewStatusCounters renders the running/success/failed/pending counters.
+// viewStatusCounters renders the running/success/failed/pending counters as colored pill badges.
 func (m Model) viewStatusCounters() string {
 	running, success, failed, pending := m.statusCounts()
 
-	runningStyle := lipgloss.NewStyle().Foreground(components.ColorCyan).Bold(true)
-	successStyle := lipgloss.NewStyle().Foreground(components.ColorGreen).Bold(true)
-	failedStyle := lipgloss.NewStyle().Foreground(components.ColorDestructive).Bold(true)
-	pendingStyle := lipgloss.NewStyle().Foreground(components.ColorTextMuted).Bold(true)
-	labelStyle := lipgloss.NewStyle().Foreground(components.ColorTextSecondary)
+	runningBadge := lipgloss.NewStyle().
+		Background(components.ColorCyan).
+		Foreground(components.ColorBackground).
+		Bold(true).
+		Padding(0, 1).
+		Render(fmt.Sprintf("● Running: %d", running))
+
+	successBadge := lipgloss.NewStyle().
+		Background(components.ColorGreen).
+		Foreground(components.ColorBackground).
+		Bold(true).
+		Padding(0, 1).
+		Render(fmt.Sprintf("✓ Success: %d", success))
+
+	failedBadge := lipgloss.NewStyle().
+		Background(components.ColorDestructive).
+		Foreground(components.ColorTextPrimary).
+		Bold(true).
+		Padding(0, 1).
+		Render(fmt.Sprintf("✗ Failed: %d", failed))
+
+	pendingBadge := lipgloss.NewStyle().
+		Background(components.ColorSecondary).
+		Foreground(components.ColorTextPrimary).
+		Padding(0, 1).
+		Render(fmt.Sprintf("○ Pending: %d", pending))
 
 	return lipgloss.JoinHorizontal(lipgloss.Top,
-		runningStyle.Render(fmt.Sprintf("%d", running)),
-		labelStyle.Render(" Running"),
-		lipgloss.NewStyle().Render("    "),
-		successStyle.Render(fmt.Sprintf("%d", success)),
-		labelStyle.Render(" Success"),
-		lipgloss.NewStyle().Render("    "),
-		failedStyle.Render(fmt.Sprintf("%d", failed)),
-		labelStyle.Render(" Failed"),
-		lipgloss.NewStyle().Render("    "),
-		pendingStyle.Render(fmt.Sprintf("%d", pending)),
-		labelStyle.Render(" Pending"),
-	)
+		runningBadge, "  ", successBadge, "  ", failedBadge, "  ", pendingBadge)
 }
 
 // viewExecutionActions renders the action buttons during/after build execution.

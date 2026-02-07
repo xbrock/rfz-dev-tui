@@ -11,6 +11,7 @@
 | Story | Summary | Key Changes |
 |-------|---------|-------------|
 | Story-1 | Fix Tab nav, keybindings, actions on Build Complete | `app.go`, `update.go`, `execution.go`, `model.go` |
+| Story-2 | Redesign Build Execution layout: 4 separate bordered boxes, pill badges, tree-branch rows | `execution.go`, golden files |
 
 ---
 
@@ -43,6 +44,12 @@ _None yet_
 - `viewExecutionActions` renders different buttons for running vs completed/canceled states
 - Actions box border color uses `m.focused` for cyan/border toggle
 - Golden files regenerated for `TestApp_BuildExecuting` and `TestApp_BuildCompleted`
+- `viewExecution()` now renders 4 separate bordered boxes: Build Execution, Components, Progress, Actions
+- `viewComponentTable()` wraps table in "Components" bordered box with cyan border
+- `viewComponentRow()` uses `TuiStatusCompact` for St column, tree-branch prefix (`├──`/`>`), full-row cyan background highlight for focused row
+- `viewProgressBox()` combines overall progress bar and status counters in "Progress" bordered box
+- `viewStatusCounters()` renders colored pill badges with background colors (replaced plain text counters)
+- Column "Status" renamed to "St" with width reduced from 11 to 4
 
 ---
 
@@ -54,5 +61,6 @@ _None yet_
 | `internal/ui/screens/build/model.go` | Modified | Story-1 |
 | `internal/ui/screens/build/update.go` | Modified | Story-1 |
 | `internal/ui/screens/build/execution.go` | Modified | Story-1 |
-| `internal/app/testdata/TestApp_BuildExecuting.golden` | Regenerated | Story-1 |
-| `internal/app/testdata/TestApp_BuildCompleted.golden` | Regenerated | Story-1 |
+| `internal/app/testdata/TestApp_BuildExecuting.golden` | Regenerated | Story-1, Story-2 |
+| `internal/app/testdata/TestApp_BuildCompleted.golden` | Regenerated | Story-1, Story-2 |
+| `internal/ui/screens/build/execution.go` | Modified | Story-2 |

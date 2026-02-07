@@ -339,24 +339,26 @@ if m.focused {
 - [x] Box-Rendering-Muster validiert (see existing `viewExecutionActions` line 248 pattern)
 
 ### Definition of Done (DoD)
-- [ ] "Build Execution" Box mit Command-Preview in Rounded-Border (eigene Box, nicht Teil eines Wrappers)
-- [ ] "Components" Box als eigene Rounded-Border-Box mit Titel "Components"
-- [ ] Tabellen-Header: `St`, `Component`, `Phase`, `Progress`, `Time` (nicht "Status")
-- [ ] `St` Spalte nutzt `TuiStatusCompact` (einzelne Zeichen: `*`, `v`, `x`, `o`)
-- [ ] Fokussierte Zeile in Components-Tabelle mit cyan Hintergrund-Highlight (volle Zeile, nicht nur Name)
-- [ ] Tree-Branch-Prefix: `|-- ` fuer normale Zeilen, `>   ` fuer fokussierte Zeile
-- [ ] "Progress" Box als eigene Rounded-Border-Box mit Titel "Progress"
-- [ ] Progress-Label: "Overall:" (nicht "Overall Progress")
-- [ ] Status-Counter-Badges INNERHALB der Progress-Box (nicht darunter)
-- [ ] Status-Counter als farbige Badges/Pills mit Hintergrundfarbe gerendert
-- [ ] "Actions" Box als eigene Rounded-Border-Box mit Titel "Actions"
-- [ ] Actions-Box-Border ist `ColorCyan` (`#0891b2`) wenn Content fokussiert, `ColorBorder` (`#4a4a5e`) sonst
-- [ ] Vertikales Layout mit einzelner Leerzeile zwischen Boxen
-- [ ] Visueller Vergleich mit `references/prototype-screenshots/45-build-execution-actions-focus.png` bestanden
-- [ ] Visueller Vergleich mit `references/prototype-screenshots/49-build-execution-complete.png` bestanden
-- [ ] Visueller Vergleich mit `references/prototype-screenshots/40-build-execution-starting.png` bestanden
-- [ ] Keine Regression in bestehenden Rendering-Tests (Golden-Files regeneriert)
-- [ ] Architect Review bestanden
+- [x] "Build Execution" Box mit Command-Preview in Rounded-Border (eigene Box, nicht Teil eines Wrappers)
+- [x] "Components" Box als eigene Rounded-Border-Box mit Titel "Components"
+- [x] Tabellen-Header: `St`, `Component`, `Phase`, `Progress`, `Time` (nicht "Status")
+- [x] `St` Spalte nutzt `TuiStatusCompact` (einzelne Zeichen: `*`, `v`, `x`, `o`)
+- [x] Fokussierte Zeile in Components-Tabelle mit cyan Hintergrund-Highlight (volle Zeile, nicht nur Name)
+- [x] Tree-Branch-Prefix: `|-- ` fuer normale Zeilen, `>   ` fuer fokussierte Zeile
+- [x] "Progress" Box als eigene Rounded-Border-Box mit Titel "Progress"
+- [x] Progress-Label: "Overall:" (nicht "Overall Progress")
+- [x] Status-Counter-Badges INNERHALB der Progress-Box (nicht darunter)
+- [x] Status-Counter als farbige Badges/Pills mit Hintergrundfarbe gerendert
+- [x] "Actions" Box als eigene Rounded-Border-Box mit Titel "Actions"
+- [x] Actions-Box-Border ist `ColorCyan` (`#0891b2`) wenn Content fokussiert, `ColorBorder` (`#4a4a5e`) sonst
+- [x] Vertikales Layout mit einzelner Leerzeile zwischen Boxen
+- [x] Visueller Vergleich mit `references/prototype-screenshots/45-build-execution-actions-focus.png` bestanden
+- [x] Visueller Vergleich mit `references/prototype-screenshots/49-build-execution-complete.png` bestanden
+- [x] Visueller Vergleich mit `references/prototype-screenshots/40-build-execution-starting.png` bestanden
+- [x] Keine Regression in bestehenden Rendering-Tests (Golden-Files regeneriert)
+- [x] Architect Review bestanden
+
+### Status: Done
 
 ### Story Points
 5
