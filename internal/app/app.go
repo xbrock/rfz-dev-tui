@@ -170,7 +170,7 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	}
 
 	// When build screen is configuring or executing, it captures all input (Tab, Esc, etc.)
-	if m.screen == screenBuild && (m.build.IsConfiguring() || m.build.IsExecuting() || m.build.IsCompleted()) {
+	if m.screen == screenBuild && (m.build.IsConfiguring() || m.build.IsExecuting()) {
 		var cmd tea.Cmd
 		m.build, cmd = m.build.Update(msg)
 		return m, cmd
@@ -189,6 +189,12 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 
 	case "esc":
+		// In build completed state, Esc returns to selection (handled by build screen)
+		if m.screen == screenBuild && m.build.IsCompleted() {
+			var cmd tea.Cmd
+			m.build, cmd = m.build.Update(msg)
+			return m, cmd
+		}
 		if m.screen != screenWelcome {
 			m.navigateTo(screenWelcome)
 			m.build = m.build.SetFocused(false)
@@ -508,8 +514,9 @@ func (m Model) viewStatusBar() string {
 		modeBadge = "DONE"
 		contextBadge = "Build Complete"
 		hints = []components.KeyHint{
-			{Key: "n", Label: "New Build"},
+			{Key: "Tab", Label: "Switch Focus"},
 			{Key: "\u2191\u2193", Label: "Navigate"},
+			{Key: "Esc", Label: "Back"},
 		}
 	} else if m.screen == screenBuild && m.focus == focusContent {
 		modeBadge = "SELECT"

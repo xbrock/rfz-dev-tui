@@ -222,6 +222,17 @@ func (m Model) overallProgress() float64 {
 	return float64(done) / float64(len(m.buildStates))
 }
 
+// failedComponents returns the names of components that failed the build.
+func (m Model) failedComponents() []string {
+	var failed []string
+	for _, s := range m.buildStates {
+		if s.Phase == domain.PhaseFailed {
+			failed = append(failed, s.Name)
+		}
+	}
+	return failed
+}
+
 // initBuildStates initializes build state tracking for the selected components.
 func (m Model) initBuildStates() Model {
 	states := make([]componentBuildState, len(m.selectedComponents))
