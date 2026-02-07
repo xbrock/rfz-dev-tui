@@ -11,6 +11,8 @@ func (m Model) View() string {
 		return m.viewSelection()
 	case phaseConfiguring:
 		return m.viewConfig()
+	case phaseExecuting, phaseCompleted:
+		return m.viewExecution()
 	default:
 		return m.viewSelection()
 	}

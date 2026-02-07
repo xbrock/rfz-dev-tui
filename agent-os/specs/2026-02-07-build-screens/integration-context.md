@@ -13,6 +13,7 @@
 | BUILD-001 | Domain model with components, build config, mock provider | `internal/domain/` package created |
 | BUILD-002 | Build Component Selection Screen with TuiList multi-select | `internal/ui/screens/build/` package created, app.go integrated |
 | BUILD-003 | Build Configuration Modal with TuiModal, TuiRadio, TuiCheckbox | `config.go` created, `model.go`/`update.go`/`view.go`/`app.go` modified |
+| BUILD-004 | Build Execution View with simulator, progress, status counters | `execution.go`/`simulator.go` created, `model.go`/`update.go`/`view.go`/`app.go` modified |
 
 ---
 
@@ -24,6 +25,8 @@
 - `internal/ui/screens/build/model.go` -> `build.OpenConfigMsg{Selected []string}` - Message sent when user confirms selection
 - `internal/ui/screens/build/model.go` -> `build.StartBuildMsg{Config, Selected}` - Message sent when user starts build from config
 - `internal/ui/screens/build/config.go` -> Config modal view with 5 sections (Goal, Profiles, Port, Options, Buttons)
+- `internal/ui/screens/build/execution.go` -> Execution view with component table, progress bar, status counters, actions
+- `internal/ui/screens/build/simulator.go` -> Build simulator with timed phase transitions via tea.Tick
 
 ### Services
 <!-- New service classes/modules -->
@@ -35,6 +38,11 @@
 - `internal/ui/screens/build/model.go` -> `build.Model.IsConfiguring() bool` - Returns true when in config phase
 - `internal/ui/screens/build/model.go` -> `build.Model.OpenConfig(selected []string) Model` - Transitions to config phase
 - `internal/ui/screens/build/model.go` -> `build.Model.SetTermSize(w, h int) Model` - Stores terminal dimensions for modal overlay
+- `internal/ui/screens/build/model.go` -> `build.Model.IsExecuting() bool` - Returns true when build is running
+- `internal/ui/screens/build/model.go` -> `build.Model.IsCompleted() bool` - Returns true when build has finished
+- `internal/ui/screens/build/model.go` -> `build.BuildTickMsg` - Sent every 100ms during build execution
+- `internal/ui/screens/build/model.go` -> `build.BuildPhaseMsg{ComponentIndex, Phase}` - Phase transition message
+- `internal/ui/screens/build/model.go` -> `build.BuildCompleteMsg{}` - All components finished
 
 ### Types / Interfaces
 <!-- New type definitions -->
@@ -67,6 +75,13 @@
 - Use `domain.BuildConfig{}.ToCommand()` to generate Maven command strings
 - `BuildPhase` enum has `.String()` method for display text
 - Component order in mock matches prototype screenshot (boss first, konfiguration last)
+- App handles `StartBuildMsg`, `BuildTickMsg`, `BuildPhaseMsg`, `BuildCompleteMsg` by delegating to build.Update()
+- When `build.IsExecuting()` or `build.IsCompleted()` is true, app delegates ALL key events to build
+- Status bar shows "BUILD" mode badge when executing, "DONE" mode badge when completed
+- Simulator uses `tea.Tick(100ms)` pattern, no goroutines - max 3 concurrent component builds
+- Build simulator has 20% chance of failure during Testing phase
+- Esc during execution cancels build (marks running/pending as failed), "n" after completion resets to selection
+- Execution view uses custom Lip Gloss table layout with TuiStatus badges, TuiProgress bars per row
 
 ---
 
@@ -91,3 +106,9 @@
 | internal/ui/screens/build/view.go | Modified | BUILD-003 |
 | internal/domain/buildconfig.go | Modified | BUILD-003 |
 | internal/app/app.go | Modified | BUILD-003 |
+| internal/ui/screens/build/execution.go | Created | BUILD-004 |
+| internal/ui/screens/build/simulator.go | Created | BUILD-004 |
+| internal/ui/screens/build/model.go | Modified | BUILD-004 |
+| internal/ui/screens/build/update.go | Modified | BUILD-004 |
+| internal/ui/screens/build/view.go | Modified | BUILD-004 |
+| internal/app/app.go | Modified | BUILD-004 |

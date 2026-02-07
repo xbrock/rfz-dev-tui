@@ -2,6 +2,8 @@
 package build
 
 import (
+	"time"
+
 	tea "github.com/charmbracelet/bubbletea"
 
 	"rfz-cli/internal/domain"
@@ -39,6 +41,27 @@ type OpenConfigMsg struct {
 type StartBuildMsg struct {
 	Config   domain.BuildConfig
 	Selected []string
+}
+
+// BuildTickMsg is sent periodically to update elapsed time during execution.
+type BuildTickMsg time.Time
+
+// BuildPhaseMsg signals a phase transition for a specific component.
+type BuildPhaseMsg struct {
+	ComponentIndex int
+	Phase          domain.BuildPhase
+}
+
+// BuildCompleteMsg signals that all components have finished building.
+type BuildCompleteMsg struct{}
+
+// componentBuildState tracks build progress for a single component.
+type componentBuildState struct {
+	Name      string
+	Phase     domain.BuildPhase
+	StartTime time.Time
+	Elapsed   time.Duration
+	Progress  float64 // 0.0 to 1.0 within current phase
 }
 
 // mavenGoals defines the available Maven goals in display order.
@@ -84,6 +107,12 @@ type Model struct {
 	profileCursor      int // Cursor within profiles list
 	portIndex          int // Cursor within port radio group
 	buttonIndex        int // 0=Cancel, 1=Start Build
+
+	// Execution phase
+	buildStates   []componentBuildState
+	simStates     []simulatorState
+	buildCursor   int  // Cursor in execution table
+	buildCanceled bool // True if user canceled the build
 
 	provider domain.ComponentProvider
 }
@@ -140,6 +169,74 @@ func (m Model) CurrentItemLabel() string {
 		return m.items[m.cursorIndex].Label
 	}
 	return ""
+}
+
+// IsExecuting returns true when a build is running.
+func (m Model) IsExecuting() bool {
+	return m.phase == phaseExecuting
+}
+
+// IsCompleted returns true when the build has finished.
+func (m Model) IsCompleted() bool {
+	return m.phase == phaseCompleted
+}
+
+// buildDone returns true when all components have finished (Done or Failed).
+func (m Model) buildDone() bool {
+	for _, s := range m.buildStates {
+		if s.Phase != domain.PhaseDone && s.Phase != domain.PhaseFailed {
+			return false
+		}
+	}
+	return len(m.buildStates) > 0
+}
+
+// statusCounts returns running, success, failed, pending counts.
+func (m Model) statusCounts() (running, success, failed, pending int) {
+	for _, s := range m.buildStates {
+		switch s.Phase {
+		case domain.PhasePending:
+			pending++
+		case domain.PhaseDone:
+			success++
+		case domain.PhaseFailed:
+			failed++
+		default:
+			running++
+		}
+	}
+	return
+}
+
+// overallProgress returns the fraction of completed components (0.0 to 1.0).
+func (m Model) overallProgress() float64 {
+	if len(m.buildStates) == 0 {
+		return 0
+	}
+	done := 0
+	for _, s := range m.buildStates {
+		if s.Phase == domain.PhaseDone || s.Phase == domain.PhaseFailed {
+			done++
+		}
+	}
+	return float64(done) / float64(len(m.buildStates))
+}
+
+// initBuildStates initializes build state tracking for the selected components.
+func (m Model) initBuildStates() Model {
+	states := make([]componentBuildState, len(m.selectedComponents))
+	now := time.Now()
+	for i, name := range m.selectedComponents {
+		states[i] = componentBuildState{
+			Name:      name,
+			Phase:     domain.PhasePending,
+			StartTime: now,
+		}
+	}
+	m.buildStates = states
+	m.buildCursor = 0
+	m.buildCanceled = false
+	return m
 }
 
 // componentsToListItems converts domain components to TuiListItems with type badges.

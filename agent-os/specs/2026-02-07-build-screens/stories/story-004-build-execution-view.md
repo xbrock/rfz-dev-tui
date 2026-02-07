@@ -174,18 +174,18 @@ None required.
 
 ### DoD (Definition of Done) - Vom Architect
 
-- [ ] Execution view renders component table with per-row status, spinner, progress, time
-- [ ] Build simulator sends timed BuildTickMsg and BuildPhaseMsg
-- [ ] Overall progress bar tracks completion percentage
-- [ ] Status counters display running/success/failed/pending counts
-- [ ] Per-component build phases transition correctly (Pending -> Compiling -> Testing -> Packaging -> Installing -> Done)
-- [ ] Random failure simulation works for at least one component
-- [ ] Keyboard handling for cancellation (Escape, Ctrl+C)
-- [ ] Actions section shows appropriate buttons based on build state
-- [ ] All acceptance criteria met
-- [ ] Tests written and passing
-- [ ] No linting errors
-- [ ] Completion Check commands successful
+- [x] Execution view renders component table with per-row status, spinner, progress, time
+- [x] Build simulator sends timed BuildTickMsg and BuildPhaseMsg
+- [x] Overall progress bar tracks completion percentage
+- [x] Status counters display running/success/failed/pending counts
+- [x] Per-component build phases transition correctly (Pending -> Compiling -> Testing -> Packaging -> Installing -> Done)
+- [x] Random failure simulation works for at least one component
+- [x] Keyboard handling for cancellation (Escape, Ctrl+C)
+- [x] Actions section shows appropriate buttons based on build state
+- [x] All acceptance criteria met
+- [x] Tests written and passing
+- [x] No linting errors
+- [x] Completion Check commands successful
 
 ### Betroffene Layer & Komponenten
 
