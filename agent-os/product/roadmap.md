@@ -1,8 +1,8 @@
 # Product Roadmap: RFZ Developer CLI
 
-> Last Updated: 2026-02-02
+> Last Updated: 2026-02-07
 > Version: 1.0.0
-> Status: Planning
+> Status: In Progress (Phase 2 - Sprint 2.1 Complete)
 
 ---
 
@@ -23,16 +23,16 @@ This roadmap organizes development into three distinct phases, each with clear g
 ## MoSCoW Prioritization
 
 ### Must Have (MVP - Phases 1-2)
-- [ ] TUI Component Library (all design system components)
-- [ ] Visual testing infrastructure with teatest
-- [ ] Golden file testing for all component variants
+- [x] TUI Component Library (all design system components)
+- [x] Visual testing infrastructure with teatest
+- [x] Golden file testing for all component variants
 - [ ] Build Components screen with multi-select
 - [ ] Build Configuration modal
 - [ ] Build Execution view with status tracking
 - [ ] Log Viewer with filtering
 - [ ] Discover screen with component listing
 - [ ] Configuration screen for scan paths
-- [ ] Keyboard navigation throughout
+- [x] Keyboard navigation throughout
 - [ ] Visual tests for all 97 UI states
 
 ### Should Have (Phase 3)
@@ -73,7 +73,7 @@ This roadmap organizes development into three distinct phases, each with clear g
 - Demo components integrated for testing
 - No external dependencies (Maven, Git) required for tests
 
-### Sprint 1.1: Core Components (Week 1)
+### Sprint 1.1: Core Components (Week 1) - DONE
 
 | Task | Priority | Component | Description |
 |------|----------|-----------|-------------|
@@ -84,13 +84,13 @@ This roadmap organizes development into three distinct phases, each with clear g
 | T1.1.5 | Must | Test Infra | teatest setup with golden file management |
 
 **Deliverables:**
-- [ ] Core container components
-- [ ] Button component with all variants
-- [ ] Status badge component
-- [ ] teatest harness with screenshot capture
-- [ ] Golden file comparison tooling
+- [x] Core container components
+- [x] Button component with all variants
+- [x] Status badge component
+- [x] teatest harness with screenshot capture
+- [x] Golden file comparison tooling
 
-### Sprint 1.2: Interactive Components (Week 2)
+### Sprint 1.2: Interactive Components (Week 2) - DONE
 
 | Task | Priority | Component | Description |
 |------|----------|-----------|-------------|
@@ -102,12 +102,12 @@ This roadmap organizes development into three distinct phases, each with clear g
 | T1.2.6 | Must | TuiProgress | Progress bars (block, gradient, braille, ASCII) |
 
 **Deliverables:**
-- [ ] List component with selection modes
-- [ ] Form input components (checkbox, radio, text)
-- [ ] Animation components (spinner, progress)
-- [ ] Golden file tests for all variants
+- [x] List component with selection modes
+- [x] Form input components (checkbox, radio, text)
+- [x] Animation components (spinner, progress)
+- [x] Golden file tests for all variants
 
-### Sprint 1.3: Layout & Navigation (Week 3)
+### Sprint 1.3: Layout & Navigation (Week 3) - DONE
 
 | Task | Priority | Component | Description |
 |------|----------|-----------|-------------|
@@ -121,12 +121,12 @@ This roadmap organizes development into three distinct phases, each with clear g
 | T1.3.8 | Must | TuiKeyHints | Keyboard shortcut hints display |
 
 **Deliverables:**
-- [ ] Navigation components
-- [ ] Modal overlay system
-- [ ] Data display components (table, tree)
-- [ ] Utility components (status bar, key hints)
-- [ ] Component showcase/gallery screen
-- [ ] Complete golden file coverage for all components
+- [x] Navigation components
+- [x] Modal overlay system
+- [x] Data display components (table, tree)
+- [x] Utility components (status bar, key hints)
+- [x] Component showcase/gallery screen
+- [x] Complete golden file coverage for all components
 
 ---
 
@@ -141,7 +141,7 @@ This roadmap organizes development into three distinct phases, each with clear g
 - Screen transitions smooth and correct
 - Still using mocked domain logic
 
-### Sprint 2.1: Welcome & Navigation (Week 4)
+### Sprint 2.1: Welcome & Navigation (Week 4) - DONE
 
 | Task | Priority | Screen | Description |
 |------|----------|--------|-------------|
@@ -153,10 +153,10 @@ This roadmap organizes development into three distinct phases, each with clear g
 **Screenshot Coverage:** 01-welcome-*.png series
 
 **Deliverables:**
-- [ ] Application shell with navigation
-- [ ] Welcome/home screen
-- [ ] Global keyboard navigation
-- [ ] Visual tests for welcome states
+- [x] Application shell with navigation
+- [x] Welcome/home screen
+- [x] Global keyboard navigation
+- [x] Visual tests for welcome states
 
 ### Sprint 2.2: Build Screens (Week 5)
 
@@ -325,12 +325,12 @@ This roadmap organizes development into three distinct phases, each with clear g
 
 ## Milestones
 
-| Milestone | Target Date | Criteria |
-|-----------|-------------|----------|
-| M1: Component Library Complete | Week 3 | All components with golden tests |
-| M2: UI Feature Complete | Week 7 | All 97 visual tests passing |
-| M3: MVP Release | Week 12 | Real functionality working |
-| M4: Team Adoption | Week 16 | 80% team using weekly |
+| Milestone | Target Date | Status | Criteria |
+|-----------|-------------|--------|----------|
+| M1: Component Library Complete | Week 3 | DONE (2026-02-06) | All components with golden tests |
+| M2: UI Feature Complete | Week 7 | In Progress (Sprint 2.1 done) | All 97 visual tests passing |
+| M3: MVP Release | Week 12 | Pending | Real functionality working |
+| M4: Team Adoption | Week 16 | Pending | 80% team using weekly |
 
 ---
 
