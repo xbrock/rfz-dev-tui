@@ -293,6 +293,8 @@ func (m Model) handleExecutionKey(msg tea.KeyMsg) (Model, tea.Cmd) {
 		if m.buildCursor < len(m.buildStates)-1 {
 			m.buildCursor++
 		}
+	case "l":
+		// View Logs: no-op placeholder for future log modal
 	case "esc":
 		// Cancel build: mark all running/pending as failed
 		m.buildCanceled = true
@@ -320,14 +322,24 @@ func (m Model) handleCompletedKey(msg tea.KeyMsg) (Model, tea.Cmd) {
 		if m.buildCursor < len(m.buildStates)-1 {
 			m.buildCursor++
 		}
-	case "n":
-		// New build: reset to selection phase
+	case "l":
+		// View Logs: no-op placeholder for future log modal
+	case "r":
+		// Rebuild Failed: rebuild only failed components with same config
+		failed := m.failedComponents()
+		if len(failed) > 0 {
+			cfg := m.config
+			return m, func() tea.Msg {
+				return StartBuildMsg{Config: cfg, Selected: failed}
+			}
+		}
+	case "esc":
+		// Back: return to component selection
 		m.phase = phaseSelecting
 		m.buildStates = nil
 		m.simStates = nil
 		m.buildCursor = 0
 		m.buildCanceled = false
-		// Deselect all items
 		m.items = components.DeselectAll(m.items)
 	}
 	return m, nil

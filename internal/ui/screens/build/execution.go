@@ -212,42 +212,49 @@ func (m Model) viewStatusCounters() string {
 // viewExecutionActions renders the action buttons during/after build execution.
 func (m Model) viewExecutionActions() string {
 	var buttons string
-	var hints []components.KeyHint
+	var hintsStr string
 
 	if m.buildDone() || m.buildCanceled {
-		newBuildBtn := components.TuiButton("New Build", components.ButtonPrimary, "n", false)
-		buttons = newBuildBtn
-		hints = []components.KeyHint{
-			{Key: "n", Label: "New Build"},
-			{Key: "\u2191\u2193", Label: "Navigate"},
-		}
+		// Completed/Canceled: View Logs + Rebuild Failed + Back, with Tab Switch Focus hint
+		viewLogsBtn := components.TuiButton("View Logs", components.ButtonSecondary, "l", false)
+		rebuildBtn := components.TuiButton("Rebuild Failed", components.ButtonPrimary, "r", false)
+		backBtn := components.TuiButton("Back", components.ButtonSecondary, "Esc", false)
+		buttons = viewLogsBtn + "  " + rebuildBtn + "  " + backBtn
+		hintsStr = components.TuiKeyHints([]components.KeyHint{
+			{Key: "Tab", Label: "Switch Focus"},
+		}, 0)
 	} else {
-		cancelBtn := components.TuiButton("Cancel Build", components.ButtonSecondary, "Esc", false)
-		buttons = cancelBtn
-		hints = []components.KeyHint{
-			{Key: "Esc", Label: "Cancel"},
-			{Key: "\u2191\u2193", Label: "Navigate"},
+		// Running: View Logs + Cancel Build, no hints on right
+		viewLogsBtn := components.TuiButton("View Logs", components.ButtonSecondary, "l", false)
+		cancelBtn := components.TuiButton("Cancel Build", components.ButtonDestructive, "Esc", false)
+		buttons = viewLogsBtn + "  " + cancelBtn
+	}
+
+	var actionsContent string
+	if hintsStr != "" {
+		buttonsWidth := lipgloss.Width(buttons)
+		hintsWidth := lipgloss.Width(hintsStr)
+		gapWidth := m.width - buttonsWidth - hintsWidth - 6
+		if gapWidth < 1 {
+			gapWidth = 1
 		}
+		actionsContent = lipgloss.JoinHorizontal(lipgloss.Top,
+			buttons,
+			lipgloss.NewStyle().Width(gapWidth).Render(""),
+			hintsStr,
+		)
+	} else {
+		actionsContent = buttons
 	}
 
-	hintsStr := components.TuiKeyHints(hints, 0)
-
-	buttonsWidth := lipgloss.Width(buttons)
-	hintsWidth := lipgloss.Width(hintsStr)
-	gapWidth := m.width - buttonsWidth - hintsWidth - 6
-	if gapWidth < 1 {
-		gapWidth = 1
+	borderColor := components.ColorBorder
+	if m.focused {
+		borderColor = components.ColorCyan
 	}
-
-	actionsContent := lipgloss.JoinHorizontal(lipgloss.Top,
-		buttons,
-		lipgloss.NewStyle().Width(gapWidth).Render(""),
-		hintsStr,
-	)
 
 	return lipgloss.NewStyle().
 		Border(components.BorderRounded).
-		BorderForeground(components.ColorBorder).
+		BorderForeground(borderColor).
 		Padding(0, 1).
 		Width(m.width).
 		Render(
