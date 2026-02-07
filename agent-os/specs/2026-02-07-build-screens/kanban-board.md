@@ -14,7 +14,7 @@
 | **Git Branch** | feature/build-screens |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | PR created - https://github.com/xbrock/rfz-dev-tui/pull/6 |
+| **Last Action** | PR #6 merged to master - https://github.com/xbrock/rfz-dev-tui/pull/6 |
 | **Next Action** | - |
 
 ---
@@ -102,6 +102,7 @@ None
 | 2026-02-07 | Story-998 | In Progress | Done | All 4 integration tests passed, all connections verified |
 | 2026-02-07 | Story-999 | Backlog | In Progress | Started Finalize PR |
 | 2026-02-07 | Story-999 | In Progress | Done | PR #6 created, test scenarios generated |
+| 2026-02-07 | - | - | - | PR #6 merged to master. Spec execution complete. |
 
 ---
 
