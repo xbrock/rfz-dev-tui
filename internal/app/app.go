@@ -9,6 +9,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 
 	"rfz-cli/internal/ui/components"
+	"rfz-cli/internal/ui/screens/placeholder"
 	"rfz-cli/internal/ui/screens/welcome"
 )
 
@@ -20,6 +21,17 @@ const (
 	focusContent                  // Content area is focused
 )
 
+// activeScreen identifies which screen is displayed in the content area.
+type activeScreen int
+
+const (
+	screenWelcome  activeScreen = iota // Welcome/Home screen
+	screenBuild                        // Build Components
+	screenLogs                         // View Logs
+	screenDiscover                     // Discover
+	screenConfig                       // Configuration
+)
+
 // Navigation panel width (fixed).
 const navWidth = 30
 
@@ -29,13 +41,13 @@ const (
 	minHeight = 24
 )
 
-// Screen indices for navigation items.
+// Navigation item indices (0-based for cursor positioning).
 const (
-	screenBuild  = 0
-	screenLogs   = 1
-	screenDiscover = 2
-	screenConfig = 3
-	screenExit   = 4
+	navBuild   = 0
+	navLogs    = 1
+	navDiscover = 2
+	navConfig  = 3
+	navExit    = 4
 )
 
 // navItems defines the navigation menu entries.
@@ -47,25 +59,43 @@ var navItems = []components.TuiNavItem{
 	{Label: "Exit", Number: 5, Shortcut: "q"},
 }
 
+// screenNames maps activeScreen to display name for the status bar.
+var screenNames = map[activeScreen]string{
+	screenBuild:    "Build Components",
+	screenLogs:     "View Logs",
+	screenDiscover: "Discover",
+	screenConfig:   "Configuration",
+}
+
 // Model is the top-level Bubble Tea model for the RFZ CLI application.
 type Model struct {
 	width       int
 	height      int
 	focus       focusArea
-	cursorIndex int // Navigation cursor position
-	activeIndex int // Currently active screen (-1 = welcome/home)
+	cursorIndex int          // Navigation cursor position
+	activeIndex int          // Active nav highlight (-1 = none/welcome)
+	screen      activeScreen // Currently displayed screen
 	currentTime time.Time
 
-	welcome welcome.Model
+	welcome  welcome.Model
+	phBuild  placeholder.Model
+	phLogs   placeholder.Model
+	phDisc   placeholder.Model
+	phConfig placeholder.Model
 }
 
 // New creates a new application model.
 func New() Model {
 	return Model{
 		cursorIndex: 0,
-		activeIndex: -1, // Welcome screen (no active nav item)
+		activeIndex: -1, // No active nav item on welcome
+		screen:      screenWelcome,
 		currentTime: time.Now(),
 		welcome:     welcome.New(0, 0),
+		phBuild:     placeholder.New("Build Components", 0, 0),
+		phLogs:      placeholder.New("View Logs", 0, 0),
+		phDisc:      placeholder.New("Discover", 0, 0),
+		phConfig:    placeholder.New("Configuration", 0, 0),
 	}
 }
 
@@ -89,7 +119,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
 		m.height = msg.Height
-		m.welcome = m.welcome.SetSize(m.contentWidth(), m.contentHeight())
+		cw, ch := m.contentWidth(), m.contentHeight()
+		m.welcome = m.welcome.SetSize(cw, ch)
+		m.phBuild = m.phBuild.SetSize(cw, ch)
+		m.phLogs = m.phLogs.SetSize(cw, ch)
+		m.phDisc = m.phDisc.SetSize(cw, ch)
+		m.phConfig = m.phConfig.SetSize(cw, ch)
 		return m, nil
 	case TickMsg:
 		m.currentTime = time.Time(msg)
@@ -98,40 +133,62 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+// navigateTo switches to the given screen and updates cursor/active state.
+func (m *Model) navigateTo(s activeScreen) {
+	m.screen = s
+	if s == screenWelcome {
+		m.activeIndex = -1
+	} else {
+		idx := int(s) - 1 // screenBuild=1 → navBuild=0, etc.
+		m.cursorIndex = idx
+		m.activeIndex = idx
+	}
+}
+
 // handleKey processes keyboard input.
 func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch msg.String() {
 	case "ctrl+c":
 		return m, tea.Quit
+
 	case "q":
 		if m.focus == focusNav {
 			return m, tea.Quit
 		}
+
+	case "esc":
+		if m.screen != screenWelcome {
+			m.navigateTo(screenWelcome)
+		}
+
 	case "up", "k":
-		if m.focus == focusNav && m.cursorIndex > 0 {
-			m.cursorIndex--
+		if m.focus == focusNav {
+			m.cursorIndex = (m.cursorIndex - 1 + len(navItems)) % len(navItems)
 		}
+
 	case "down", "j":
-		if m.focus == focusNav && m.cursorIndex < len(navItems)-1 {
-			m.cursorIndex++
+		if m.focus == focusNav {
+			m.cursorIndex = (m.cursorIndex + 1) % len(navItems)
 		}
+
 	case "1":
-		m.cursorIndex = screenBuild
+		m.navigateTo(screenBuild)
 	case "2":
-		m.cursorIndex = screenLogs
+		m.navigateTo(screenLogs)
 	case "3":
-		m.cursorIndex = screenDiscover
+		m.navigateTo(screenDiscover)
 	case "4":
-		m.cursorIndex = screenConfig
-	case "5":
-		m.cursorIndex = screenExit
+		m.navigateTo(screenConfig)
+
 	case "enter":
 		if m.focus == focusNav {
-			if m.cursorIndex == screenExit {
+			if m.cursorIndex == navExit {
 				return m, tea.Quit
 			}
-			m.activeIndex = m.cursorIndex
+			// Map nav index to screen: navBuild(0)→screenBuild(1), etc.
+			m.navigateTo(activeScreen(m.cursorIndex + 1))
 		}
+
 	case "tab":
 		if m.focus == focusNav {
 			m.focus = focusContent
@@ -235,7 +292,7 @@ func (m Model) viewNavigation(height int) string {
 		{Key: "\u2191/k", Label: "Up"},
 		{Key: "\u2193/j", Label: "Down"},
 		{Key: "Enter", Label: "Select"},
-		{Key: "1-5", Label: "Quick nav"},
+		{Key: "1-4", Label: "Quick nav"},
 	}, navWidth-4) // account for box border + padding
 
 	navContent := components.TuiNavigation(
@@ -295,15 +352,15 @@ func (m Model) viewContent(height int) string {
 	}
 
 	var contentBody string
-	switch m.activeIndex {
+	switch m.screen {
 	case screenBuild:
-		contentBody = placeholderScreen("Build Components")
+		contentBody = m.phBuild.View()
 	case screenLogs:
-		contentBody = placeholderScreen("View Logs")
+		contentBody = m.phLogs.View()
 	case screenDiscover:
-		contentBody = placeholderScreen("Discover")
+		contentBody = m.phDisc.View()
 	case screenConfig:
-		contentBody = placeholderScreen("Configuration")
+		contentBody = m.phConfig.View()
 	default:
 		contentBody = m.welcome.View()
 	}
@@ -323,28 +380,13 @@ func (m Model) viewContent(height int) string {
 	return boxStyle.Render(contentBody)
 }
 
-// placeholderScreen renders a placeholder title for screens not yet implemented.
-func placeholderScreen(title string) string {
-	return lipgloss.NewStyle().
-		Foreground(components.ColorTextSecondary).
-		Bold(true).
-		Render(title)
-}
-
 // viewStatusBar renders the bottom status bar.
 func (m Model) viewStatusBar() string {
 	// Determine context badge based on active screen
 	var contextBadge string
-	switch m.activeIndex {
-	case screenBuild:
-		contextBadge = "Build Components"
-	case screenLogs:
-		contextBadge = "View Logs"
-	case screenDiscover:
-		contextBadge = "Discover"
-	case screenConfig:
-		contextBadge = "Configuration"
-	default:
+	if name, ok := screenNames[m.screen]; ok {
+		contextBadge = name
+	} else {
 		contextBadge = navItems[m.cursorIndex].Label
 	}
 

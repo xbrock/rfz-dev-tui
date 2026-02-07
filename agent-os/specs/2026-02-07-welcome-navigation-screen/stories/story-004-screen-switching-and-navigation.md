@@ -5,6 +5,7 @@
 > Created: 2026-02-07
 > Last Updated: 2026-02-07
 
+**Status**: Done
 **Priority**: High
 **Type**: Frontend
 **Estimated Effort**: S
@@ -98,18 +99,18 @@ Scenario: Navigation-Cursor umwickelt am Ende
 
 ### Datei-Pruefungen
 
-- [ ] FILE_EXISTS: internal/ui/screens/placeholder/placeholder.go
+- [x] FILE_EXISTS: internal/ui/screens/placeholder/placeholder.go
 
 ### Inhalt-Pruefungen
 
-- [ ] CONTAINS: internal/ui/screens/placeholder/placeholder.go enthaelt "Coming Soon"
-- [ ] CONTAINS: internal/app/app.go enthaelt "activeScreen"
+- [x] CONTAINS: internal/ui/screens/placeholder/placeholder.go enthaelt "Coming Soon"
+- [x] CONTAINS: internal/app/app.go enthaelt "activeScreen"
 
 ### Funktions-Pruefungen
 
-- [ ] BUILD_PASS: `go build ./internal/ui/screens/placeholder/...`
-- [ ] BUILD_PASS: `go build ./internal/app/...`
-- [ ] LINT_PASS: `golangci-lint run ./internal/ui/screens/...`
+- [x] BUILD_PASS: `go build ./internal/ui/screens/placeholder/...`
+- [x] BUILD_PASS: `go build ./internal/app/...`
+- [x] LINT_PASS: `golangci-lint run ./internal/ui/screens/...`
 
 ---
 
@@ -146,18 +147,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Keyboard Routing korrekt (Global vs Panel vs Screen)
-- [ ] Fokus-Management implementiert (Tab wechselt Panels)
+- [x] Code implementiert und folgt Style Guide
+- [x] Keyboard Routing korrekt (Global vs Panel vs Screen)
+- [x] Fokus-Management implementiert (Tab wechselt Panels)
 
 #### Qualitaetssicherung
-- [ ] Alle Akzeptanzkriterien erfuellt
-- [ ] Build kompiliert ohne Fehler
-- [ ] Alle Platzhalter-Bildschirme korrekt angezeigt
+- [x] Alle Akzeptanzkriterien erfuellt
+- [x] Build kompiliert ohne Fehler
+- [x] Alle Platzhalter-Bildschirme korrekt angezeigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich (exit 0)
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich (exit 0)
 
 ---
 
