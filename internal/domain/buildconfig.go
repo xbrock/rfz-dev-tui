@@ -9,6 +9,7 @@ import (
 type MavenGoal string
 
 const (
+	GoalClean        MavenGoal = "clean"
 	GoalInstall      MavenGoal = "install"
 	GoalCleanInstall MavenGoal = "clean install"
 	GoalPackage      MavenGoal = "package"

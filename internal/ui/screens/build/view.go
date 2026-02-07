@@ -9,6 +9,8 @@ func (m Model) View() string {
 	switch m.phase {
 	case phaseSelecting:
 		return m.viewSelection()
+	case phaseConfiguring:
+		return m.viewConfig()
 	default:
 		return m.viewSelection()
 	}

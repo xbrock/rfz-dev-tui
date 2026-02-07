@@ -125,7 +125,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.height = msg.Height
 		cw, ch := m.contentWidth(), m.contentHeight()
 		m.welcome = m.welcome.SetSize(cw, ch)
-		m.build = m.build.SetSize(cw, ch)
+		m.build = m.build.SetSize(cw, ch).SetTermSize(msg.Width, msg.Height)
 		m.phLogs = m.phLogs.SetSize(cw, ch)
 		m.phDisc = m.phDisc.SetSize(cw, ch)
 		m.phConfig = m.phConfig.SetSize(cw, ch)
@@ -134,7 +134,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.currentTime = time.Time(msg)
 		return m, tickCmd()
 	case build.OpenConfigMsg:
-		// Build screen wants to open configuration (handled in BUILD-003)
+		m.build = m.build.OpenConfig(msg.Selected)
 		return m, nil
 	}
 	return m, nil
@@ -159,11 +159,20 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m.handleModalKey(msg)
 	}
 
+	// ctrl+c always quits
+	if msg.String() == "ctrl+c" {
+		return m, tea.Quit
+	}
+
+	// When build screen is configuring, it captures all input (Tab, Esc, etc.)
+	if m.screen == screenBuild && m.build.IsConfiguring() {
+		var cmd tea.Cmd
+		m.build, cmd = m.build.Update(msg)
+		return m, cmd
+	}
+
 	// Global keys that always work
 	switch msg.String() {
-	case "ctrl+c":
-		return m, tea.Quit
-
 	case "tab":
 		if m.focus == focusNav {
 			m.focus = focusContent
@@ -270,6 +279,11 @@ func (m Model) View() string {
 	// Modal overlays entire screen
 	if m.showModal {
 		return m.viewQuitModal()
+	}
+
+	// Build config modal overlays entire screen
+	if m.screen == screenBuild && m.build.IsConfiguring() {
+		return m.build.View()
 	}
 
 	header := m.viewHeader()
@@ -469,7 +483,16 @@ func (m Model) viewStatusBar() string {
 	modeBadge := "HOME"
 	var hints []components.KeyHint
 
-	if m.screen == screenBuild && m.focus == focusContent {
+	if m.screen == screenBuild && m.build.IsConfiguring() {
+		modeBadge = "CONFIG"
+		contextBadge = "Build Configuration"
+		hints = []components.KeyHint{
+			{Key: "Tab", Label: "Section"},
+			{Key: "\u2190\u2192", Label: "Select"},
+			{Key: "Enter", Label: "Confirm"},
+			{Key: "Esc", Label: "Cancel"},
+		}
+	} else if m.screen == screenBuild && m.focus == focusContent {
 		modeBadge = "SELECT"
 		contextBadge = m.build.CurrentItemLabel()
 		hints = []components.KeyHint{

@@ -8,6 +8,7 @@
 **Priority**: High
 **Type**: Frontend
 **Estimated Effort**: S
+**Status**: Done
 **Dependencies**: BUILD-002
 
 ---
