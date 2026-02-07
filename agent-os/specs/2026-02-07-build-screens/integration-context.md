@@ -14,6 +14,7 @@
 | BUILD-002 | Build Component Selection Screen with TuiList multi-select | `internal/ui/screens/build/` package created, app.go integrated |
 | BUILD-003 | Build Configuration Modal with TuiModal, TuiRadio, TuiCheckbox | `config.go` created, `model.go`/`update.go`/`view.go`/`app.go` modified |
 | BUILD-004 | Build Execution View with simulator, progress, status counters | `execution.go`/`simulator.go` created, `model.go`/`update.go`/`view.go`/`app.go` modified |
+| BUILD-005 | Golden file tests for all build UI states, test helpers | `teststate.go` created, `app_test.go` modified, 5 new golden files |
 
 ---
 
@@ -43,6 +44,8 @@
 - `internal/ui/screens/build/model.go` -> `build.BuildTickMsg` - Sent every 100ms during build execution
 - `internal/ui/screens/build/model.go` -> `build.BuildPhaseMsg{ComponentIndex, Phase}` - Phase transition message
 - `internal/ui/screens/build/model.go` -> `build.BuildCompleteMsg{}` - All components finished
+- `internal/ui/screens/build/teststate.go` -> `build.TestExecutingState(w, h, termW, termH)` - Deterministic executing state for golden file tests
+- `internal/ui/screens/build/teststate.go` -> `build.TestCompletedState(w, h, termW, termH)` - Deterministic completed state for golden file tests
 
 ### Types / Interfaces
 <!-- New type definitions -->
@@ -82,6 +85,8 @@
 - Build simulator has 20% chance of failure during Testing phase
 - Esc during execution cancels build (marks running/pending as failed), "n" after completion resets to selection
 - Execution view uses custom Lip Gloss table layout with TuiStatus badges, TuiProgress bars per row
+- Golden file tests cover 6 build UI states: selection (nav focus), content focused (SELECT), items selected, config modal, executing (BUILD), completed (DONE)
+- `build.TestExecutingState()` and `build.TestCompletedState()` provide deterministic models for golden tests (bypassing real-time simulator)
 
 ---
 
@@ -112,3 +117,10 @@
 | internal/ui/screens/build/update.go | Modified | BUILD-004 |
 | internal/ui/screens/build/view.go | Modified | BUILD-004 |
 | internal/app/app.go | Modified | BUILD-004 |
+| internal/ui/screens/build/teststate.go | Created | BUILD-005 |
+| internal/app/app_test.go | Modified | BUILD-005 |
+| internal/app/testdata/TestApp_BuildScreenContentFocused.golden | Created | BUILD-005 |
+| internal/app/testdata/TestApp_BuildScreenItemSelected.golden | Created | BUILD-005 |
+| internal/app/testdata/TestApp_BuildConfigModal.golden | Created | BUILD-005 |
+| internal/app/testdata/TestApp_BuildExecuting.golden | Created | BUILD-005 |
+| internal/app/testdata/TestApp_BuildCompleted.golden | Created | BUILD-005 |

@@ -14,7 +14,7 @@
 | **Git Branch** | feature/build-screens |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Completed BUILD-004 - self-review passed |
+| **Last Action** | Completed BUILD-005 - self-review passed |
 | **Next Action** | Execute next story |
 
 ---
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 8 |
-| **Completed** | 4 |
+| **Completed** | 5 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 4 |
+| **Backlog** | 3 |
 | **Blocked** | 0 |
 
 ---
@@ -43,7 +43,6 @@ None
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| BUILD-005 | App Integration & Screen Transitions | Frontend | BUILD-002, BUILD-003, BUILD-004 | Ready | S |
 | Story-997 | Code Review | System | Story 001-005 | Ready | 0 |
 | Story-998 | Integration Validation | System | Story-997 | Ready | 0 |
 | Story-999 | Finalize PR | System | Story-998 | Ready | 0 |
@@ -76,6 +75,7 @@ None
 | BUILD-002 | Build Component Selection Screen | Frontend | BUILD-001 | Ready | S |
 | BUILD-003 | Build Configuration Modal | Frontend | BUILD-002 | Ready | S |
 | BUILD-004 | Build Execution View | Frontend | BUILD-001, BUILD-003 | Ready | M |
+| BUILD-005 | App Integration & Screen Transitions | Frontend | BUILD-002, BUILD-003, BUILD-004 | Ready | S |
 
 ---
 
@@ -93,6 +93,8 @@ None
 | 2026-02-07 | BUILD-003 | In Progress | Done | Build Configuration Modal implemented, all tests pass |
 | 2026-02-07 | BUILD-004 | Backlog | In Progress | Started story execution |
 | 2026-02-07 | BUILD-004 | In Progress | Done | Build Execution View implemented, all checks pass |
+| 2026-02-07 | BUILD-005 | Backlog | In Progress | Started story execution |
+| 2026-02-07 | BUILD-005 | In Progress | Done | Golden file tests for all build UI states, all checks pass |
 
 ---
 
