@@ -9,6 +9,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 
 	"rfz-cli/internal/ui/components"
+	"rfz-cli/internal/ui/screens/welcome"
 )
 
 // Focus area within the application.
@@ -54,6 +55,8 @@ type Model struct {
 	cursorIndex int // Navigation cursor position
 	activeIndex int // Currently active screen (-1 = welcome/home)
 	currentTime time.Time
+
+	welcome welcome.Model
 }
 
 // New creates a new application model.
@@ -62,6 +65,7 @@ func New() Model {
 		cursorIndex: 0,
 		activeIndex: -1, // Welcome screen (no active nav item)
 		currentTime: time.Now(),
+		welcome:     welcome.New(0, 0),
 	}
 }
 
@@ -85,6 +89,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
 		m.height = msg.Height
+		m.welcome = m.welcome.SetSize(m.contentWidth(), m.contentHeight())
 		return m, nil
 	case TickMsg:
 		m.currentTime = time.Time(msg)
@@ -258,33 +263,50 @@ func (m Model) viewNavigation(height int) string {
 	return boxStyle.Render(navContent)
 }
 
-// viewContent renders the main content area (placeholder for screen content).
+// contentWidth returns the inner width available for content (excluding border/padding).
+func (m Model) contentWidth() int {
+	// Total width - nav - content box border (2) - content box padding (2)
+	w := m.width - navWidth - 4
+	if w < 1 {
+		w = 1
+	}
+	return w
+}
+
+// contentHeight returns the inner height available for content.
+func (m Model) contentHeight() int {
+	header := m.viewHeader()
+	statusBar := m.viewStatusBar()
+	headerHeight := lipgloss.Height(header)
+	statusBarHeight := lipgloss.Height(statusBar)
+	// Total height - header - statusbar - content box border (2)
+	h := m.height - headerHeight - statusBarHeight - 2
+	if h < 1 {
+		h = 1
+	}
+	return h
+}
+
+// viewContent renders the main content area.
 func (m Model) viewContent(height int) string {
 	contentWidth := m.width - navWidth
 	if contentWidth < 1 {
 		contentWidth = 1
 	}
 
-	// Placeholder content for the current screen
-	var screenTitle string
+	var contentBody string
 	switch m.activeIndex {
 	case screenBuild:
-		screenTitle = "Build Components"
+		contentBody = placeholderScreen("Build Components")
 	case screenLogs:
-		screenTitle = "View Logs"
+		contentBody = placeholderScreen("View Logs")
 	case screenDiscover:
-		screenTitle = "Discover"
+		contentBody = placeholderScreen("Discover")
 	case screenConfig:
-		screenTitle = "Configuration"
+		contentBody = placeholderScreen("Configuration")
 	default:
-		screenTitle = "Welcome"
+		contentBody = m.welcome.View()
 	}
-
-	titleStyle := lipgloss.NewStyle().
-		Foreground(components.ColorTextSecondary).
-		Bold(true)
-
-	contentBody := titleStyle.Render(screenTitle)
 
 	borderColor := components.ColorBorder
 	if m.focus == focusContent {
@@ -299,6 +321,14 @@ func (m Model) viewContent(height int) string {
 		Height(height - 2) // account for border top/bottom
 
 	return boxStyle.Render(contentBody)
+}
+
+// placeholderScreen renders a placeholder title for screens not yet implemented.
+func placeholderScreen(title string) string {
+	return lipgloss.NewStyle().
+		Foreground(components.ColorTextSecondary).
+		Bold(true).
+		Render(title)
 }
 
 // viewStatusBar renders the bottom status bar.
