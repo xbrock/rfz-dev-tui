@@ -11,6 +11,7 @@
 | Story | Summary | Key Changes |
 |-------|---------|-------------|
 | BUILD-001 | Domain model with components, build config, mock provider | `internal/domain/` package created |
+| BUILD-002 | Build Component Selection Screen with TuiList multi-select | `internal/ui/screens/build/` package created, app.go integrated |
 
 ---
 
@@ -18,7 +19,8 @@
 
 ### Components
 <!-- New UI components created -->
-_None yet_
+- `internal/ui/screens/build/model.go` -> `build.Model` - Build screen with component selection (New/SetSize/SetFocused/Init/Update/View)
+- `internal/ui/screens/build/model.go` -> `build.OpenConfigMsg{Selected []string}` - Message sent when user confirms selection
 
 ### Services
 <!-- New service classes/modules -->
@@ -26,7 +28,7 @@ _None yet_
 
 ### Hooks / Utilities
 <!-- New hooks, helpers, utilities -->
-_None yet_
+- `internal/ui/screens/build/model.go` -> `build.Model.CurrentItemLabel() string` - Returns label of cursor-focused component
 
 ### Types / Interfaces
 <!-- New type definitions -->
@@ -43,6 +45,11 @@ _None yet_
 ## Integration Notes
 
 <!-- Important integration information for subsequent stories -->
+- Import build screen: `import "rfz-cli/internal/ui/screens/build"`
+- Build screen delegates to parent via `build.OpenConfigMsg` when Enter is pressed with selections
+- Build screen has internal `buildPhase` state machine: selecting -> configuring -> executing -> completed
+- App.go handles focus delegation: Tab switches focus to content, then key events go to build.Update()
+- Status bar shows "SELECT" mode badge when build screen is content-focused
 - Import domain types: `import "rfz-cli/internal/domain"`
 - Use `domain.MockComponentProvider{}` to get components: `provider.Components()` returns `[]domain.Component`
 - Each `Component` has `.Name` (string) and `.Type` (ComponentType with `.String()` method)
@@ -60,3 +67,10 @@ _None yet_
 | internal/domain/buildconfig.go | Created | BUILD-001 |
 | internal/domain/mock_provider.go | Created | BUILD-001 |
 | internal/domain/domain_test.go | Created | BUILD-001 |
+| internal/ui/screens/build/model.go | Created | BUILD-002 |
+| internal/ui/screens/build/update.go | Created | BUILD-002 |
+| internal/ui/screens/build/view.go | Created | BUILD-002 |
+| internal/ui/screens/build/selection.go | Created | BUILD-002 |
+| internal/app/app.go | Modified | BUILD-002 |
+| internal/app/app_test.go | Modified | BUILD-002 |
+| internal/app/testdata/TestApp_BuildScreen.golden | Created | BUILD-002 |

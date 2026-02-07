@@ -69,7 +69,7 @@ func TestApp_NavExitFocused(t *testing.T) {
 	golden.RequireEqual(t, []byte(m.View()))
 }
 
-func TestApp_PlaceholderBuild(t *testing.T) {
+func TestApp_BuildScreen(t *testing.T) {
 	m := initModel(120, 40)
 	m = sendKey(m, "1") // Navigate to Build Components
 	golden.RequireEqual(t, []byte(m.View()))
