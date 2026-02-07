@@ -1,6 +1,6 @@
 # Story 999: Finalize PR
 
-**Status**: Pending
+**Status**: In Progress
 **Type**: System
 **Points**: 0
 **Dependencies**: Story 998
