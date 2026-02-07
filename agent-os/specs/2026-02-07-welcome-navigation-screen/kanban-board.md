@@ -7,14 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | 1-complete |
-| **Next Phase** | 2 - Git Worktree |
+| **Current Phase** | story-complete |
+| **Next Phase** | 3 - Execute Story |
 | **Spec Folder** | agent-os/specs/2026-02-07-welcome-navigation-screen |
-| **Worktree Path** | (pending) |
-| **Git Branch** | (pending) |
+| **Worktree Path** | (none) |
+| **Git Branch** | feature/welcome-navigation-screen |
+| **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Kanban board created |
-| **Next Action** | Setup git worktree |
+| **Last Action** | Completed WELCOME-001 - self-review passed |
+| **Next Action** | Execute next story |
 
 ---
 
@@ -23,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 9 |
-| **Completed** | 0 |
+| **Completed** | 1 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 9 |
+| **Backlog** | 8 |
 | **Blocked** | 0 |
 
 ---
@@ -47,7 +48,6 @@ No blocked stories.
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| WELCOME-001 | Entry Point & Demo Rename | Frontend | None | ✅ Ready | XS |
 | WELCOME-002 | App Shell Model with Layout | Frontend | WELCOME-001 | ✅ Ready | S |
 | WELCOME-003 | Welcome Screen | Frontend | WELCOME-002 | ✅ Ready | XS |
 | WELCOME-004 | Screen Switching & Navigation | Frontend | WELCOME-002 | ✅ Ready | S |
@@ -87,7 +87,9 @@ No stories in testing.
 
 <!-- Stories that are complete -->
 
-No stories completed yet.
+| Story ID | Title | Type | Dependencies | DoR Status | Points |
+|----------|-------|------|--------------|------------|--------|
+| WELCOME-001 | Entry Point & Demo Rename | Frontend | None | ✅ Ready | XS |
 
 ---
 
@@ -97,6 +99,8 @@ No stories completed yet.
 
 | Timestamp | Story | From | To | Notes |
 |-----------|-------|------|-----|-------|
+| 2026-02-07 | WELCOME-001 | In Progress | Done | Entry Point & Demo Rename completed - self-review passed |
+| 2026-02-07 | - | - | - | Phase 2 complete. Branch strategy: feature/welcome-navigation-screen |
 | 2026-02-07 | - | - | - | Board created. Initial kanban with 9 stories (6 feature + 3 system) |
 
 ---

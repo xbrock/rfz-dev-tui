@@ -61,20 +61,20 @@ Scenario: Beide Programme kompilieren ohne Fehler
 
 ### Datei-Pruefungen
 
-- [ ] FILE_EXISTS: cmd/rfz/main.go
-- [ ] FILE_EXISTS: cmd/rfz-components-demo/main.go
-- [ ] FILE_NOT_EXISTS: cmd/layout-demo/main.go
+- [x] FILE_EXISTS: cmd/rfz/main.go
+- [x] FILE_EXISTS: cmd/rfz-components-demo/main.go
+- [x] FILE_NOT_EXISTS: cmd/layout-demo/main.go
 
 ### Inhalt-Pruefungen
 
-- [ ] CONTAINS: cmd/rfz/main.go enthaelt "internal/app"
-- [ ] CONTAINS: cmd/rfz-components-demo/main.go enthaelt "demo.New()"
+- [x] CONTAINS: cmd/rfz/main.go enthaelt "internal/app"
+- [x] CONTAINS: cmd/rfz-components-demo/main.go enthaelt "demo.New()"
 
 ### Funktions-Pruefungen
 
-- [ ] BUILD_PASS: `go build ./cmd/rfz/...`
-- [ ] BUILD_PASS: `go build ./cmd/rfz-components-demo/...`
-- [ ] LINT_PASS: `golangci-lint run ./cmd/...`
+- [x] BUILD_PASS: `go build ./cmd/rfz/...`
+- [x] BUILD_PASS: `go build ./cmd/rfz-components-demo/...`
+- [x] LINT_PASS: `golangci-lint run ./cmd/...`
 
 ---
 
@@ -113,18 +113,18 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten
-- [ ] Security/Performance Anforderungen erfuellt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten
+- [x] Security/Performance Anforderungen erfuellt
 
 #### Qualitaetssicherung
-- [ ] Alle Akzeptanzkriterien erfuellt
-- [ ] Build kompiliert ohne Fehler
-- [ ] Code Review durchgefuehrt und genehmigt
+- [x] Alle Akzeptanzkriterien erfuellt
+- [x] Build kompiliert ohne Fehler
+- [x] Code Review durchgefuehrt und genehmigt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich (exit 0)
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich (exit 0)
 
 ---
 
