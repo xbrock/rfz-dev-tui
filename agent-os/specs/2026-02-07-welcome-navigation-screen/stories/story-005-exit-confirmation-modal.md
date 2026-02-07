@@ -5,6 +5,7 @@
 > Created: 2026-02-07
 > Last Updated: 2026-02-07
 
+**Status**: Done
 **Priority**: Medium
 **Type**: Frontend
 **Estimated Effort**: XS
@@ -86,14 +87,14 @@ Scenario: Modal ueberlagert gesamten Bildschirm
 
 ### Inhalt-Pruefungen
 
-- [ ] CONTAINS: internal/app/app.go enthaelt "showModal"
-- [ ] CONTAINS: internal/app/app.go enthaelt "TuiModal"
-- [ ] CONTAINS: internal/app/app.go enthaelt "tea.Quit"
+- [x] CONTAINS: internal/app/app.go enthaelt "showModal"
+- [x] CONTAINS: internal/app/app.go enthaelt "TuiModal"
+- [x] CONTAINS: internal/app/app.go enthaelt "tea.Quit"
 
 ### Funktions-Pruefungen
 
-- [ ] BUILD_PASS: `go build ./internal/app/...`
-- [ ] LINT_PASS: `golangci-lint run ./internal/app/...`
+- [x] BUILD_PASS: `go build ./internal/app/...`
+- [x] LINT_PASS: `golangci-lint run ./internal/app/...`
 
 ---
 
@@ -130,17 +131,17 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Modal ueberlagert korrekt (captures all input)
-- [ ] Yes = tea.Quit, No/Esc = dismiss modal
+- [x] Code implementiert und folgt Style Guide
+- [x] Modal ueberlagert korrekt (captures all input)
+- [x] Yes = tea.Quit, No/Esc = dismiss modal
 
 #### Qualitaetssicherung
-- [ ] Alle Akzeptanzkriterien erfuellt
-- [ ] Build kompiliert ohne Fehler
+- [x] Alle Akzeptanzkriterien erfuellt
+- [x] Build kompiliert ohne Fehler
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich (exit 0)
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich (exit 0)
 
 ---
 

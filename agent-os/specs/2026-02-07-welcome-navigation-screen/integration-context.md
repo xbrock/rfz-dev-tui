@@ -10,6 +10,7 @@
 
 | Story | Summary | Key Changes |
 |-------|---------|-------------|
+| WELCOME-005 | Exit confirmation modal with quit dialog | showModal/modalFocusIndex fields, handleModalKey(), viewQuitModal() |
 | WELCOME-004 | Screen switching, placeholder screens, focus management | New placeholder package, activeScreen enum, navigateTo(), cursor wrapping |
 | WELCOME-003 | Welcome Screen with ASCII art and badges | New welcome screen package, integrated into app shell content area |
 | WELCOME-002 | App Shell with full layout | Root Model with header, nav sidebar, content, statusbar, clock tick |
@@ -58,6 +59,11 @@ _None yet_
 - Number keys 1-4 directly navigate to screens, Esc returns to welcome
 - Cursor wraps around (down from Exit goes to Build, up from Build goes to Exit)
 - Welcome screen is initialized via `welcome.New(0, 0)`, resized via `SetSize()` on `WindowSizeMsg`
+- `app.Model` has `showModal` bool and `modalFocusIndex` int fields for quit confirmation modal
+- When `showModal` is true, all key input is captured by `handleModalKey()` (modal captures all input)
+- `q` key globally triggers quit modal (no longer direct quit), `ctrl+c` still immediately quits
+- Enter on Exit nav item also triggers quit modal instead of direct quit
+- Modal buttons: Yes (y shortcut) = tea.Quit, No (n/Esc) = dismiss modal
 - `app.Model` has helper methods `contentWidth()` and `contentHeight()` for inner content dimensions
 - Clock ticks every second via `tea.Every` → `TickMsg`
 - Terminal minimum size check: 80x24, shows warning if too small
@@ -79,3 +85,4 @@ _None yet_
 | internal/app/app.go | Modified | WELCOME-003 |
 | internal/ui/screens/placeholder/placeholder.go | Created | WELCOME-004 |
 | internal/app/app.go | Modified | WELCOME-004 |
+| internal/app/app.go | Modified | WELCOME-005 |

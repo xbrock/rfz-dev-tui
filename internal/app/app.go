@@ -77,6 +77,9 @@ type Model struct {
 	screen      activeScreen // Currently displayed screen
 	currentTime time.Time
 
+	showModal       bool // Whether the quit confirmation modal is visible
+	modalFocusIndex int  // Focused button in modal (0=Yes, 1=No)
+
 	welcome  welcome.Model
 	phBuild  placeholder.Model
 	phLogs   placeholder.Model
@@ -147,14 +150,19 @@ func (m *Model) navigateTo(s activeScreen) {
 
 // handleKey processes keyboard input.
 func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	// Modal captures all input when visible
+	if m.showModal {
+		return m.handleModalKey(msg)
+	}
+
 	switch msg.String() {
 	case "ctrl+c":
 		return m, tea.Quit
 
 	case "q":
-		if m.focus == focusNav {
-			return m, tea.Quit
-		}
+		m.showModal = true
+		m.modalFocusIndex = 1 // Default focus on "No" for safety
+		return m, nil
 
 	case "esc":
 		if m.screen != screenWelcome {
@@ -183,7 +191,9 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "enter":
 		if m.focus == focusNav {
 			if m.cursorIndex == navExit {
-				return m, tea.Quit
+				m.showModal = true
+				m.modalFocusIndex = 1 // Default focus on "No" for safety
+				return m, nil
 			}
 			// Map nav index to screen: navBuild(0)→screenBuild(1), etc.
 			m.navigateTo(activeScreen(m.cursorIndex + 1))
@@ -199,6 +209,27 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+// handleModalKey processes keyboard input when the quit confirmation modal is visible.
+func (m Model) handleModalKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	switch msg.String() {
+	case "ctrl+c":
+		return m, tea.Quit
+	case "y":
+		return m, tea.Quit
+	case "n", "esc":
+		m.showModal = false
+		return m, nil
+	case "left", "right", "tab":
+		m.modalFocusIndex = 1 - m.modalFocusIndex // Toggle between 0 and 1
+	case "enter":
+		if m.modalFocusIndex == 0 {
+			return m, tea.Quit
+		}
+		m.showModal = false
+	}
+	return m, nil
+}
+
 // View implements tea.Model.
 func (m Model) View() string {
 	if m.width == 0 || m.height == 0 {
@@ -208,6 +239,11 @@ func (m Model) View() string {
 	// Check minimum terminal size
 	if m.width < minWidth || m.height < minHeight {
 		return m.viewTooSmall()
+	}
+
+	// Modal overlays entire screen
+	if m.showModal {
+		return m.viewQuitModal()
 	}
 
 	header := m.viewHeader()
@@ -241,6 +277,20 @@ func (m Model) viewTooSmall() string {
 		AlignVertical(lipgloss.Center).
 		Height(m.height)
 	return style.Render(msg)
+}
+
+// viewQuitModal renders the quit confirmation modal overlay.
+func (m Model) viewQuitModal() string {
+	config := components.TuiModalConfig{
+		Title:   "Quit RFZ-CLI?",
+		Content: "Are you sure you want to quit?",
+		Buttons: []components.TuiModalButton{
+			{Label: "Yes", Variant: components.ButtonPrimary, Shortcut: "y"},
+			{Label: "No", Variant: components.ButtonSecondary, Shortcut: "n"},
+		},
+		FocusedIndex: m.modalFocusIndex,
+	}
+	return components.TuiModal(config, m.width, m.height)
 }
 
 // viewHeader renders the top header bar.
