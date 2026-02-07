@@ -10,6 +10,7 @@
 
 | Story | Summary | Key Changes |
 |-------|---------|-------------|
+| WELCOME-006 | Golden file visual regression tests for all 12 UI states | app_test.go, testdata/*.golden |
 | WELCOME-005 | Exit confirmation modal with quit dialog | showModal/modalFocusIndex fields, handleModalKey(), viewQuitModal() |
 | WELCOME-004 | Screen switching, placeholder screens, focus management | New placeholder package, activeScreen enum, navigateTo(), cursor wrapping |
 | WELCOME-003 | Welcome Screen with ASCII art and badges | New welcome screen package, integrated into app shell content area |
@@ -68,6 +69,9 @@ _None yet_
 - Clock ticks every second via `tea.Every` → `TickMsg`
 - Terminal minimum size check: 80x24, shows warning if too small
 - Module path: `rfz-cli`
+- Golden file tests use `fixedTime()` (2026-01-15 14:30:00 UTC) for deterministic clock output
+- Tests use `github.com/charmbracelet/x/exp/golden` with `-update` flag to regenerate golden files
+- 12 golden files cover: welcome-default, 5 nav-focus states, 4 placeholder screens, exit-modal, terminal-too-small
 
 ---
 
@@ -86,3 +90,5 @@ _None yet_
 | internal/ui/screens/placeholder/placeholder.go | Created | WELCOME-004 |
 | internal/app/app.go | Modified | WELCOME-004 |
 | internal/app/app.go | Modified | WELCOME-005 |
+| internal/app/app_test.go | Created | WELCOME-006 |
+| internal/app/testdata/*.golden | Created | WELCOME-006 |

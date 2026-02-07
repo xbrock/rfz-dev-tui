@@ -5,6 +5,7 @@
 > Created: 2026-02-07
 > Last Updated: 2026-02-07
 
+**Status**: Done
 **Priority**: High
 **Type**: Test
 **Estimated Effort**: S
@@ -93,12 +94,12 @@ Scenario: Golden File fuer zu kleines Terminal
 
 ### Datei-Pruefungen
 
-- [ ] FILE_EXISTS: internal/app/app_test.go
+- [x] FILE_EXISTS: internal/app/app_test.go
 
 ### Funktions-Pruefungen
 
-- [ ] TEST_PASS: `go test ./internal/app/... -count=1`
-- [ ] LINT_PASS: `golangci-lint run ./internal/app/...`
+- [x] TEST_PASS: `go test ./internal/app/... -count=1`
+- [x] LINT_PASS: `golangci-lint run ./internal/app/...`
 
 ---
 
@@ -135,16 +136,16 @@ None required.
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Golden File Tests fuer alle UI-Zustaende erstellt
-- [ ] Tests laufen bei 120x40 Terminal-Groesse
+- [x] Golden File Tests fuer alle UI-Zustaende erstellt
+- [x] Tests laufen bei 120x40 Terminal-Groesse
 
 #### Qualitaetssicherung
-- [ ] Alle Tests bestehen beim ersten Lauf
-- [ ] Golden Files eingecheckt
+- [x] Alle Tests bestehen beim ersten Lauf
+- [x] Golden Files eingecheckt
 
 #### Dokumentation
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich (exit 0)
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich (exit 0)
 
 ---
 
