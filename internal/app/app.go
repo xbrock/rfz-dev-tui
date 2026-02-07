@@ -9,6 +9,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 
 	"rfz-cli/internal/ui/components"
+	"rfz-cli/internal/ui/screens/build"
 	"rfz-cli/internal/ui/screens/placeholder"
 	"rfz-cli/internal/ui/screens/welcome"
 )
@@ -80,9 +81,9 @@ type Model struct {
 	showModal       bool // Whether the quit confirmation modal is visible
 	modalFocusIndex int  // Focused button in modal (0=Yes, 1=No)
 
-	welcome  welcome.Model
-	phBuild  placeholder.Model
-	phLogs   placeholder.Model
+	welcome welcome.Model
+	build   build.Model
+	phLogs  placeholder.Model
 	phDisc   placeholder.Model
 	phConfig placeholder.Model
 }
@@ -94,8 +95,8 @@ func New() Model {
 		activeIndex: -1, // No active nav item on welcome
 		screen:      screenWelcome,
 		currentTime: time.Now(),
-		welcome:     welcome.New(0, 0),
-		phBuild:     placeholder.New("Build Components", 0, 0),
+		welcome: welcome.New(0, 0),
+		build:   build.New(0, 0),
 		phLogs:      placeholder.New("View Logs", 0, 0),
 		phDisc:      placeholder.New("Discover", 0, 0),
 		phConfig:    placeholder.New("Configuration", 0, 0),
@@ -124,7 +125,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.height = msg.Height
 		cw, ch := m.contentWidth(), m.contentHeight()
 		m.welcome = m.welcome.SetSize(cw, ch)
-		m.phBuild = m.phBuild.SetSize(cw, ch)
+		m.build = m.build.SetSize(cw, ch).SetTermSize(msg.Width, msg.Height)
 		m.phLogs = m.phLogs.SetSize(cw, ch)
 		m.phDisc = m.phDisc.SetSize(cw, ch)
 		m.phConfig = m.phConfig.SetSize(cw, ch)
@@ -132,6 +133,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case TickMsg:
 		m.currentTime = time.Time(msg)
 		return m, tickCmd()
+	case build.OpenConfigMsg:
+		m.build = m.build.OpenConfig(msg.Selected)
+		return m, nil
+
+	case build.StartBuildMsg, build.BuildTickMsg, build.BuildPhaseMsg, build.BuildCompleteMsg:
+		var cmd tea.Cmd
+		m.build, cmd = m.build.Update(msg)
+		return m, cmd
 	}
 	return m, nil
 }
@@ -155,19 +164,57 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m.handleModalKey(msg)
 	}
 
-	switch msg.String() {
-	case "ctrl+c":
+	// ctrl+c always quits
+	if msg.String() == "ctrl+c" {
 		return m, tea.Quit
+	}
 
-	case "q":
-		m.showModal = true
-		m.modalFocusIndex = 1 // Default focus on "No" for safety
+	// When build screen is configuring or executing, it captures all input (Tab, Esc, etc.)
+	if m.screen == screenBuild && (m.build.IsConfiguring() || m.build.IsExecuting() || m.build.IsCompleted()) {
+		var cmd tea.Cmd
+		m.build, cmd = m.build.Update(msg)
+		return m, cmd
+	}
+
+	// Global keys that always work
+	switch msg.String() {
+	case "tab":
+		if m.focus == focusNav {
+			m.focus = focusContent
+			m.build = m.build.SetFocused(m.screen == screenBuild)
+		} else {
+			m.focus = focusNav
+			m.build = m.build.SetFocused(false)
+		}
 		return m, nil
 
 	case "esc":
 		if m.screen != screenWelcome {
 			m.navigateTo(screenWelcome)
+			m.build = m.build.SetFocused(false)
 		}
+		return m, nil
+	}
+
+	// Delegate to content screen when focused
+	if m.focus == focusContent && m.screen == screenBuild {
+		// q in content focus should not trigger quit modal for build screen
+		if msg.String() == "q" {
+			m.showModal = true
+			m.modalFocusIndex = 1
+			return m, nil
+		}
+		var cmd tea.Cmd
+		m.build, cmd = m.build.Update(msg)
+		return m, cmd
+	}
+
+	// Navigation-focused keys
+	switch msg.String() {
+	case "q":
+		m.showModal = true
+		m.modalFocusIndex = 1 // Default focus on "No" for safety
+		return m, nil
 
 	case "up", "k":
 		if m.focus == focusNav {
@@ -197,13 +244,6 @@ func (m Model) handleKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			}
 			// Map nav index to screen: navBuild(0)→screenBuild(1), etc.
 			m.navigateTo(activeScreen(m.cursorIndex + 1))
-		}
-
-	case "tab":
-		if m.focus == focusNav {
-			m.focus = focusContent
-		} else {
-			m.focus = focusNav
 		}
 	}
 	return m, nil
@@ -244,6 +284,11 @@ func (m Model) View() string {
 	// Modal overlays entire screen
 	if m.showModal {
 		return m.viewQuitModal()
+	}
+
+	// Build config modal overlays entire screen
+	if m.screen == screenBuild && m.build.IsConfiguring() {
+		return m.build.View()
 	}
 
 	header := m.viewHeader()
@@ -404,7 +449,7 @@ func (m Model) viewContent(height int) string {
 	var contentBody string
 	switch m.screen {
 	case screenBuild:
-		contentBody = m.phBuild.View()
+		contentBody = m.build.View()
 	case screenLogs:
 		contentBody = m.phLogs.View()
 	case screenDiscover:
@@ -440,17 +485,56 @@ func (m Model) viewStatusBar() string {
 		contextBadge = navItems[m.cursorIndex].Label
 	}
 
-	return components.TuiStatusBar(components.TuiStatusBarConfig{
-		ModeBadge:      "HOME",
-		ModeBadgeColor: components.ColorCyan,
-		ContextBadge:   contextBadge,
-		Hints: []components.KeyHint{
+	modeBadge := "HOME"
+	var hints []components.KeyHint
+
+	if m.screen == screenBuild && m.build.IsConfiguring() {
+		modeBadge = "CONFIG"
+		contextBadge = "Build Configuration"
+		hints = []components.KeyHint{
+			{Key: "Tab", Label: "Section"},
+			{Key: "\u2190\u2192", Label: "Select"},
+			{Key: "Enter", Label: "Confirm"},
+			{Key: "Esc", Label: "Cancel"},
+		}
+	} else if m.screen == screenBuild && m.build.IsExecuting() {
+		modeBadge = "BUILD"
+		contextBadge = "Build Running"
+		hints = []components.KeyHint{
+			{Key: "\u2191\u2193", Label: "Navigate"},
+			{Key: "Esc", Label: "Cancel"},
+		}
+	} else if m.screen == screenBuild && m.build.IsCompleted() {
+		modeBadge = "DONE"
+		contextBadge = "Build Complete"
+		hints = []components.KeyHint{
+			{Key: "n", Label: "New Build"},
+			{Key: "\u2191\u2193", Label: "Navigate"},
+		}
+	} else if m.screen == screenBuild && m.focus == focusContent {
+		modeBadge = "SELECT"
+		contextBadge = m.build.CurrentItemLabel()
+		hints = []components.KeyHint{
 			{Key: "Tab", Label: "Focus"},
 			{Key: "\u2191\u2193", Label: "Nav"},
 			{Key: "Enter", Label: "Select"},
 			{Key: "Esc", Label: "Back"},
-		},
-		QuitHint: &components.KeyHint{Key: "q", Label: "Quit"},
-		Width:    m.width,
+		}
+	} else {
+		hints = []components.KeyHint{
+			{Key: "Tab", Label: "Focus"},
+			{Key: "\u2191\u2193", Label: "Nav"},
+			{Key: "Enter", Label: "Select"},
+			{Key: "Esc", Label: "Back"},
+		}
+	}
+
+	return components.TuiStatusBar(components.TuiStatusBarConfig{
+		ModeBadge:      modeBadge,
+		ModeBadgeColor: components.ColorCyan,
+		ContextBadge:   contextBadge,
+		Hints:          hints,
+		QuitHint:       &components.KeyHint{Key: "q", Label: "Quit"},
+		Width:          m.width,
 	})
 }

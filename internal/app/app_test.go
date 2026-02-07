@@ -6,6 +6,8 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/x/exp/golden"
+
+	"rfz-cli/internal/ui/screens/build"
 )
 
 // fixedTime returns a deterministic time for golden file tests.
@@ -26,6 +28,20 @@ func initModel(width, height int) Model {
 func sendKey(m Model, key string) Model {
 	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune(key)})
 	return updated.(Model)
+}
+
+// sendKeyWithCmd sends a key message and processes the returned command (one level).
+func sendKeyWithCmd(m Model, key string) Model {
+	updated, cmd := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune(key)})
+	m = updated.(Model)
+	if cmd != nil {
+		msg := cmd()
+		if msg != nil {
+			updated, _ = m.Update(msg)
+			m = updated.(Model)
+		}
+	}
+	return m
 }
 
 func TestApp_WelcomeDefault(t *testing.T) {
@@ -69,7 +85,7 @@ func TestApp_NavExitFocused(t *testing.T) {
 	golden.RequireEqual(t, []byte(m.View()))
 }
 
-func TestApp_PlaceholderBuild(t *testing.T) {
+func TestApp_BuildScreen(t *testing.T) {
 	m := initModel(120, 40)
 	m = sendKey(m, "1") // Navigate to Build Components
 	golden.RequireEqual(t, []byte(m.View()))
@@ -101,5 +117,49 @@ func TestApp_ExitModal(t *testing.T) {
 
 func TestApp_TerminalTooSmall(t *testing.T) {
 	m := initModel(60, 15)
+	golden.RequireEqual(t, []byte(m.View()))
+}
+
+func TestApp_BuildScreenContentFocused(t *testing.T) {
+	m := initModel(120, 40)
+	m = sendKey(m, "1")   // Navigate to Build Components
+	m = sendKey(m, "tab") // Focus content area (SELECT mode)
+	golden.RequireEqual(t, []byte(m.View()))
+}
+
+func TestApp_BuildScreenItemSelected(t *testing.T) {
+	m := initModel(120, 40)
+	m = sendKey(m, "1")   // Navigate to Build Components
+	m = sendKey(m, "tab") // Focus content area
+	m = sendKey(m, " ")   // Select first item (boss)
+	m = sendKey(m, "j")   // Move down
+	m = sendKey(m, " ")   // Select second item
+	golden.RequireEqual(t, []byte(m.View()))
+}
+
+func TestApp_BuildConfigModal(t *testing.T) {
+	m := initModel(120, 40)
+	m = sendKey(m, "1")        // Navigate to Build Components
+	m = sendKey(m, "tab")      // Focus content area
+	m = sendKey(m, "a")        // Select all components
+	m = sendKeyWithCmd(m, "enter") // Open config modal (processes OpenConfigMsg)
+	golden.RequireEqual(t, []byte(m.View()))
+}
+
+func TestApp_BuildExecuting(t *testing.T) {
+	m := initModel(120, 40)
+	// Replace build model with deterministic executing state
+	m.build = build.TestExecutingState(m.contentWidth(), m.contentHeight(), 120, 40)
+	m.screen = screenBuild
+	m.activeIndex = navBuild
+	golden.RequireEqual(t, []byte(m.View()))
+}
+
+func TestApp_BuildCompleted(t *testing.T) {
+	m := initModel(120, 40)
+	// Replace build model with deterministic completed state
+	m.build = build.TestCompletedState(m.contentWidth(), m.contentHeight(), 120, 40)
+	m.screen = screenBuild
+	m.activeIndex = navBuild
 	golden.RequireEqual(t, []byte(m.View()))
 }
