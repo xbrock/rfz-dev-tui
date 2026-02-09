@@ -14,8 +14,8 @@
 | **Git Branch** | bugfix/layout-matching-design |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Completed LAYOUT-997 Code Review - no critical issues |
-| **Next Action** | Execute LAYOUT-998 Integration Validation |
+| **Last Action** | Completed LAYOUT-998 Integration Validation - all passed |
+| **Next Action** | Execute LAYOUT-999 Finalize PR |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 11 |
-| **Completed** | 9 |
+| **Completed** | 10 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 2 |
+| **Backlog** | 1 |
 
 | **Blocked** | 0 |
 
@@ -49,7 +49,6 @@ _None - all stories have complete DoR_
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-998 | Integration Validation | System/Integration | LAYOUT-997 | ✅ Ready | - |
 | LAYOUT-999 | Finalize PR | System/Finalization | LAYOUT-998 | ✅ Ready | - |
 
 ---
@@ -93,6 +92,7 @@ _None_
 | LAYOUT-006 | Fix Config Modal Styling | Frontend | 2026-02-09 |
 | LAYOUT-007 | Fix Build Execution View | Frontend | 2026-02-09 |
 | LAYOUT-997 | Code Review | System/Review | 2026-02-09 |
+| LAYOUT-998 | Integration Validation | System/Integration | 2026-02-09 |
 
 ---
 
@@ -121,6 +121,7 @@ _None_
 | 2026-02-09 | LAYOUT-007 | Backlog | In Progress | Started execution |
 | 2026-02-09 | LAYOUT-007 | In Progress | Done | Tree icons, braille progress bars, block overall progress, full-width columns, badge cleanup |
 | 2026-02-09 | LAYOUT-997 | Backlog | Done | Code review passed - 0 critical, 0 major, 1 minor issue |
+| 2026-02-09 | LAYOUT-998 | Backlog | Done | Integration validation passed: build OK, lint 0 issues, tests OK (golden files updated) |
 
 ---
 
