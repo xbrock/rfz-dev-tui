@@ -11,9 +11,19 @@ import (
 	"rfz-cli/internal/ui/components"
 )
 
+// execBoxWidth returns the Width value for bordered boxes so visual width = m.width.
+func (m Model) execBoxWidth() int {
+	w := m.width - 2 // subtract border (left+right)
+	if w < 1 {
+		w = 1
+	}
+	return w
+}
+
 // viewExecution renders the build execution phase.
 func (m Model) viewExecution() string {
 	title := components.StyleH2.Render("Build")
+	boxWidth := m.execBoxWidth()
 
 	// Build Execution box: command preview
 	cmdLine := components.StylePrompt.Render("$") + " " +
@@ -23,7 +33,7 @@ func (m Model) viewExecution() string {
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorBorder).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Build Execution") + "\n" +
 				cmdLine,
@@ -56,35 +66,45 @@ func (m Model) viewComponentTable() string {
 		return ""
 	}
 
-	// Column widths
+	boxWidth := m.execBoxWidth()
+	// Inner content width = boxWidth - 2 (padding left+right)
+	innerWidth := boxWidth - 2
+
+	// Fixed column widths; name gets the remaining space
+	const prefixWidth = 3 // "├─ " or "> " padded to 3
 	colStatus := 4
-	colName := 20
-	colPhase := 12
-	colProgress := 22
-	colTime := 8
+	colPhase := 14
+	colProgress := 16
+	colTime := 6
+	colName := innerWidth - prefixWidth - colStatus - colPhase - colProgress - colTime
+	if colName < 10 {
+		colName = 10
+	}
 
 	headerStyle := lipgloss.NewStyle().
 		Bold(true).
 		Foreground(components.ColorTextSecondary)
 
-	// Use padding to account for the tree-branch prefix width (4 chars: "├── " or ">   ")
-	headerPad := "    "
+	// Header with prefix-width padding to align with tree content
+	headerPad := strings.Repeat(" ", prefixWidth)
 	header := headerPad + lipgloss.JoinHorizontal(lipgloss.Top,
 		headerStyle.Width(colStatus).Render("St"),
 		headerStyle.Width(colName).Render("Component"),
-		headerStyle.Width(colPhase).Render("Phase"),
-		headerStyle.Width(colProgress).Render("Progress"),
-		headerStyle.Width(colTime).Render("Time"),
+		headerStyle.Width(colPhase).Align(lipgloss.Right).Render("Phase"),
+		headerStyle.Width(colProgress).Align(lipgloss.Right).Render("Progress"),
+		headerStyle.Width(colTime).Align(lipgloss.Right).Render("Time"),
 	)
 
-	divider := components.TuiDivider(components.DividerSingle, colStatus+colName+colPhase+colProgress+colTime+4)
+	divider := components.TuiDivider(components.DividerSingle, innerWidth)
 
 	var rows []string
 	rows = append(rows, header)
 	rows = append(rows, divider)
 
+	lastIdx := len(m.buildStates) - 1
 	for i, state := range m.buildStates {
-		row := m.viewComponentRow(i, state, colStatus, colName, colPhase, colProgress, colTime)
+		isLast := i == lastIdx
+		row := m.viewComponentRow(i, state, colStatus, colName, colPhase, colProgress, colTime, isLast, innerWidth)
 		rows = append(rows, row)
 	}
 
@@ -94,7 +114,7 @@ func (m Model) viewComponentTable() string {
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorCyan).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Components") + "\n" +
 				tableContent,
@@ -106,6 +126,8 @@ func (m Model) viewComponentRow(
 	idx int,
 	state componentBuildState,
 	colStatus, colName, colPhase, colProgress, colTime int,
+	isLast bool,
+	totalWidth int,
 ) string {
 	isFocused := idx == m.buildCursor
 
@@ -120,38 +142,21 @@ func (m Model) viewComponentRow(
 		Foreground(components.ColorTextPrimary).
 		Render(state.Name)
 
-	// Phase
+	// Phase (right-aligned)
 	phaseCell := lipgloss.NewStyle().
 		Width(colPhase).
+		Align(lipgloss.Right).
 		Foreground(phaseColor(state.Phase)).
 		Render(state.Phase.String())
 
-	// Progress bar (inline)
-	var progressCell string
-	switch state.Phase {
-	case domain.PhasePending:
-		progressCell = lipgloss.NewStyle().
-			Width(colProgress).
-			Foreground(components.ColorTextMuted).
-			Render("waiting...")
-	case domain.PhaseDone:
-		progressCell = lipgloss.NewStyle().
-			Width(colProgress).
-			Foreground(components.ColorGreen).
-			Render("complete")
-	case domain.PhaseFailed:
-		progressCell = lipgloss.NewStyle().
-			Width(colProgress).
-			Foreground(components.ColorDestructive).
-			Render("failed")
-	default:
-		progressCell = components.TuiProgress(state.Progress, colProgress-6, false)
-	}
+	// Progress bar (braille blocks with color)
+	progressCell := m.renderBrailleProgress(state, colProgress)
 
-	// Elapsed time
+	// Elapsed time (right-aligned)
 	elapsed := formatDuration(state.Elapsed)
 	timeCell := lipgloss.NewStyle().
 		Width(colTime).
+		Align(lipgloss.Right).
 		Foreground(components.ColorTextSecondary).
 		Render(elapsed)
 
@@ -165,27 +170,92 @@ func (m Model) viewComponentRow(
 
 	// Tree-branch prefix and highlight
 	if isFocused {
-		totalWidth := colStatus + colName + colPhase + colProgress + colTime + 4
 		return lipgloss.NewStyle().
 			Background(components.ColorCyan).
 			Foreground(components.ColorBackground).
 			Width(totalWidth).
-			Render("> " + "  " + rowCells)
+			Render("> " + " " + rowCells)
 	}
 
-	return "├── " + rowCells
+	// Tree prefix: ├─ for non-last, └─ for last
+	prefix := "├─ "
+	if isLast {
+		prefix = "└─ "
+	}
+
+	return prefix + rowCells
+}
+
+// renderBrailleProgress renders a braille-block progress bar for a component.
+func (m Model) renderBrailleProgress(state componentBuildState, width int) string {
+	barWidth := width - 2 // leave margin
+	if barWidth < 4 {
+		barWidth = 4
+	}
+
+	switch state.Phase {
+	case domain.PhasePending:
+		// Dots pattern for pending
+		dots := strings.Repeat("·", barWidth)
+		return lipgloss.NewStyle().
+			Width(width).
+			Align(lipgloss.Right).
+			Foreground(components.ColorTextMuted).
+			Render(dots)
+	case domain.PhaseDone:
+		// Full braille blocks in green
+		blocks := strings.Repeat("⣿", barWidth)
+		return lipgloss.NewStyle().
+			Width(width).
+			Align(lipgloss.Right).
+			Foreground(components.ColorGreen).
+			Render(blocks)
+	case domain.PhaseFailed:
+		// Partial braille blocks in red
+		filled := int(float64(barWidth) * state.Progress)
+		blocks := strings.Repeat("⣿", filled) + strings.Repeat("·", barWidth-filled)
+		return lipgloss.NewStyle().
+			Width(width).
+			Align(lipgloss.Right).
+			Foreground(components.ColorDestructive).
+			Render(blocks)
+	default:
+		// Running: braille blocks in cyan
+		filled := int(float64(barWidth) * state.Progress)
+		if filled < 1 && state.Progress > 0 {
+			filled = 1
+		}
+		empty := barWidth - filled
+		filledStr := lipgloss.NewStyle().Foreground(components.ColorCyan).Render(strings.Repeat("⣿", filled))
+		emptyStr := lipgloss.NewStyle().Foreground(components.ColorTextMuted).Render(strings.Repeat("·", empty))
+		return lipgloss.NewStyle().
+			Width(width).
+			Align(lipgloss.Right).
+			Render(filledStr + emptyStr)
+	}
 }
 
 // viewProgressBox renders the progress section with overall bar and status counters in a bordered box.
 func (m Model) viewProgressBox() string {
-	progress := m.overallProgress()
+	prog := m.overallProgress()
+	boxWidth := m.execBoxWidth()
 
 	label := lipgloss.NewStyle().
 		Foreground(components.ColorTextSecondary).
 		Bold(true).
 		Render("Overall:")
 
-	bar := components.TuiProgress(progress, m.width-30, true)
+	// Block-style overall progress bar (█ filled, ░ empty)
+	barWidth := boxWidth - 30 // account for label + percentage + padding
+	if barWidth < 10 {
+		barWidth = 10
+	}
+	filled := int(float64(barWidth) * prog)
+	empty := barWidth - filled
+	filledStr := lipgloss.NewStyle().Foreground(components.ColorCyan).Render(strings.Repeat("█", filled))
+	emptyStr := lipgloss.NewStyle().Foreground(components.ColorTextMuted).Render(strings.Repeat("░", empty))
+	percentStr := lipgloss.NewStyle().Foreground(components.ColorTextSecondary).Render(fmt.Sprintf(" %3.0f%%", prog*100))
+	bar := filledStr + emptyStr + percentStr
 
 	progressLine := label + "  " + bar
 	counters := m.viewStatusCounters()
@@ -195,23 +265,19 @@ func (m Model) viewProgressBox() string {
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorBorder).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Progress") + "\n" +
 				content,
 		)
 }
 
-// viewStatusCounters renders the running/success/failed/pending counters as colored pill badges.
+// viewStatusCounters renders the success/failed/pending counters as colored pill badges.
+// Running badge is omitted per design. Pending is hidden when count is 0.
 func (m Model) viewStatusCounters() string {
-	running, success, failed, pending := m.statusCounts()
+	_, success, failed, pending := m.statusCounts()
 
-	runningBadge := lipgloss.NewStyle().
-		Background(components.ColorCyan).
-		Foreground(components.ColorBackground).
-		Bold(true).
-		Padding(0, 1).
-		Render(fmt.Sprintf("● Running: %d", running))
+	var badges []string
 
 	successBadge := lipgloss.NewStyle().
 		Background(components.ColorGreen).
@@ -219,6 +285,7 @@ func (m Model) viewStatusCounters() string {
 		Bold(true).
 		Padding(0, 1).
 		Render(fmt.Sprintf("✓ Success: %d", success))
+	badges = append(badges, successBadge)
 
 	failedBadge := lipgloss.NewStyle().
 		Background(components.ColorDestructive).
@@ -226,15 +293,18 @@ func (m Model) viewStatusCounters() string {
 		Bold(true).
 		Padding(0, 1).
 		Render(fmt.Sprintf("✗ Failed: %d", failed))
+	badges = append(badges, failedBadge)
 
-	pendingBadge := lipgloss.NewStyle().
-		Background(components.ColorSecondary).
-		Foreground(components.ColorTextPrimary).
-		Padding(0, 1).
-		Render(fmt.Sprintf("○ Pending: %d", pending))
+	if pending > 0 {
+		pendingBadge := lipgloss.NewStyle().
+			Background(components.ColorSecondary).
+			Foreground(components.ColorTextPrimary).
+			Padding(0, 1).
+			Render(fmt.Sprintf("○ Pending: %d", pending))
+		badges = append(badges, pendingBadge)
+	}
 
-	return lipgloss.JoinHorizontal(lipgloss.Top,
-		runningBadge, "  ", successBadge, "  ", failedBadge, "  ", pendingBadge)
+	return strings.Join(badges, "  ")
 }
 
 // viewExecutionActions renders the action buttons during/after build execution.
@@ -258,11 +328,14 @@ func (m Model) viewExecutionActions() string {
 		buttons = viewLogsBtn + "  " + cancelBtn
 	}
 
+	boxWidth := m.execBoxWidth()
+	actInnerWidth := boxWidth - 2 // subtract padding
+
 	var actionsContent string
 	if hintsStr != "" {
 		buttonsWidth := lipgloss.Width(buttons)
 		hintsWidth := lipgloss.Width(hintsStr)
-		gapWidth := m.width - buttonsWidth - hintsWidth - 6
+		gapWidth := actInnerWidth - buttonsWidth - hintsWidth
 		if gapWidth < 1 {
 			gapWidth = 1
 		}
@@ -284,7 +357,7 @@ func (m Model) viewExecutionActions() string {
 		Border(components.BorderRounded).
 		BorderForeground(borderColor).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Actions") + "\n" +
 				actionsContent,

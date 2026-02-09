@@ -69,9 +69,9 @@ func (m Model) View() string {
 	}
 
 	logo := m.renderLogo()
-	subtitle := components.StyleHeaderSubtitle.Render("Terminal Orchestration Tool")
+	subtitle := lipgloss.NewStyle().Foreground(components.ColorTextPrimary).Render("Terminal Orchestration Tool")
 	tagline := components.StyleTagline.Render(`"First, solve the problem. Then, write the code."`)
-	divider := components.TuiDivider(components.DividerSingle, 40)
+	divider := lipgloss.NewStyle().Foreground(components.ColorTextMuted).Render(strings.Repeat("⣿", 30))
 	badges := m.renderBadges()
 	status := m.renderStatus()
 	hints := m.renderHints()
@@ -111,10 +111,20 @@ func (m Model) renderLogo() string {
 // renderBadges builds the version, org, and info badge row.
 func (m Model) renderBadges() string {
 	version := components.StyleBadgeVersion.Render("v1.0.0")
-	org := components.StyleBody.Render("  Deutsche Bahn  ")
-	info := components.StyleBadgeInfo.Render("Internal Tool")
 
-	return lipgloss.JoinHorizontal(lipgloss.Center, version, org, info)
+	org := lipgloss.NewStyle().
+		Background(components.ColorSecondary).
+		Foreground(components.ColorTextPrimary).
+		Padding(0, 1).
+		Render("Deutsche Bahn")
+
+	info := lipgloss.NewStyle().
+		Background(lipgloss.Color("#164e63")).
+		Foreground(components.ColorTextPrimary).
+		Padding(0, 1).
+		Render("Internal Tool")
+
+	return lipgloss.JoinHorizontal(lipgloss.Center, version, " ", org, " ", info)
 }
 
 // renderStatus builds the readiness status line.
@@ -133,23 +143,9 @@ func (m Model) renderStatus() string {
 
 // renderHints builds the keyboard hints block.
 func (m Model) renderHints() string {
-	hintStyle := lipgloss.NewStyle().Foreground(components.ColorTextMuted)
-	keyStyle := lipgloss.NewStyle().Foreground(components.ColorCyan).Bold(true)
-
-	hints := []struct {
-		key   string
-		label string
-	}{
-		{"\u2191\u2193/jk", "navigate"},
-		{"Enter", "select"},
-		{"q", "quit"},
-	}
-
-	var lines []string
-	for _, h := range hints {
-		line := hintStyle.Render("  ── ") + keyStyle.Render(h.key) + hintStyle.Render(" "+h.label)
-		lines = append(lines, line)
-	}
-
-	return strings.Join(lines, "\n")
+	return components.TuiKeyHintsTree([]components.KeyHint{
+		{Key: "↑↓/jk", Label: "navigate"},
+		{Key: "Enter", Label: "select"},
+		{Key: "q", Label: "quit"},
+	})
 }

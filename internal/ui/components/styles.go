@@ -31,6 +31,9 @@ var (
 	// ColorCyan is the primary focus/interactive color
 	ColorCyan = lipgloss.Color("#0891b2")
 
+	// ColorNavActiveBg is the light blue background for active navigation items
+	ColorNavActiveBg = lipgloss.Color("#164e63")
+
 	// ColorGreen is for success states
 	ColorGreen = lipgloss.Color("#22c55e")
 
@@ -84,6 +87,10 @@ const (
 	// Radio symbols (charm-style circle)
 	SymbolRadioUnselected = "◯" // U+25EF Large Circle
 	SymbolRadioSelected   = "◉" // U+25C9 Fisheye (filled circle)
+
+	// Circle select symbols (for component multi-select lists)
+	SymbolCircleUnselected = "○" // U+25CB White Circle
+	SymbolCircleSelected   = "◉" // U+25C9 Fisheye (filled circle)
 
 	// List/navigation symbols
 	SymbolListPointer = "›" // U+203A Single Right-Pointing Angle Quotation Mark
@@ -218,7 +225,7 @@ var (
 	// StyleNavItemActive is the currently active/selected navigation item
 	StyleNavItemActive = lipgloss.NewStyle().
 		Foreground(ColorTextPrimary).
-		Background(ColorSecondary).
+		Background(ColorNavActiveBg).
 		Bold(true).
 		PaddingLeft(2).
 		PaddingRight(2)
@@ -349,7 +356,7 @@ var (
 var (
 	// StyleHeader is the main application header bar
 	StyleHeader = lipgloss.NewStyle().
-			BorderBottom(true).
+			BorderTop(true).
 			BorderStyle(lipgloss.NormalBorder()).
 			BorderForeground(ColorBrand).
 			Padding(0, 1).

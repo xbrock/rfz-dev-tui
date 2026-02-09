@@ -349,52 +349,56 @@ func (m Model) viewHeader() string {
 	title := components.StyleHeaderTitle.Render("RFZ-CLI v1.0.0")
 	subtitle := components.StyleHeaderSubtitle.Render("Terminal Orchestration Tool")
 
-	leftContent := lipgloss.JoinVertical(lipgloss.Left, title, subtitle)
-
 	timeStr := m.currentTime.Format("3:04:05 PM")
 	rightText := timeStr + " | Deutsche Bahn Internal"
 	rightContent := lipgloss.NewStyle().
 		Foreground(components.ColorTextSecondary).
 		Render(rightText)
 
-	// Calculate gap
-	leftWidth := lipgloss.Width(leftContent)
-	rightWidth := lipgloss.Width(rightContent)
+	// First line: title (left) + gap + time/info (right)
 	headerInnerWidth := m.width - 2 // account for StyleHeader padding
-	gapWidth := headerInnerWidth - leftWidth - rightWidth
+	titleWidth := lipgloss.Width(title)
+	rightWidth := lipgloss.Width(rightContent)
+	gapWidth := headerInnerWidth - titleWidth - rightWidth
 	if gapWidth < 1 {
 		gapWidth = 1
 	}
 	gap := lipgloss.NewStyle().Width(gapWidth).Render("")
 
-	headerContent := lipgloss.JoinHorizontal(lipgloss.Top,
-		leftContent,
+	topLine := lipgloss.JoinHorizontal(lipgloss.Top,
+		title,
 		gap,
 		rightContent,
 	)
+
+	// Two lines: title+info on top, subtitle below
+	headerContent := lipgloss.JoinVertical(lipgloss.Left, topLine, subtitle)
 
 	return components.StyleHeader.Width(m.width).Render(headerContent)
 }
 
 // viewBody renders the main body with navigation sidebar and content area.
 func (m Model) viewBody(height int) string {
-	nav := m.viewNavigation(height)
+	nav := m.viewNavigation()
 	content := m.viewContent(height)
 
 	return lipgloss.JoinHorizontal(lipgloss.Top, nav, content)
 }
 
 // viewNavigation renders the left navigation sidebar.
-func (m Model) viewNavigation(height int) string {
+func (m Model) viewNavigation() string {
 	focused := m.focus == focusNav
 
-	// Build footer with key hints
-	footer := components.TuiKeyHints([]components.KeyHint{
+	// Nav inner width: total navWidth - border(2) - padding(2) = navWidth-4
+	navInnerWidth := navWidth - 4
+
+	// Build footer with tree-style key hints
+	footer := components.TuiKeyHintsTree([]components.KeyHint{
 		{Key: "\u2191/k", Label: "Up"},
 		{Key: "\u2193/j", Label: "Down"},
 		{Key: "Enter", Label: "Select"},
-		{Key: "1-4", Label: "Quick nav"},
-	}, navWidth-4) // account for box border + padding
+		{Key: "1-5", Label: "Quick nav"},
+	})
 
 	navContent := components.TuiNavigation(
 		navItems,
@@ -403,7 +407,7 @@ func (m Model) viewNavigation(height int) string {
 		focused,
 		"Navigation",
 		footer,
-		navWidth-4, // inner width (box border 2 + padding 2)
+		navInnerWidth,
 	)
 
 	borderColor := components.ColorBorder
@@ -415,8 +419,7 @@ func (m Model) viewNavigation(height int) string {
 		Border(components.BorderSingle).
 		BorderForeground(borderColor).
 		Padding(0, 1).
-		Width(navWidth).
-		Height(height - 2) // account for border top/bottom
+		Width(navWidth - 2) // subtract border so total visual width = navWidth
 
 	return boxStyle.Render(navContent)
 }
@@ -447,9 +450,10 @@ func (m Model) contentHeight() int {
 
 // viewContent renders the main content area.
 func (m Model) viewContent(height int) string {
-	contentWidth := m.width - navWidth
-	if contentWidth < 1 {
-		contentWidth = 1
+	// Remaining width after nav, minus border (2) so visual width = m.width - navWidth
+	boxWidth := m.width - navWidth - 2
+	if boxWidth < 1 {
+		boxWidth = 1
 	}
 
 	var contentBody string
@@ -475,7 +479,7 @@ func (m Model) viewContent(height int) string {
 		Border(components.BorderSingle).
 		BorderForeground(borderColor).
 		Padding(0, 1).
-		Width(contentWidth).
+		Width(boxWidth).
 		Height(height - 2) // account for border top/bottom
 
 	return boxStyle.Render(contentBody)
@@ -492,6 +496,8 @@ func (m Model) viewStatusBar() string {
 	}
 
 	modeBadge := "HOME"
+	var stateBadge string
+	var stateBadgeColor lipgloss.Color
 	var hints []components.KeyHint
 
 	if m.screen == screenBuild && m.build.IsConfiguring() {
@@ -505,14 +511,20 @@ func (m Model) viewStatusBar() string {
 		}
 	} else if m.screen == screenBuild && m.build.IsExecuting() {
 		modeBadge = "BUILD"
-		contextBadge = "Build Running"
+		contextBadge = m.build.CurrentItemLabel()
+		stateBadge = "RUNNING"
+		stateBadgeColor = components.ColorYellow
 		hints = []components.KeyHint{
-			{Key: "\u2191\u2193", Label: "Navigate"},
-			{Key: "Esc", Label: "Cancel"},
+			{Key: "Tab", Label: "Focus"},
+			{Key: "\u2191\u2193", Label: "Nav"},
+			{Key: "Enter", Label: "Select"},
+			{Key: "Esc", Label: "Back"},
 		}
 	} else if m.screen == screenBuild && m.build.IsCompleted() {
 		modeBadge = "DONE"
-		contextBadge = "Build Complete"
+		contextBadge = m.build.CurrentItemLabel()
+		stateBadge = "COMPLETE"
+		stateBadgeColor = components.ColorGreen
 		hints = []components.KeyHint{
 			{Key: "Tab", Label: "Switch Focus"},
 			{Key: "\u2191\u2193", Label: "Navigate"},
@@ -537,11 +549,13 @@ func (m Model) viewStatusBar() string {
 	}
 
 	return components.TuiStatusBar(components.TuiStatusBarConfig{
-		ModeBadge:      modeBadge,
-		ModeBadgeColor: components.ColorCyan,
-		ContextBadge:   contextBadge,
-		Hints:          hints,
-		QuitHint:       &components.KeyHint{Key: "q", Label: "Quit"},
-		Width:          m.width,
+		ModeBadge:       modeBadge,
+		ModeBadgeColor:  components.ColorCyan,
+		ContextBadge:    contextBadge,
+		StateBadge:      stateBadge,
+		StateBadgeColor: stateBadgeColor,
+		Hints:           hints,
+		QuitHint:        &components.KeyHint{Key: "q", Label: "Quit"},
+		Width:           m.width,
 	})
 }

@@ -14,6 +14,8 @@ type TuiStatusBarConfig struct {
 	ModeBadgeColor    lipgloss.Color // Background color for mode badge
 	ContextBadge      string         // Context text (e.g., "rfz-dispatcher", "Boss")
 	ContextBadgeColor lipgloss.Color // Background color for context badge (optional, defaults to ColorSecondary)
+	StateBadge        string         // Optional state text (e.g., "RUNNING", "DONE")
+	StateBadgeColor   lipgloss.Color // Background color for state badge (optional, defaults to ColorWarning)
 
 	// Key hints section (right)
 	Hints    []KeyHint // Main key hints (rendered via TuiKeyHints)
@@ -68,6 +70,24 @@ func TuiStatusBar(cfg TuiStatusBarConfig) string {
 			Bold(true).
 			Padding(0, 1).
 			Render(cfg.ContextBadge)
+		if len(leftParts) > 0 {
+			leftWidth++ // space between badges
+		}
+		leftParts = append(leftParts, badge)
+		leftWidth += lipgloss.Width(badge)
+	}
+
+	if cfg.StateBadge != "" {
+		badgeColor := cfg.StateBadgeColor
+		if badgeColor == "" {
+			badgeColor = ColorYellow
+		}
+		badge := lipgloss.NewStyle().
+			Background(badgeColor).
+			Foreground(ColorBackground).
+			Bold(true).
+			Padding(0, 1).
+			Render(cfg.StateBadge)
 		if len(leftParts) > 0 {
 			leftWidth++ // space between badges
 		}

@@ -37,57 +37,109 @@ type TuiListItem struct {
 // mode: selection mode (multi or single)
 // focused: whether this item is focused (cursor + list focused)
 func TuiListItemRender(item TuiListItem, cursor bool, mode ListSelectMode, focused bool) string {
-	var parts []string
+	return TuiListItemRenderWidth(item, cursor, mode, focused, 0)
+}
 
-	// Add cursor indicator
-	cursorStyle := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
+// TuiListItemRenderWidth renders a single list item with right-aligned badge.
+// width: total available width (0 = no right-alignment for badge)
+func TuiListItemRenderWidth(item TuiListItem, cursor bool, mode ListSelectMode, focused bool, width int) string {
+	// Build cursor indicator
+	cursorStr := " "
 	if cursor {
-		parts = append(parts, cursorStyle.Render(SymbolListPointer))
-	} else {
-		parts = append(parts, " ")
+		cursorStr = SymbolListPointer
 	}
 
-	// Add selection symbol based on mode
+	// Build selection symbol based on mode
+	var selSymbol string
+	var selColor lipgloss.Color
 	switch mode {
 	case ListMultiSelect:
 		if item.Selected {
-			parts = append(parts, SymbolCheckboxChecked)
+			selSymbol = SymbolCircleSelected
+			selColor = ColorGreen
 		} else {
-			parts = append(parts, SymbolCheckboxUnchecked)
+			selSymbol = SymbolCircleUnselected
+			selColor = ColorTextSecondary
 		}
 	case ListSingleSelect:
 		if item.Selected {
-			parts = append(parts, SymbolRadioSelected)
+			selSymbol = SymbolRadioSelected
+			selColor = ColorGreen
 		} else {
-			parts = append(parts, SymbolRadioUnselected)
+			selSymbol = SymbolRadioUnselected
+			selColor = ColorTextSecondary
 		}
 	}
 
 	// Truncate label if needed
 	label := Truncate(item.Label, maxListItemLabelWidth)
 
-	// Apply style based on focus/selection state
-	var labelStyle lipgloss.Style
-	switch {
-	case cursor && focused:
-		labelStyle = lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
-	case item.Selected:
-		labelStyle = lipgloss.NewStyle().Foreground(ColorTextPrimary)
-	default:
-		labelStyle = lipgloss.NewStyle().Foreground(ColorTextSecondary)
-	}
-	parts = append(parts, labelStyle.Render(label))
+	// Determine if this row has a highlight background (cursor + focused)
+	isCursorRow := cursor && focused
 
-	// Add badge if present
+	// Build the left portion: "> ○ label"
+	var leftParts []string
+	if isCursorRow {
+		rowStyle := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
+		leftParts = append(leftParts, rowStyle.Render(cursorStr))
+		leftParts = append(leftParts, lipgloss.NewStyle().Foreground(selColor).Render(selSymbol))
+		leftParts = append(leftParts, rowStyle.Render(label))
+	} else {
+		cursorStyle := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
+		leftParts = append(leftParts, cursorStyle.Render(cursorStr))
+		leftParts = append(leftParts, lipgloss.NewStyle().Foreground(selColor).Render(selSymbol))
+
+		var labelStyle lipgloss.Style
+		switch {
+		case item.Selected:
+			labelStyle = lipgloss.NewStyle().Foreground(ColorTextPrimary)
+		default:
+			labelStyle = lipgloss.NewStyle().Foreground(ColorTextSecondary)
+		}
+		leftParts = append(leftParts, labelStyle.Render(label))
+	}
+
+	leftStr := strings.Join(leftParts, " ")
+
+	// Build badge (right-aligned if width > 0)
 	if item.Badge != "" {
 		badgeStyle := lipgloss.NewStyle().
 			Background(ColorSecondary).
 			Foreground(ColorTextMuted).
 			Padding(0, 1)
-		parts = append(parts, badgeStyle.Render(item.Badge))
+		badge := badgeStyle.Render(item.Badge)
+
+		if width > 0 {
+			leftWidth := lipgloss.Width(leftStr)
+			badgeWidth := lipgloss.Width(badge)
+			gap := width - leftWidth - badgeWidth
+			if gap < 1 {
+				gap = 1
+			}
+			row := leftStr + strings.Repeat(" ", gap) + badge
+
+			// Apply row highlight for cursor
+			if isCursorRow {
+				rowBg := lipgloss.NewStyle().
+					Background(ColorNavActiveBg).
+					Width(width)
+				return rowBg.Render(row)
+			}
+			return row
+		}
+
+		leftStr += " " + badge
 	}
 
-	return strings.Join(parts, " ")
+	// Apply row highlight for cursor (no badge case)
+	if isCursorRow && width > 0 {
+		rowBg := lipgloss.NewStyle().
+			Background(ColorNavActiveBg).
+			Width(width)
+		return rowBg.Render(leftStr)
+	}
+
+	return leftStr
 }
 
 // TuiList renders a complete list with all items.
@@ -97,6 +149,12 @@ func TuiListItemRender(item TuiListItem, cursor bool, mode ListSelectMode, focus
 // focused: whether the list is focused
 // showCounter: whether to show selection counter ("3/13 selected")
 func TuiList(items []TuiListItem, cursorIndex int, mode ListSelectMode, focused bool, showCounter bool) string {
+	return TuiListWidth(items, cursorIndex, mode, focused, showCounter, 0)
+}
+
+// TuiListWidth renders a complete list with right-aligned badges.
+// width: total row width for right-alignment (0 = no alignment)
+func TuiListWidth(items []TuiListItem, cursorIndex int, mode ListSelectMode, focused bool, showCounter bool, width int) string {
 	if len(items) == 0 {
 		emptyStyle := lipgloss.NewStyle().Foreground(ColorTextMuted).Italic(true)
 		return emptyStyle.Render("No items")
@@ -107,7 +165,7 @@ func TuiList(items []TuiListItem, cursorIndex int, mode ListSelectMode, focused 
 	// Render each item
 	for i, item := range items {
 		isCursor := i == cursorIndex
-		line := TuiListItemRender(item, isCursor, mode, focused)
+		line := TuiListItemRenderWidth(item, isCursor, mode, focused, width)
 		lines = append(lines, line)
 	}
 

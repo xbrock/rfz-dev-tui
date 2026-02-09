@@ -1,40 +1,40 @@
- RFZ-CLI v1.0.0                                                                     2:30:00 PM | Deutsche Bahn Internal     
- Terminal Orchestration Tool                                                                                                
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────    
-                                                                                                                            
-┌──────────────────────────────┐┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│ Navigation                   ││ Build                                                                                    │
-│ ──────────────────────────   ││ ╭──────────────────────────────────────────────────────────────────────────────────────╮ │
-│ › 1. Build Components        ││ │ Build RFZ Components                                                                 │ │
-│   2. View Logs  2            ││ │ Select components to build (0/13 selected)                 Space Toggle  a All  n    │ │
-│   3. Discover  3             ││ │ None                                                                                 │ │
-│   4. Configuration  4        ││ │                                                                                      │ │
-│   5. Exit  q                 ││ │ › ☐ boss  Core                                                                       │ │
-│ ──────────────────────────   ││ │   ☐ fistiv  Core                                                                     │ │
-│ ↑/k Up  ↓/j Down             ││ │   ☐ audiocon  Standalone                                                             │ │
-│                              ││ │   ☐ traktion  Core                                                                   │ │
-│                              ││ │   ☐ signalsteuerung  Core                                                            │ │
-│                              ││ │   ☐ weichensteuerung  Core                                                           │ │
-│                              ││ │   ☐ simkern  Simulation                                                              │ │
-│                              ││ │   ☐ fahrdynamik  Simulation                                                          │ │
-│                              ││ │   ☐ energierechnung  Simulation                                                      │ │
-│                              ││ │   ☐ zuglauf  Simulation                                                              │ │
-│                              ││ │   ☐ stellwerk  Core                                                                  │ │
-│                              ││ │   ☐ diagnose  Standalone                                                             │ │
-│                              ││ │   ☐ konfiguration  Standalone                                                        │ │
-│                              ││ ╰──────────────────────────────────────────────────────────────────────────────────────╯ │
-│                              ││                                                                                          │
-│                              ││ ╭──────────────────────────────────────────────────────────────────────────────────────╮ │
-│                              ││ │ Actions                                                                              │ │
-│                              ││ │ [Build Selected]  Enter     [Select All]  a     [Clear Selection]  n  Tab Switch     │ │
-│                              ││ │ focus                                                                                │ │
-│                              ││ ╰──────────────────────────────────────────────────────────────────────────────────────╯ │
-│                              ││                                                                                          │
-│                              ││ [x] Selected    [ ] Not selected    > Current                                            │
-│                              ││                                                                                          │
-│                              ││                                                                                          │
-│                              ││                                                                                          │
-│                              ││                                                                                          │
-│                              ││                                                                                          │
-└──────────────────────────────┘└──────────────────────────────────────────────────────────────────────────────────────────┘
-  HOME   Build Components                                             Tab Focus  ↑↓ Nav  Enter Select  Esc Back  q Quit     
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ RFZ-CLI v1.0.0                                                                     2:30:00 PM | Deutsche Bahn Internal 
+ Terminal Orchestration Tool                                                                                            
+                                                                                                                        
+┌────────────────────────────┐┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ Navigation                 ││ Build                                                                                  │
+│ ────────────────────────── ││ ╭────────────────────────────────────────────────────────────────────────────────────╮ │
+│ › 1. Build Components    1 ││ │ Build RFZ Components                                                               │ │
+│   2. View Logs           2 ││ │ Select components to build (0/13 selected)           Space Toggle | a All | n None │ │
+│   3. Discover            3 ││ │                                                                                    │ │
+│   4. Configuration       4 ││ │ › ○ boss                                                                     Core  │ │
+│   5. Exit                q ││ │   ○ fistiv                                                                   Core  │ │
+│ ────────────────────────── ││ │   ○ audiocon                                                           Standalone  │ │
+│ ├── ↑/k Up                 ││ │   ○ traktion                                                                 Core  │ │
+│ ├── ↓/j Down               ││ │   ○ signalsteuerung                                                          Core  │ │
+│ ├── Enter Select           ││ │   ○ weichensteuerung                                                         Core  │ │
+│ └── 1-5 Quick nav          ││ │   ○ simkern                                                            Simulation  │ │
+└────────────────────────────┘│ │   ○ fahrdynamik                                                        Simulation  │ │
+                              │ │   ○ energierechnung                                                    Simulation  │ │
+                              │ │   ○ zuglauf                                                            Simulation  │ │
+                              │ │   ○ stellwerk                                                                Core  │ │
+                              │ │   ○ diagnose                                                           Standalone  │ │
+                              │ │   ○ konfiguration                                                      Standalone  │ │
+                              │ ╰────────────────────────────────────────────────────────────────────────────────────╯ │
+                              │                                                                                        │
+                              │ ╭────────────────────────────────────────────────────────────────────────────────────╮ │
+                              │ │ Actions                                                                            │ │
+                              │ │ [Build Selected]  Enter     [Select All]  a     [Clear Selection]  n  Tab Switch   │ │
+                              │ │ focus                                                                              │ │
+                              │ ╰────────────────────────────────────────────────────────────────────────────────────╯ │
+                              │                                                                                        │
+                              │ ◉ Selected    ○ Not selected    › Current                                              │
+                              │                                                                                        │
+                              │                                                                                        │
+                              │                                                                                        │
+                              │                                                                                        │
+                              │                                                                                        │
+                              │                                                                                        │
+                              └────────────────────────────────────────────────────────────────────────────────────────┘
+  HOME   Build Components                                          Tab Focus | ↑↓ Nav | Enter Select | Esc Back  q Quit 

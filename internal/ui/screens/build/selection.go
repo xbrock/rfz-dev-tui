@@ -12,6 +12,11 @@ import (
 func (m Model) viewSelection() string {
 	title := components.StyleH2.Render("Build")
 
+	// Box width: m.width - 2 for border so visual width = m.width
+	boxWidth := m.width - 2
+	// Inner content width inside box: boxWidth - 2 (padding)
+	innerWidth := boxWidth - 2
+
 	// Header section with title and key hints
 	selectedCount := len(components.GetSelected(m.items))
 	totalCount := len(m.items)
@@ -22,22 +27,26 @@ func (m Model) viewSelection() string {
 		{Key: "Space", Label: "Toggle"},
 		{Key: "a", Label: "All"},
 		{Key: "n", Label: "None"},
-	}, m.width)
+	}, innerWidth)
 
+	gapW := innerWidth - lipgloss.Width(subtitleRendered) - lipgloss.Width(shortcutHints)
+	if gapW < 1 {
+		gapW = 1
+	}
 	headerLine := lipgloss.JoinHorizontal(lipgloss.Top,
 		subtitleRendered,
-		lipgloss.NewStyle().Width(m.width-lipgloss.Width(subtitleRendered)-lipgloss.Width(shortcutHints)).Render(""),
+		lipgloss.NewStyle().Width(gapW).Render(""),
 		shortcutHints,
 	)
 
-	// Component list
-	listContent := components.TuiList(m.items, m.cursorIndex, components.ListMultiSelect, m.focused, false)
+	// Component list with right-aligned badges
+	listContent := components.TuiListWidth(m.items, m.cursorIndex, components.ListMultiSelect, m.focused, false, innerWidth)
 
 	listBox := lipgloss.NewStyle().
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorCyan).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Build RFZ Components") + "\n" +
 				headerLine + "\n\n" +
@@ -87,29 +96,29 @@ func (m Model) viewActions() string {
 		clearBtn,
 	)
 
+	// Box width: m.width - 2 for border; inner = boxWidth - 2 (padding)
+	actBoxWidth := m.width - 2
+	actInnerWidth := actBoxWidth - 2
+
 	// Right-align the tab hint
 	buttonsWidth := lipgloss.Width(buttons)
 	tabHintWidth := lipgloss.Width(tabHint)
-	gapWidth := m.width - buttonsWidth - tabHintWidth - 6 // account for box padding/border
-	if gapWidth < 1 {
-		gapWidth = 1
+	actGapWidth := actInnerWidth - buttonsWidth - tabHintWidth
+	if actGapWidth < 1 {
+		actGapWidth = 1
 	}
 
 	actionsContent := lipgloss.JoinHorizontal(lipgloss.Top,
 		buttons,
-		lipgloss.NewStyle().Width(gapWidth).Render(""),
+		lipgloss.NewStyle().Width(actGapWidth).Render(""),
 		tabHint,
 	)
 
 	return lipgloss.NewStyle().
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorBorder).
-		BorderTop(true).
-		BorderBottom(true).
-		BorderLeft(true).
-		BorderRight(true).
 		Padding(0, 1).
-		Width(m.width).
+		Width(actBoxWidth).
 		Render(
 			components.StyleH3.Render("Actions") + "\n" +
 				actionsContent,
@@ -118,19 +127,21 @@ func (m Model) viewActions() string {
 
 // viewLegend renders the selection legend.
 func (m Model) viewLegend() string {
-	keyStyle := lipgloss.NewStyle().Foreground(components.ColorCyan).Bold(true)
+	selectedStyle := lipgloss.NewStyle().Foreground(components.ColorGreen).Bold(true)
+	unselectedStyle := lipgloss.NewStyle().Foreground(components.ColorTextSecondary)
 	labelStyle := lipgloss.NewStyle().Foreground(components.ColorTextSecondary)
+	cursorStyle := lipgloss.NewStyle().Foreground(components.ColorCyan).Bold(true)
 
 	legend := lipgloss.JoinHorizontal(lipgloss.Top,
-		keyStyle.Render("[x]"),
+		selectedStyle.Render(components.SymbolCircleSelected),
 		" ",
 		labelStyle.Render("Selected"),
 		"    ",
-		keyStyle.Render("[ ]"),
+		unselectedStyle.Render(components.SymbolCircleUnselected),
 		" ",
 		labelStyle.Render("Not selected"),
 		"    ",
-		keyStyle.Render(">"),
+		cursorStyle.Render(components.SymbolListPointer),
 		" ",
 		labelStyle.Render("Current"),
 	)

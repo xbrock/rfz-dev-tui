@@ -26,8 +26,8 @@ func TuiKeyHints(hints []KeyHint, width int) string {
 	keyStyle := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
 	labelStyle := lipgloss.NewStyle().Foreground(ColorTextSecondary)
 
-	separator := "  " // double space, no dot separator
-	separatorWidth := 2
+	separator := " | " // pipe separator matching design prototype
+	separatorWidth := 3
 
 	var renderedHints []string
 	usedWidth := 0
@@ -56,4 +56,34 @@ func TuiKeyHints(hints []KeyHint, width int) string {
 	}
 
 	return strings.Join(renderedHints, separator)
+}
+
+// Tree connector symbols for tree-style hint rendering.
+const (
+	SymbolTreeBranch = "├──" // Branch connector (non-last item)
+	SymbolTreeLast   = "└──" // Last item connector
+)
+
+// TuiKeyHintsTree renders a vertical tree-style list of keyboard hints.
+// hints: slice of KeyHint items to render
+func TuiKeyHintsTree(hints []KeyHint) string {
+	if len(hints) == 0 {
+		return ""
+	}
+
+	keyStyle := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
+	labelStyle := lipgloss.NewStyle().Foreground(ColorTextSecondary)
+	treeStyle := lipgloss.NewStyle().Foreground(ColorTextMuted)
+
+	var lines []string
+	for i, hint := range hints {
+		connector := SymbolTreeBranch
+		if i == len(hints)-1 {
+			connector = SymbolTreeLast
+		}
+		line := treeStyle.Render(connector) + " " + keyStyle.Render(hint.Key) + " " + labelStyle.Render(hint.Label)
+		lines = append(lines, line)
+	}
+
+	return strings.Join(lines, "\n")
 }
