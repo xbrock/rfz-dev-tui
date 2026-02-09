@@ -88,6 +88,10 @@ const (
 	SymbolRadioUnselected = "◯" // U+25EF Large Circle
 	SymbolRadioSelected   = "◉" // U+25C9 Fisheye (filled circle)
 
+	// Circle select symbols (for component multi-select lists)
+	SymbolCircleUnselected = "○" // U+25CB White Circle
+	SymbolCircleSelected   = "◉" // U+25C9 Fisheye (filled circle)
+
 	// List/navigation symbols
 	SymbolListPointer = "›" // U+203A Single Right-Pointing Angle Quotation Mark
 

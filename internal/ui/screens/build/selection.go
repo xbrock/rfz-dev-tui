@@ -39,8 +39,8 @@ func (m Model) viewSelection() string {
 		shortcutHints,
 	)
 
-	// Component list
-	listContent := components.TuiList(m.items, m.cursorIndex, components.ListMultiSelect, m.focused, false)
+	// Component list with right-aligned badges
+	listContent := components.TuiListWidth(m.items, m.cursorIndex, components.ListMultiSelect, m.focused, false, innerWidth)
 
 	listBox := lipgloss.NewStyle().
 		Border(components.BorderRounded).
@@ -127,19 +127,21 @@ func (m Model) viewActions() string {
 
 // viewLegend renders the selection legend.
 func (m Model) viewLegend() string {
-	keyStyle := lipgloss.NewStyle().Foreground(components.ColorCyan).Bold(true)
+	selectedStyle := lipgloss.NewStyle().Foreground(components.ColorGreen).Bold(true)
+	unselectedStyle := lipgloss.NewStyle().Foreground(components.ColorTextSecondary)
 	labelStyle := lipgloss.NewStyle().Foreground(components.ColorTextSecondary)
+	cursorStyle := lipgloss.NewStyle().Foreground(components.ColorCyan).Bold(true)
 
 	legend := lipgloss.JoinHorizontal(lipgloss.Top,
-		keyStyle.Render("[x]"),
+		selectedStyle.Render(components.SymbolCircleSelected),
 		" ",
 		labelStyle.Render("Selected"),
 		"    ",
-		keyStyle.Render("[ ]"),
+		unselectedStyle.Render(components.SymbolCircleUnselected),
 		" ",
 		labelStyle.Render("Not selected"),
 		"    ",
-		keyStyle.Render(">"),
+		cursorStyle.Render(components.SymbolListPointer),
 		" ",
 		labelStyle.Render("Current"),
 	)

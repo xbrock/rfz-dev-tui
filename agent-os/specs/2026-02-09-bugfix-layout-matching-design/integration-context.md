@@ -15,6 +15,7 @@
 | LAYOUT-002 | Fixed nav sidebar styling | navigation.go rewritten, keyhints.go tree mode added, app.go nav height removed |
 | LAYOUT-003 | Fixed status bar layout | keyhints.go pipe separator, statusbar.go 3rd badge, app.go status bar badges |
 | LAYOUT-004 | Fixed welcome screen layout | welcome.go: white subtitle, braille divider, 3 badges, tree hints |
+| LAYOUT-005 | Fixed build components screen | list.go: circle symbols, right-aligned badges, cursor row highlight; selection.go: updated legend |
 
 ---
 
@@ -33,6 +34,10 @@ _None yet_
 - `components.TuiKeyHintsTree(hints)` - renders key hints as vertical tree-style list with `├──`/`└──` connectors
 - `TuiStatusBarConfig.StateBadge` - optional 3rd badge (e.g., "RUNNING", "COMPLETE") rendered after context badge
 - `TuiStatusBarConfig.StateBadgeColor` - color for state badge (defaults to ColorYellow)
+
+### List Functions
+- `components.TuiListWidth(items, cursor, mode, focused, counter, width)` - renders list with right-aligned badges within given width
+- `components.TuiListItemRenderWidth(item, cursor, mode, focused, width)` - renders single item with right-aligned badge
 
 ### Color Tokens
 - `components.ColorNavActiveBg` (#164e63) - light blue/teal background for active nav items
@@ -65,6 +70,12 @@ _None yet_
 - Welcome screen divider uses braille blocks (`⣿`) in muted color instead of single-line divider
 - Welcome screen badges: v1.0.0 (brand red bg), Deutsche Bahn (gray bg), Internal Tool (teal bg #164e63)
 - Welcome screen hints use `TuiKeyHintsTree()` component for tree-style rendering
+- Multi-select lists now use ○/◉ circle symbols instead of ☐/☑ checkboxes, with ◉ in green
+- `SymbolCircleUnselected` (○) and `SymbolCircleSelected` (◉) added to styles.go
+- List items support right-aligned badges via `TuiListWidth()` / `TuiListItemRenderWidth()` with width parameter
+- Cursor+focused rows get `ColorNavActiveBg` background highlight across full width
+- Build selection legend uses ◉/○/› symbols instead of [x]/[ ]/>
+
 
 ---
 
@@ -84,3 +95,6 @@ _None yet_
 | internal/ui/components/statusbar.go | Modified | LAYOUT-003 |
 | internal/app/app.go | Modified | LAYOUT-003 |
 | internal/ui/screens/welcome/welcome.go | Modified | LAYOUT-004 |
+| internal/ui/components/list.go | Modified | LAYOUT-005 |
+| internal/ui/components/styles.go | Modified | LAYOUT-005 |
+| internal/ui/screens/build/selection.go | Modified | LAYOUT-005 |
