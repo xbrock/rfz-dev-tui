@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | all-stories-done |
-| **Next Phase** | 3 - System Story 997 (Code Review) |
+| **Current Phase** | complete |
+| **Next Phase** | - |
 | **Spec Folder** | agent-os/specs/2026-02-09-bugfix-layout-matching-design |
 | **Worktree Path** | (none) |
 | **Git Branch** | bugfix/layout-matching-design |
 | **Git Strategy** | branch |
-| **Current Story** | LAYOUT-999 |
-| **Last Action** | Started LAYOUT-999 Finalize PR |
-| **Next Action** | Push branch and create PR |
+| **Current Story** | None |
+| **Last Action** | PR created - https://github.com/xbrock/rfz-dev-tui/pull/8 |
+| **Next Action** | - |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 11 |
-| **Completed** | 10 |
+| **Completed** | 11 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 1 |
+| **Backlog** | 0 |
 
 | **Blocked** | 0 |
 
@@ -49,7 +49,7 @@ _None - all stories have complete DoR_
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-999 | Finalize PR | System/Finalization | LAYOUT-998 | ✅ Ready | - |
+_None - all stories completed_
 
 ---
 
@@ -93,6 +93,7 @@ _None_
 | LAYOUT-007 | Fix Build Execution View | Frontend | 2026-02-09 |
 | LAYOUT-997 | Code Review | System/Review | 2026-02-09 |
 | LAYOUT-998 | Integration Validation | System/Integration | 2026-02-09 |
+| LAYOUT-999 | Finalize PR | System/Finalization | 2026-02-09 |
 
 ---
 
@@ -122,6 +123,7 @@ _None_
 | 2026-02-09 | LAYOUT-007 | In Progress | Done | Tree icons, braille progress bars, block overall progress, full-width columns, badge cleanup |
 | 2026-02-09 | LAYOUT-997 | Backlog | Done | Code review passed - 0 critical, 0 major, 1 minor issue |
 | 2026-02-09 | LAYOUT-998 | Backlog | Done | Integration validation passed: build OK, lint 0 issues, tests OK (golden files updated) |
+| 2026-02-09 | LAYOUT-999 | Backlog | Done | PR #8 created, test scenarios documented |
 
 ---
 
