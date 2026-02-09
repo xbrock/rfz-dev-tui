@@ -16,6 +16,7 @@
 | LAYOUT-003 | Fixed status bar layout | keyhints.go pipe separator, statusbar.go 3rd badge, app.go status bar badges |
 | LAYOUT-004 | Fixed welcome screen layout | welcome.go: white subtitle, braille divider, 3 badges, tree hints |
 | LAYOUT-005 | Fixed build components screen | list.go: circle symbols, right-aligned badges, cursor row highlight; selection.go: updated legend |
+| LAYOUT-006 | Fixed config modal section hint styling | config.go: sectionHint() helper, cyan keys + muted text in all section hints |
 
 ---
 
@@ -75,7 +76,8 @@ _None yet_
 - List items support right-aligned badges via `TuiListWidth()` / `TuiListItemRenderWidth()` with width parameter
 - Cursor+focused rows get `ColorNavActiveBg` background highlight across full width
 - Build selection legend uses ◉/○/› symbols instead of [x]/[ ]/>
-
+- Config modal section hints use `sectionHint()` helper: keys in cyan bold, description text in muted gray
+- Config modal bottom hints already use `TuiKeyHints()` with pipe separators (from LAYOUT-003)
 
 ---
 
@@ -98,3 +100,4 @@ _None yet_
 | internal/ui/components/list.go | Modified | LAYOUT-005 |
 | internal/ui/components/styles.go | Modified | LAYOUT-005 |
 | internal/ui/screens/build/selection.go | Modified | LAYOUT-005 |
+| internal/ui/screens/build/config.go | Modified | LAYOUT-006 |

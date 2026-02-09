@@ -14,7 +14,7 @@
 | **Git Branch** | bugfix/layout-matching-design |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Completed LAYOUT-005 - self-review passed |
+| **Last Action** | Completed LAYOUT-006 - self-review passed |
 | **Next Action** | Execute next story |
 
 ---
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 11 |
-| **Completed** | 6 |
+| **Completed** | 7 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 5 |
+| **Backlog** | 4 |
 
 | **Blocked** | 0 |
 
@@ -49,7 +49,6 @@ _None - all stories have complete DoR_
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-006 | Fix Config Modal Styling | Frontend | LAYOUT-001, LAYOUT-008 | ✅ Ready | XS |
 | LAYOUT-007 | Fix Build Execution View | Frontend | LAYOUT-001, LAYOUT-008 | ✅ Ready | S |
 | LAYOUT-997 | Code Review | System/Review | All regular stories | ✅ Ready | - |
 | LAYOUT-998 | Integration Validation | System/Integration | LAYOUT-997 | ✅ Ready | - |
@@ -93,6 +92,7 @@ _None_
 | LAYOUT-003 | Fix Status Bar Layout | Frontend | 2026-02-09 |
 | LAYOUT-004 | Fix Welcome Screen Layout | Frontend | 2026-02-09 |
 | LAYOUT-005 | Fix Build Components Screen | Frontend | 2026-02-09 |
+| LAYOUT-006 | Fix Config Modal Styling | Frontend | 2026-02-09 |
 
 ---
 
@@ -116,6 +116,8 @@ _None_
 | 2026-02-09 | LAYOUT-004 | In Progress | Done | White subtitle, braille divider, 3 styled badges, tree hints |
 | 2026-02-09 | LAYOUT-005 | Backlog | In Progress | Started execution |
 | 2026-02-09 | LAYOUT-005 | In Progress | Done | Circle symbols ○/◉, right-aligned badges, cursor row highlight, updated legend |
+| 2026-02-09 | LAYOUT-006 | Backlog | In Progress | Started execution |
+| 2026-02-09 | LAYOUT-006 | In Progress | Done | Section hints: cyan keys + muted text, pipe separators already present from LAYOUT-003 |
 
 ---
 

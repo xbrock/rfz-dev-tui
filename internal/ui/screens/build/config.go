@@ -62,6 +62,28 @@ func (m Model) viewConfig() string {
 	return components.TuiModal(modalConfig, termW, termH)
 }
 
+// sectionHintPart represents a part of a section hint, either a key or plain text.
+type sectionHintPart struct {
+	text  string
+	isKey bool
+}
+
+// sectionHint renders a hint line with cyan keys and muted text.
+func sectionHint(parts []sectionHintPart) string {
+	keyStyle := lipgloss.NewStyle().Foreground(components.ColorCyan).Bold(true)
+	textStyle := lipgloss.NewStyle().Foreground(components.ColorTextMuted)
+
+	var b strings.Builder
+	for _, p := range parts {
+		if p.isKey {
+			b.WriteString(keyStyle.Render(p.text))
+		} else {
+			b.WriteString(textStyle.Render(p.text))
+		}
+	}
+	return b.String()
+}
+
 // sectionBox renders a bordered section with a title label in the top border.
 func sectionBox(title string, content string, width int, focused bool) string {
 	borderColor := components.ColorBorder
@@ -132,7 +154,12 @@ func (m Model) viewGoalSection(width int) string {
 
 	radios := components.TuiRadioGroup(labels, selectedIdx, focusedIdx, true)
 
-	hint := components.StyleBodyMuted.Render("\u2190\u2192 or h/l to select")
+	hint := sectionHint([]sectionHintPart{
+		{text: "\u2190\u2192", isKey: true},
+		{text: " or "},
+		{text: "h/l", isKey: true},
+		{text: " to select"},
+	})
 
 	content := radios + "\n" + hint
 
@@ -156,7 +183,12 @@ func (m Model) viewProfilesSection(width int) string {
 		lines = append(lines, "  "+cb)
 	}
 
-	hint := components.StyleBodyMuted.Render("\u2191\u2193 navigate | Space toggle")
+	hint := sectionHint([]sectionHintPart{
+		{text: "\u2191\u2193", isKey: true},
+		{text: " navigate | "},
+		{text: "Space", isKey: true},
+		{text: " toggle"},
+	})
 
 	content := strings.Join(lines, "\n") + "\n" + hint
 
@@ -180,7 +212,12 @@ func (m Model) viewPortSection(width int) string {
 
 	radios := components.TuiRadioGroup(labels, selectedIdx, focusedIdx, true)
 
-	hint := components.StyleBodyMuted.Render("\u2190\u2192 or h/l to select | Appends use_traktion_* profile")
+	hint := sectionHint([]sectionHintPart{
+		{text: "\u2190\u2192", isKey: true},
+		{text: " or "},
+		{text: "h/l", isKey: true},
+		{text: " to select | Appends use_traktion_* profile"},
+	})
 
 	content := radios + "\n" + hint
 
@@ -196,7 +233,12 @@ func (m Model) viewOptionsSection(width int) string {
 	desc := components.StyleBodyMuted.Render("(adds -DskipTests)")
 	line := "  " + cb + "  " + desc
 
-	hint := components.StyleBodyMuted.Render("Space or Enter to toggle")
+	hint := sectionHint([]sectionHintPart{
+		{text: "Space", isKey: true},
+		{text: " or "},
+		{text: "Enter", isKey: true},
+		{text: " to toggle"},
+	})
 
 	content := line + "\n" + hint
 
