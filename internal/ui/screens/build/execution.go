@@ -11,9 +11,19 @@ import (
 	"rfz-cli/internal/ui/components"
 )
 
+// execBoxWidth returns the Width value for bordered boxes so visual width = m.width.
+func (m Model) execBoxWidth() int {
+	w := m.width - 2 // subtract border (left+right)
+	if w < 1 {
+		w = 1
+	}
+	return w
+}
+
 // viewExecution renders the build execution phase.
 func (m Model) viewExecution() string {
 	title := components.StyleH2.Render("Build")
+	boxWidth := m.execBoxWidth()
 
 	// Build Execution box: command preview
 	cmdLine := components.StylePrompt.Render("$") + " " +
@@ -23,7 +33,7 @@ func (m Model) viewExecution() string {
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorBorder).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Build Execution") + "\n" +
 				cmdLine,
@@ -94,7 +104,7 @@ func (m Model) viewComponentTable() string {
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorCyan).
 		Padding(0, 1).
-		Width(m.width).
+		Width(m.execBoxWidth()).
 		Render(
 			components.StyleH3.Render("Components") + "\n" +
 				tableContent,
@@ -179,13 +189,15 @@ func (m Model) viewComponentRow(
 // viewProgressBox renders the progress section with overall bar and status counters in a bordered box.
 func (m Model) viewProgressBox() string {
 	progress := m.overallProgress()
+	boxWidth := m.execBoxWidth()
 
 	label := lipgloss.NewStyle().
 		Foreground(components.ColorTextSecondary).
 		Bold(true).
 		Render("Overall:")
 
-	bar := components.TuiProgress(progress, m.width-30, true)
+	// Inner width = boxWidth - 2 (padding); subtract label+gap for bar
+	bar := components.TuiProgress(progress, boxWidth-30, true)
 
 	progressLine := label + "  " + bar
 	counters := m.viewStatusCounters()
@@ -195,7 +207,7 @@ func (m Model) viewProgressBox() string {
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorBorder).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Progress") + "\n" +
 				content,
@@ -258,11 +270,14 @@ func (m Model) viewExecutionActions() string {
 		buttons = viewLogsBtn + "  " + cancelBtn
 	}
 
+	boxWidth := m.execBoxWidth()
+	actInnerWidth := boxWidth - 2 // subtract padding
+
 	var actionsContent string
 	if hintsStr != "" {
 		buttonsWidth := lipgloss.Width(buttons)
 		hintsWidth := lipgloss.Width(hintsStr)
-		gapWidth := m.width - buttonsWidth - hintsWidth - 6
+		gapWidth := actInnerWidth - buttonsWidth - hintsWidth
 		if gapWidth < 1 {
 			gapWidth = 1
 		}
@@ -284,7 +299,7 @@ func (m Model) viewExecutionActions() string {
 		Border(components.BorderRounded).
 		BorderForeground(borderColor).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Actions") + "\n" +
 				actionsContent,

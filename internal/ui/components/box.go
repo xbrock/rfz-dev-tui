@@ -56,8 +56,9 @@ func TuiBox(content string, style BoxStyle, focused bool) string {
 	return boxStyle.Render(content)
 }
 
-// TuiBoxWithWidth renders content inside a bordered container with a fixed width.
-// Content exceeding the width is truncated with an ellipsis.
+// TuiBoxWithWidth renders content inside a bordered container with a fixed total visual width.
+// The width parameter is the desired visual width including border and padding.
+// Content exceeding the inner width is truncated with an ellipsis.
 func TuiBoxWithWidth(content string, style BoxStyle, focused bool, width int) string {
 	border := getBorder(style)
 
@@ -75,11 +76,12 @@ func TuiBoxWithWidth(content string, style BoxStyle, focused bool, width int) st
 	// Truncate content if needed
 	truncated := Truncate(content, innerWidth)
 
+	// Width() sets content+padding area; border adds 2 more chars visually
 	boxStyle := lipgloss.NewStyle().
 		Border(border).
 		BorderForeground(borderColor).
 		Padding(0, 1).
-		Width(width)
+		Width(width - 2) // subtract border so total visual width = width
 
 	return boxStyle.Render(truncated)
 }

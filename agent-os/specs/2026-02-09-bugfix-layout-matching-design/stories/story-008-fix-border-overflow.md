@@ -8,6 +8,7 @@
 **Priority**: Critical
 **Type**: Frontend
 **Estimated Effort**: S
+**Status**: Done
 **Dependencies**: None
 
 ---
@@ -100,11 +101,11 @@ Scenario: Terminal Resize waehrend Nutzung
 
 ### DoD (Definition of Done) - Vom Architect
 
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Alle Akzeptanzkriterien erfuellt
-- [ ] `go build ./...` erfolgreich
-- [ ] `golangci-lint run ./...` ohne Fehler
-- [ ] Completion Check Commands erfolgreich
+- [x] Code implementiert und folgt Style Guide
+- [x] Alle Akzeptanzkriterien erfuellt
+- [x] `go build ./...` erfolgreich
+- [x] `golangci-lint run ./...` ohne Fehler
+- [x] Completion Check Commands erfolgreich
 
 ---
 

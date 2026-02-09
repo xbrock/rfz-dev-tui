@@ -389,13 +389,16 @@ func (m Model) viewBody(height int) string {
 func (m Model) viewNavigation(height int) string {
 	focused := m.focus == focusNav
 
+	// Nav inner width: total navWidth - border(2) - padding(2) = navWidth-4
+	navInnerWidth := navWidth - 4
+
 	// Build footer with key hints
 	footer := components.TuiKeyHints([]components.KeyHint{
 		{Key: "\u2191/k", Label: "Up"},
 		{Key: "\u2193/j", Label: "Down"},
 		{Key: "Enter", Label: "Select"},
 		{Key: "1-4", Label: "Quick nav"},
-	}, navWidth-4) // account for box border + padding
+	}, navInnerWidth)
 
 	navContent := components.TuiNavigation(
 		navItems,
@@ -404,7 +407,7 @@ func (m Model) viewNavigation(height int) string {
 		focused,
 		"Navigation",
 		footer,
-		navWidth-4, // inner width (box border 2 + padding 2)
+		navInnerWidth,
 	)
 
 	borderColor := components.ColorBorder
@@ -416,8 +419,8 @@ func (m Model) viewNavigation(height int) string {
 		Border(components.BorderSingle).
 		BorderForeground(borderColor).
 		Padding(0, 1).
-		Width(navWidth).
-		Height(height - 2) // account for border top/bottom
+		Width(navWidth - 2). // subtract border so total visual width = navWidth
+		Height(height - 2)   // account for border top/bottom
 
 	return boxStyle.Render(navContent)
 }
@@ -448,9 +451,10 @@ func (m Model) contentHeight() int {
 
 // viewContent renders the main content area.
 func (m Model) viewContent(height int) string {
-	contentWidth := m.width - navWidth
-	if contentWidth < 1 {
-		contentWidth = 1
+	// Remaining width after nav, minus border (2) so visual width = m.width - navWidth
+	boxWidth := m.width - navWidth - 2
+	if boxWidth < 1 {
+		boxWidth = 1
 	}
 
 	var contentBody string
@@ -476,7 +480,7 @@ func (m Model) viewContent(height int) string {
 		Border(components.BorderSingle).
 		BorderForeground(borderColor).
 		Padding(0, 1).
-		Width(contentWidth).
+		Width(boxWidth).
 		Height(height - 2) // account for border top/bottom
 
 	return boxStyle.Render(contentBody)

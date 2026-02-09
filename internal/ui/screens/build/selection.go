@@ -12,6 +12,11 @@ import (
 func (m Model) viewSelection() string {
 	title := components.StyleH2.Render("Build")
 
+	// Box width: m.width - 2 for border so visual width = m.width
+	boxWidth := m.width - 2
+	// Inner content width inside box: boxWidth - 2 (padding)
+	innerWidth := boxWidth - 2
+
 	// Header section with title and key hints
 	selectedCount := len(components.GetSelected(m.items))
 	totalCount := len(m.items)
@@ -22,11 +27,15 @@ func (m Model) viewSelection() string {
 		{Key: "Space", Label: "Toggle"},
 		{Key: "a", Label: "All"},
 		{Key: "n", Label: "None"},
-	}, m.width)
+	}, innerWidth)
 
+	gapW := innerWidth - lipgloss.Width(subtitleRendered) - lipgloss.Width(shortcutHints)
+	if gapW < 1 {
+		gapW = 1
+	}
 	headerLine := lipgloss.JoinHorizontal(lipgloss.Top,
 		subtitleRendered,
-		lipgloss.NewStyle().Width(m.width-lipgloss.Width(subtitleRendered)-lipgloss.Width(shortcutHints)).Render(""),
+		lipgloss.NewStyle().Width(gapW).Render(""),
 		shortcutHints,
 	)
 
@@ -37,7 +46,7 @@ func (m Model) viewSelection() string {
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorCyan).
 		Padding(0, 1).
-		Width(m.width).
+		Width(boxWidth).
 		Render(
 			components.StyleH3.Render("Build RFZ Components") + "\n" +
 				headerLine + "\n\n" +
@@ -87,29 +96,29 @@ func (m Model) viewActions() string {
 		clearBtn,
 	)
 
+	// Box width: m.width - 2 for border; inner = boxWidth - 2 (padding)
+	actBoxWidth := m.width - 2
+	actInnerWidth := actBoxWidth - 2
+
 	// Right-align the tab hint
 	buttonsWidth := lipgloss.Width(buttons)
 	tabHintWidth := lipgloss.Width(tabHint)
-	gapWidth := m.width - buttonsWidth - tabHintWidth - 6 // account for box padding/border
-	if gapWidth < 1 {
-		gapWidth = 1
+	actGapWidth := actInnerWidth - buttonsWidth - tabHintWidth
+	if actGapWidth < 1 {
+		actGapWidth = 1
 	}
 
 	actionsContent := lipgloss.JoinHorizontal(lipgloss.Top,
 		buttons,
-		lipgloss.NewStyle().Width(gapWidth).Render(""),
+		lipgloss.NewStyle().Width(actGapWidth).Render(""),
 		tabHint,
 	)
 
 	return lipgloss.NewStyle().
 		Border(components.BorderRounded).
 		BorderForeground(components.ColorBorder).
-		BorderTop(true).
-		BorderBottom(true).
-		BorderLeft(true).
-		BorderRight(true).
 		Padding(0, 1).
-		Width(m.width).
+		Width(actBoxWidth).
 		Render(
 			components.StyleH3.Render("Actions") + "\n" +
 				actionsContent,
