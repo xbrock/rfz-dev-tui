@@ -10,9 +10,6 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// maxNavItemLabelWidth is the maximum width for nav item labels before truncation.
-const maxNavItemLabelWidth = 30
-
 // TuiNavItem represents a single navigation menu item.
 type TuiNavItem struct {
 	Label    string // Display text
@@ -27,73 +24,77 @@ type TuiNavItem struct {
 // focused: whether the navigation container is focused
 // width: available width for the item (0 = no width constraint)
 func TuiNavItemRender(item TuiNavItem, cursor bool, active bool, focused bool, width int) string {
-	// Build the left part: cursor + number + label
-	var leftParts []string
-
-	if cursor {
-		cursorStyle := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
-		leftParts = append(leftParts, cursorStyle.Render(SymbolListPointer))
-	}
-
-	// Number prefix
 	numberStr := fmt.Sprintf("%d", item.Number)
+	label := item.Label
 
-	// Determine label width budget for truncation
-	labelWidth := maxNavItemLabelWidth
-	if width > 0 {
-		// Account for: cursor(2) + number(len) + dot(1) + space(1) + shortcut(len) + spacing(2)
-		overhead := 4 + len(numberStr)
-		if item.Shortcut != "" {
-			overhead += len(item.Shortcut) + 2
-		}
-		if !cursor {
-			overhead += 2 // padding for non-cursor items
-		}
-		available := width - overhead
-		if available > 0 && available < labelWidth {
-			labelWidth = available
-		}
-	}
+	// Build the text content: "N. Label"
+	text := fmt.Sprintf("%s. %s", numberStr, label)
 
-	label := Truncate(item.Label, labelWidth)
+	// Shortcut style
+	shortcutStyle := lipgloss.NewStyle().Foreground(ColorTextMuted)
 
-	// Build the content based on state
-	switch {
-	case cursor && focused:
-		// Focused cursor: cyan, bold
-		style := StyleNavItemFocused
-		leftParts = append(leftParts, style.Render(fmt.Sprintf("%s. %s", numberStr, label)))
-	case active:
-		// Active screen: background highlight
-		text := fmt.Sprintf("%s. %s", numberStr, label)
-		if item.Shortcut != "" {
-			shortcutStyle := lipgloss.NewStyle().Foreground(ColorTextMuted)
-			// Pad between label and shortcut
-			if width > 0 {
-				padding := width - lipgloss.Width(text) - len(item.Shortcut) - 4
-				if padding < 1 {
-					padding = 1
-				}
-				text += strings.Repeat(" ", padding) + shortcutStyle.Render(item.Shortcut)
-			} else {
-				text += "  " + shortcutStyle.Render(item.Shortcut)
+	if active {
+		// Active state: teal background, bold, shortcut right-aligned
+		// If cursor is also on this item, show ">" prefix
+		prefix := ""
+		if cursor {
+			prefix = SymbolListPointer + " "
+		}
+
+		fullText := prefix + text
+
+		// Build right-aligned line with shortcut
+		if item.Shortcut != "" && width > 0 {
+			shortcutRendered := shortcutStyle.
+				Background(ColorNavActiveBg).
+				Render(item.Shortcut)
+			textWidth := lipgloss.Width(fullText)
+			shortcutWidth := lipgloss.Width(item.Shortcut)
+			gap := width - textWidth - shortcutWidth
+			if gap < 1 {
+				gap = 1
 			}
+			fullText += strings.Repeat(" ", gap) + shortcutRendered
 		}
-		return StyleNavItemActive.Render(text)
-	default:
-		// Normal item
-		leftParts = append(leftParts, StyleNavItem.Render(fmt.Sprintf("%s. %s", numberStr, label)))
+
+		style := StyleNavItemActive.
+			PaddingLeft(0). // we handle prefix manually
+			PaddingRight(0).
+			Width(width)
+		return style.Render(fullText)
 	}
 
-	result := strings.Join(leftParts, " ")
+	if cursor && focused {
+		// Focused cursor (not active): cyan bold with ">" prefix
+		cursorPrefix := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true).Render(SymbolListPointer)
+		styledText := StyleNavItemFocused.Render(text)
 
-	// Add shortcut (right side) for non-active items
-	if item.Shortcut != "" && !active {
-		shortcutStyle := lipgloss.NewStyle().Foreground(ColorTextMuted)
-		result += "  " + shortcutStyle.Render(item.Shortcut)
+		line := cursorPrefix + " " + styledText
+		if item.Shortcut != "" && width > 0 {
+			lineWidth := lipgloss.Width(line)
+			shortcutWidth := lipgloss.Width(item.Shortcut)
+			gap := width - lineWidth - shortcutWidth
+			if gap < 1 {
+				gap = 1
+			}
+			line += strings.Repeat(" ", gap) + shortcutStyle.Render(item.Shortcut)
+		}
+		return line
 	}
 
-	return result
+	// Normal item: indented, shortcut right-aligned
+	indent := "  " // 2 spaces to align with "› " prefix
+	line := indent + StyleNavItem.PaddingLeft(0).Render(text)
+	if item.Shortcut != "" && width > 0 {
+		lineWidth := lipgloss.Width(line)
+		shortcutWidth := lipgloss.Width(item.Shortcut)
+		gap := width - lineWidth - shortcutWidth
+		if gap < 1 {
+			gap = 1
+		}
+		line += strings.Repeat(" ", gap) + shortcutStyle.Render(item.Shortcut)
+	}
+	return line
 }
 
 // TuiNavigation renders a complete sidebar navigation with optional header/footer.

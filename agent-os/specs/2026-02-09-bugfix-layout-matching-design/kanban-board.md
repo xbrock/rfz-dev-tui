@@ -14,7 +14,7 @@
 | **Git Branch** | bugfix/layout-matching-design |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Completed LAYOUT-008 - self-review passed |
+| **Last Action** | Completed LAYOUT-002 - self-review passed |
 | **Next Action** | Execute next story |
 
 ---
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 11 |
-| **Completed** | 2 |
+| **Completed** | 3 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 9 |
+| **Backlog** | 8 |
 | **Blocked** | 0 |
 
 ---
@@ -48,7 +48,6 @@ _None - all stories have complete DoR_
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-002 | Fix Navigation Sidebar Styling | Frontend | LAYOUT-001 | ✅ Ready | S |
 | LAYOUT-003 | Fix Status Bar Layout | Frontend | LAYOUT-001 | ✅ Ready | S |
 | LAYOUT-004 | Fix Welcome Screen Layout | Frontend | LAYOUT-001, LAYOUT-002, LAYOUT-003 | ✅ Ready | S |
 | LAYOUT-005 | Fix Build Components Screen | Frontend | LAYOUT-001, LAYOUT-008 | ✅ Ready | S |
@@ -92,6 +91,7 @@ _None_
 |----------|-------|------|-----------|
 | LAYOUT-001 | Update Style Tokens and Shared Styles | Frontend | 2026-02-09 |
 | LAYOUT-008 | Fix General Border Overflow | Frontend | 2026-02-09 |
+| LAYOUT-002 | Fix Navigation Sidebar Styling | Frontend | 2026-02-09 |
 
 ---
 
@@ -107,6 +107,8 @@ _None_
 | 2026-02-09 | LAYOUT-001 | In Progress | Done | Style tokens updated, header border moved to top, nav active bg changed to cyan |
 | 2026-02-09 | LAYOUT-008 | Backlog | In Progress | Started execution |
 | 2026-02-09 | LAYOUT-008 | In Progress | Done | Fixed border overflow in nav, content, and build screen boxes |
+| 2026-02-09 | LAYOUT-002 | Backlog | In Progress | Started execution |
+| 2026-02-09 | LAYOUT-002 | In Progress | Done | Fixed nav active/select priority, shortcut right-alignment, tree hints, content-based height |
 
 ---
 

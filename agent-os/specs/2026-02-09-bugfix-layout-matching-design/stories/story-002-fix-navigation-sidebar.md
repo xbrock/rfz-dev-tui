@@ -7,6 +7,7 @@
 
 **Priority**: High
 **Type**: Frontend
+**Status**: Done
 **Estimated Effort**: S
 **Dependencies**: LAYOUT-001
 
@@ -123,14 +124,14 @@ Scenario: Navigation bei minimaler Terminal-Hoehe
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten
-- [ ] Alle Akzeptanzkriterien erfuellt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten
+- [x] Alle Akzeptanzkriterien erfuellt
 
 #### Qualitaetssicherung
-- [ ] `go build ./...` erfolgreich
-- [ ] `golangci-lint run ./...` ohne Fehler
-- [ ] Completion Check Commands alle erfolgreich (exit 0)
+- [x] `go build ./...` erfolgreich
+- [x] `golangci-lint run ./...` ohne Fehler
+- [x] Completion Check Commands alle erfolgreich (exit 0)
 
 ---
 

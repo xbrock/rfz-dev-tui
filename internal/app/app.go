@@ -379,26 +379,26 @@ func (m Model) viewHeader() string {
 
 // viewBody renders the main body with navigation sidebar and content area.
 func (m Model) viewBody(height int) string {
-	nav := m.viewNavigation(height)
+	nav := m.viewNavigation()
 	content := m.viewContent(height)
 
 	return lipgloss.JoinHorizontal(lipgloss.Top, nav, content)
 }
 
 // viewNavigation renders the left navigation sidebar.
-func (m Model) viewNavigation(height int) string {
+func (m Model) viewNavigation() string {
 	focused := m.focus == focusNav
 
 	// Nav inner width: total navWidth - border(2) - padding(2) = navWidth-4
 	navInnerWidth := navWidth - 4
 
-	// Build footer with key hints
-	footer := components.TuiKeyHints([]components.KeyHint{
+	// Build footer with tree-style key hints
+	footer := components.TuiKeyHintsTree([]components.KeyHint{
 		{Key: "\u2191/k", Label: "Up"},
 		{Key: "\u2193/j", Label: "Down"},
 		{Key: "Enter", Label: "Select"},
-		{Key: "1-4", Label: "Quick nav"},
-	}, navInnerWidth)
+		{Key: "1-5", Label: "Quick nav"},
+	})
 
 	navContent := components.TuiNavigation(
 		navItems,
@@ -419,8 +419,7 @@ func (m Model) viewNavigation(height int) string {
 		Border(components.BorderSingle).
 		BorderForeground(borderColor).
 		Padding(0, 1).
-		Width(navWidth - 2). // subtract border so total visual width = navWidth
-		Height(height - 2)   // account for border top/bottom
+		Width(navWidth - 2) // subtract border so total visual width = navWidth
 
 	return boxStyle.Render(navContent)
 }
