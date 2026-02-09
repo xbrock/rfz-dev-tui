@@ -7,15 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Current Phase** | story-complete |
-| **Next Phase** | 3 - Execute Story |
+| **Current Phase** | all-stories-done |
+| **Next Phase** | 3 - Execute System Stories |
 | **Spec Folder** | agent-os/specs/2026-02-09-bugfix-layout-matching-design |
 | **Worktree Path** | (none) |
 | **Git Branch** | bugfix/layout-matching-design |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Completed LAYOUT-006 - self-review passed |
-| **Next Action** | Execute next story |
+| **Last Action** | Completed LAYOUT-007 - self-review passed |
+| **Next Action** | Execute system stories (997, 998, 999) |
 
 ---
 
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 11 |
-| **Completed** | 7 |
+| **Completed** | 8 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 4 |
+| **Backlog** | 3 |
 
 | **Blocked** | 0 |
 
@@ -49,7 +49,6 @@ _None - all stories have complete DoR_
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-007 | Fix Build Execution View | Frontend | LAYOUT-001, LAYOUT-008 | ✅ Ready | S |
 | LAYOUT-997 | Code Review | System/Review | All regular stories | ✅ Ready | - |
 | LAYOUT-998 | Integration Validation | System/Integration | LAYOUT-997 | ✅ Ready | - |
 | LAYOUT-999 | Finalize PR | System/Finalization | LAYOUT-998 | ✅ Ready | - |
@@ -93,6 +92,7 @@ _None_
 | LAYOUT-004 | Fix Welcome Screen Layout | Frontend | 2026-02-09 |
 | LAYOUT-005 | Fix Build Components Screen | Frontend | 2026-02-09 |
 | LAYOUT-006 | Fix Config Modal Styling | Frontend | 2026-02-09 |
+| LAYOUT-007 | Fix Build Execution View | Frontend | 2026-02-09 |
 
 ---
 
@@ -118,6 +118,8 @@ _None_
 | 2026-02-09 | LAYOUT-005 | In Progress | Done | Circle symbols ○/◉, right-aligned badges, cursor row highlight, updated legend |
 | 2026-02-09 | LAYOUT-006 | Backlog | In Progress | Started execution |
 | 2026-02-09 | LAYOUT-006 | In Progress | Done | Section hints: cyan keys + muted text, pipe separators already present from LAYOUT-003 |
+| 2026-02-09 | LAYOUT-007 | Backlog | In Progress | Started execution |
+| 2026-02-09 | LAYOUT-007 | In Progress | Done | Tree icons, braille progress bars, block overall progress, full-width columns, badge cleanup |
 
 ---
 
