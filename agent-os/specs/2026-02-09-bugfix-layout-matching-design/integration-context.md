@@ -13,6 +13,7 @@
 | LAYOUT-001 | Updated style tokens and header layout | ColorNavActiveBg added, StyleHeader uses BorderTop, viewHeader restructured |
 | LAYOUT-008 | Fixed border overflow in all bordered boxes | Width() adjusted for border chars in app.go, selection.go, execution.go, box.go |
 | LAYOUT-002 | Fixed nav sidebar styling | navigation.go rewritten, keyhints.go tree mode added, app.go nav height removed |
+| LAYOUT-003 | Fixed status bar layout | keyhints.go pipe separator, statusbar.go 3rd badge, app.go status bar badges |
 
 ---
 
@@ -29,6 +30,8 @@ _None yet_
 ### Hooks / Utilities
 - `build.Model.execBoxWidth()` - returns `m.width - 2` for bordered boxes in build execution view
 - `components.TuiKeyHintsTree(hints)` - renders key hints as vertical tree-style list with `├──`/`└──` connectors
+- `TuiStatusBarConfig.StateBadge` - optional 3rd badge (e.g., "RUNNING", "COMPLETE") rendered after context badge
+- `TuiStatusBarConfig.StateBadgeColor` - color for state badge (defaults to ColorYellow)
 
 ### Color Tokens
 - `components.ColorNavActiveBg` (#164e63) - light blue/teal background for active nav items
@@ -42,6 +45,9 @@ _None yet_
 ## Integration Notes
 
 <!-- Important integration information for subsequent stories -->
+- Key hints now use `" | "` pipe separator instead of double-space separator
+- Status bar supports 3 badges: ModeBadge + ContextBadge + StateBadge (optional)
+- Build execution shows: BUILD + component name + RUNNING; Build complete shows: DONE + component name + COMPLETE
 - StyleHeader now uses `BorderTop(true)` instead of `BorderBottom(true)` - red accent line is on top
 - StyleNavItemActive now uses `ColorNavActiveBg` instead of `ColorSecondary` - dark teal background
 - viewHeader() layout changed: title + time/info on same line, subtitle on separate line below
@@ -69,3 +75,6 @@ _None yet_
 | internal/ui/components/navigation.go | Modified | LAYOUT-002 |
 | internal/ui/components/keyhints.go | Modified | LAYOUT-002 |
 | internal/app/app.go | Modified | LAYOUT-002 |
+| internal/ui/components/keyhints.go | Modified | LAYOUT-003 |
+| internal/ui/components/statusbar.go | Modified | LAYOUT-003 |
+| internal/app/app.go | Modified | LAYOUT-003 |

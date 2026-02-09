@@ -26,8 +26,8 @@ func TuiKeyHints(hints []KeyHint, width int) string {
 	keyStyle := lipgloss.NewStyle().Foreground(ColorCyan).Bold(true)
 	labelStyle := lipgloss.NewStyle().Foreground(ColorTextSecondary)
 
-	separator := "  " // double space, no dot separator
-	separatorWidth := 2
+	separator := " | " // pipe separator matching design prototype
+	separatorWidth := 3
 
 	var renderedHints []string
 	usedWidth := 0

@@ -496,6 +496,8 @@ func (m Model) viewStatusBar() string {
 	}
 
 	modeBadge := "HOME"
+	var stateBadge string
+	var stateBadgeColor lipgloss.Color
 	var hints []components.KeyHint
 
 	if m.screen == screenBuild && m.build.IsConfiguring() {
@@ -509,14 +511,20 @@ func (m Model) viewStatusBar() string {
 		}
 	} else if m.screen == screenBuild && m.build.IsExecuting() {
 		modeBadge = "BUILD"
-		contextBadge = "Build Running"
+		contextBadge = m.build.CurrentItemLabel()
+		stateBadge = "RUNNING"
+		stateBadgeColor = components.ColorYellow
 		hints = []components.KeyHint{
-			{Key: "\u2191\u2193", Label: "Navigate"},
-			{Key: "Esc", Label: "Cancel"},
+			{Key: "Tab", Label: "Focus"},
+			{Key: "\u2191\u2193", Label: "Nav"},
+			{Key: "Enter", Label: "Select"},
+			{Key: "Esc", Label: "Back"},
 		}
 	} else if m.screen == screenBuild && m.build.IsCompleted() {
 		modeBadge = "DONE"
-		contextBadge = "Build Complete"
+		contextBadge = m.build.CurrentItemLabel()
+		stateBadge = "COMPLETE"
+		stateBadgeColor = components.ColorGreen
 		hints = []components.KeyHint{
 			{Key: "Tab", Label: "Switch Focus"},
 			{Key: "\u2191\u2193", Label: "Navigate"},
@@ -541,11 +549,13 @@ func (m Model) viewStatusBar() string {
 	}
 
 	return components.TuiStatusBar(components.TuiStatusBarConfig{
-		ModeBadge:      modeBadge,
-		ModeBadgeColor: components.ColorCyan,
-		ContextBadge:   contextBadge,
-		Hints:          hints,
-		QuitHint:       &components.KeyHint{Key: "q", Label: "Quit"},
-		Width:          m.width,
+		ModeBadge:       modeBadge,
+		ModeBadgeColor:  components.ColorCyan,
+		ContextBadge:    contextBadge,
+		StateBadge:      stateBadge,
+		StateBadgeColor: stateBadgeColor,
+		Hints:           hints,
+		QuitHint:        &components.KeyHint{Key: "q", Label: "Quit"},
+		Width:           m.width,
 	})
 }
