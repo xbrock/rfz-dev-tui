@@ -14,6 +14,7 @@
 | LAYOUT-008 | Fixed border overflow in all bordered boxes | Width() adjusted for border chars in app.go, selection.go, execution.go, box.go |
 | LAYOUT-002 | Fixed nav sidebar styling | navigation.go rewritten, keyhints.go tree mode added, app.go nav height removed |
 | LAYOUT-003 | Fixed status bar layout | keyhints.go pipe separator, statusbar.go 3rd badge, app.go status bar badges |
+| LAYOUT-004 | Fixed welcome screen layout | welcome.go: white subtitle, braille divider, 3 badges, tree hints |
 
 ---
 
@@ -60,6 +61,10 @@ _None yet_
 - Nav shortcuts are right-aligned using gap calculation: `width - textWidth - shortcutWidth`
 - Nav box no longer has fixed height - shrinks to content (no `Height()` on nav box style)
 - `viewNavigation()` no longer takes a height parameter
+- Welcome screen subtitle uses white (`ColorTextPrimary`) not cyan
+- Welcome screen divider uses braille blocks (`⣿`) in muted color instead of single-line divider
+- Welcome screen badges: v1.0.0 (brand red bg), Deutsche Bahn (gray bg), Internal Tool (teal bg #164e63)
+- Welcome screen hints use `TuiKeyHintsTree()` component for tree-style rendering
 
 ---
 
@@ -78,3 +83,4 @@ _None yet_
 | internal/ui/components/keyhints.go | Modified | LAYOUT-003 |
 | internal/ui/components/statusbar.go | Modified | LAYOUT-003 |
 | internal/app/app.go | Modified | LAYOUT-003 |
+| internal/ui/screens/welcome/welcome.go | Modified | LAYOUT-004 |

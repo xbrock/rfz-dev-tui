@@ -14,7 +14,7 @@
 | **Git Branch** | bugfix/layout-matching-design |
 | **Git Strategy** | branch |
 | **Current Story** | None |
-| **Last Action** | Completed LAYOUT-003 - self-review passed |
+| **Last Action** | Completed LAYOUT-004 - self-review passed |
 | **Next Action** | Execute next story |
 
 ---
@@ -24,11 +24,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Stories** | 11 |
-| **Completed** | 4 |
+| **Completed** | 5 |
 | **In Progress** | 0 |
 | **In Review** | 0 |
 | **Testing** | 0 |
-| **Backlog** | 7 |
+| **Backlog** | 6 |
 | **Blocked** | 0 |
 
 ---
@@ -48,7 +48,6 @@ _None - all stories have complete DoR_
 
 | Story ID | Title | Type | Dependencies | DoR Status | Points |
 |----------|-------|------|--------------|------------|--------|
-| LAYOUT-004 | Fix Welcome Screen Layout | Frontend | LAYOUT-001, LAYOUT-002, LAYOUT-003 | ✅ Ready | S |
 | LAYOUT-005 | Fix Build Components Screen | Frontend | LAYOUT-001, LAYOUT-008 | ✅ Ready | S |
 | LAYOUT-006 | Fix Config Modal Styling | Frontend | LAYOUT-001, LAYOUT-008 | ✅ Ready | XS |
 | LAYOUT-007 | Fix Build Execution View | Frontend | LAYOUT-001, LAYOUT-008 | ✅ Ready | S |
@@ -92,6 +91,7 @@ _None_
 | LAYOUT-008 | Fix General Border Overflow | Frontend | 2026-02-09 |
 | LAYOUT-002 | Fix Navigation Sidebar Styling | Frontend | 2026-02-09 |
 | LAYOUT-003 | Fix Status Bar Layout | Frontend | 2026-02-09 |
+| LAYOUT-004 | Fix Welcome Screen Layout | Frontend | 2026-02-09 |
 
 ---
 
@@ -111,6 +111,8 @@ _None_
 | 2026-02-09 | LAYOUT-002 | In Progress | Done | Fixed nav active/select priority, shortcut right-alignment, tree hints, content-based height |
 | 2026-02-09 | LAYOUT-003 | Backlog | In Progress | Started execution |
 | 2026-02-09 | LAYOUT-003 | In Progress | Done | Pipe-separated hints, 3-badge system (mode+context+state), q Quit right-aligned |
+| 2026-02-09 | LAYOUT-004 | Backlog | In Progress | Started execution |
+| 2026-02-09 | LAYOUT-004 | In Progress | Done | White subtitle, braille divider, 3 styled badges, tree hints |
 
 ---
 
