@@ -349,29 +349,30 @@ func (m Model) viewHeader() string {
 	title := components.StyleHeaderTitle.Render("RFZ-CLI v1.0.0")
 	subtitle := components.StyleHeaderSubtitle.Render("Terminal Orchestration Tool")
 
-	leftContent := lipgloss.JoinVertical(lipgloss.Left, title, subtitle)
-
 	timeStr := m.currentTime.Format("3:04:05 PM")
 	rightText := timeStr + " | Deutsche Bahn Internal"
 	rightContent := lipgloss.NewStyle().
 		Foreground(components.ColorTextSecondary).
 		Render(rightText)
 
-	// Calculate gap
-	leftWidth := lipgloss.Width(leftContent)
-	rightWidth := lipgloss.Width(rightContent)
+	// First line: title (left) + gap + time/info (right)
 	headerInnerWidth := m.width - 2 // account for StyleHeader padding
-	gapWidth := headerInnerWidth - leftWidth - rightWidth
+	titleWidth := lipgloss.Width(title)
+	rightWidth := lipgloss.Width(rightContent)
+	gapWidth := headerInnerWidth - titleWidth - rightWidth
 	if gapWidth < 1 {
 		gapWidth = 1
 	}
 	gap := lipgloss.NewStyle().Width(gapWidth).Render("")
 
-	headerContent := lipgloss.JoinHorizontal(lipgloss.Top,
-		leftContent,
+	topLine := lipgloss.JoinHorizontal(lipgloss.Top,
+		title,
 		gap,
 		rightContent,
 	)
+
+	// Two lines: title+info on top, subtitle below
+	headerContent := lipgloss.JoinVertical(lipgloss.Left, topLine, subtitle)
 
 	return components.StyleHeader.Width(m.width).Render(headerContent)
 }

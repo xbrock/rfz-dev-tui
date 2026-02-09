@@ -9,6 +9,7 @@
 **Type**: Frontend
 **Estimated Effort**: XS
 **Dependencies**: None
+**Status**: Done
 
 ---
 
@@ -93,15 +94,15 @@ Scenario: Styles sind konsistent bei verschiedenen Terminal-Groessen
 ### DoD (Definition of Done) - Vom Architect
 
 #### Implementierung
-- [ ] Code implementiert und folgt Style Guide
-- [ ] Architektur-Vorgaben eingehalten (WIE section)
-- [ ] Alle Akzeptanzkriterien erfuellt
+- [x] Code implementiert und folgt Style Guide
+- [x] Architektur-Vorgaben eingehalten (WIE section)
+- [x] Alle Akzeptanzkriterien erfuellt
 
 #### Qualitaetssicherung
-- [ ] `go build ./...` erfolgreich
-- [ ] `golangci-lint run ./...` ohne Fehler
-- [ ] Keine Linting Errors
-- [ ] Completion Check Commands alle erfolgreich (exit 0)
+- [x] `go build ./...` erfolgreich
+- [x] `golangci-lint run ./...` ohne Fehler
+- [x] Keine Linting Errors
+- [x] Completion Check Commands alle erfolgreich (exit 0)
 
 ---
 
